@@ -23,9 +23,11 @@
   "devDependencies": {
     "@oclif/dev-cli": "^1.26.0",
     "@oclif/test": "^1.2.5",
+    "@semantic-release/git": "^10.0.0",
     "@types/fs-extra": "^9.0.13",
     "@types/jest": "^27.0.2",
     "@types/node": "^16.11.4",
+    "semantic-release": "^18.0.0",
     "ts-jest": "^27.0.7",
     "ts-node": "^10.4.0",
     "typescript": "^4.4.4"
@@ -39,7 +41,10 @@
   ],
   "homepage": "https://github.com/peterknezek/har-to-mocks",
   "keywords": [
-    "cli", "har", "mocks", "connect-api-mocker"
+    "cli",
+    "har",
+    "mocks",
+    "connect-api-mocker"
   ],
   "license": "MIT",
   "main": "lib/index.js",
@@ -54,5 +59,8 @@
     "version": "oclif-dev readme && git add README.md",
     "har-to-mocks": "bin/run"
   },
-  "types": "lib/index.d.ts"
+  "types": "lib/index.d.ts",
+  "release": {
+    "branches": ["master", "next"]
+  }
 }

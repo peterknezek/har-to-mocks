@@ -56,6 +56,7 @@
     "prepack": "rm -rf lib && tsc -b && oclif-dev readme",
     "test": "jest --watchAll",
     "test:ci": "jest",
+    "build": "tsc -b",
     "version": "oclif-dev readme && git add README.md",
     "har-to-mocks": "bin/run"
   },

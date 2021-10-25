@@ -7,9 +7,14 @@
     "outDir": "lib",
     "rootDir": "src",
     "strict": true,
-    "target": "es2017"
+    "target": "es2017",
+    "removeComments": true,
+    "declarationDir": "./lib_types",
   },
   "include": [
     "src/**/*"
+  ],
+  "exclude": [
+    "src/**/*.test.ts"
   ]
 }

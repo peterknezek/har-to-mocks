@@ -1,7 +1,6 @@
 {
   "name": "har-to-mocks",
   "description": "Extract response from .har file and create JSON mocks for mock server.",
-  "version": "0.0.0",
   "author": "Peter Knezek @peterknezek",
   "bin": {
     "har-to-mocks": "./bin/run"
@@ -9,18 +8,18 @@
   "bugs": "https://github.com/peterknezek/har-to-mocks/issues",
   "dependencies": {
     "@oclif/command": "^1.8.0",
-    "@oclif/config": "^1.17.0",
-    "@oclif/plugin-help": "^3.2.3",
-    "chai": "^4.3.4",
     "cli-ux": "^5.6.3",
     "fs-extra": "^10.0.0",
     "install": "^0.13.0",
-    "jest": "^27.3.1",
-    "jest-diff": "^27.3.1",
     "npm": "^8.1.1",
     "tslib": "^2.3.1"
   },
   "devDependencies": {
+    "chai": "^4.3.4",
+    "jest": "^27.3.1",
+    "jest-diff": "^27.3.1",
+    "@oclif/config": "^1.17.0",
+    "@oclif/plugin-help": "^3.2.3",
     "@oclif/dev-cli": "^1.26.0",
     "@oclif/test": "^1.2.5",
     "@semantic-release/git": "^10.0.0",
@@ -53,7 +52,7 @@
   },
   "repository": "peterknezek/har-to-mocks",
   "scripts": {
-    "prepack": "rm -rf lib && tsc -b && oclif-dev readme",
+    "prepack": "rm -rf lib && rm -rf lib_types && tsc -b",
     "test": "jest --watchAll",
     "test:ci": "jest",
     "build": "tsc -b",
@@ -62,6 +61,9 @@
   },
   "types": "lib/index.d.ts",
   "release": {
-    "branches": ["master", "next"]
+    "branches": [
+      "master",
+      "next"
+    ]
   }
 }

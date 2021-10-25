@@ -15,7 +15,7 @@ npm install -g har-to-mocks
 or by npx
 
 ```
-npx https://github.com/peterknezek/har-to-mocks
+npx har-to-mocks [path to .har] [path mock/api folder] --dry-run
 ```
 
 ## How does it work?

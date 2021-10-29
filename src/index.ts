@@ -2,8 +2,11 @@ import {Command, flags} from '@oclif/command'
 import {readJson} from 'fs-extra'
 import {HarToMocksProcess, Har, Method, ResourceType} from './har-to-mocks'
 
+import updateNotifier from 'update-notifier'
+const pkg = require("../package.json");
+
 class HarToMocks extends Command {
-  static description = 'describe the command here'
+  static description = 'Extract response from .har file and create JSON mocks for mock server.'
 
   static flags = {
     // add --version flag to show CLI version
@@ -24,6 +27,12 @@ class HarToMocks extends Command {
   static args = [{name: 'file', description: 'sorce file (.har) path', require: true}, {name: 'to', description: 'path to your mocks/api folder'}]
 
   async run() {
+    updateNotifier({
+      pkg,
+      updateCheckInterval: 100,
+      shouldNotifyInNpmScript: true
+    }).notify();
+
     const {args, flags} = this.parse(HarToMocks)
     const process = new HarToMocksProcess(this.log)
 

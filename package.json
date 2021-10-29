@@ -1,5 +1,6 @@
 {
   "name": "har-to-mocks",
+  "version": "0.0.0",
   "description": "Extract response from .har file and create JSON mocks for mock server.",
   "author": "Peter Knezek @peterknezek",
   "bin": {
@@ -10,22 +11,24 @@
     "@oclif/command": "^1.8.0",
     "cli-ux": "^5.6.3",
     "fs-extra": "^10.0.0",
-    "install": "^0.13.0",
-    "npm": "^8.1.1",
-    "tslib": "^2.3.1"
+    "tslib": "^2.3.1",
+    "update-notifier": "^5.1.0"
   },
   "devDependencies": {
-    "chai": "^4.3.4",
-    "jest": "^27.3.1",
-    "jest-diff": "^27.3.1",
     "@oclif/config": "^1.17.0",
-    "@oclif/plugin-help": "^3.2.3",
     "@oclif/dev-cli": "^1.26.0",
+    "@oclif/plugin-help": "^3.2.3",
     "@oclif/test": "^1.2.5",
     "@semantic-release/git": "^10.0.0",
     "@types/fs-extra": "^9.0.13",
     "@types/jest": "^27.0.2",
     "@types/node": "^16.11.4",
+    "@types/update-notifier": "^5.1.0",
+    "chai": "^4.3.4",
+    "install": "^0.13.0",
+    "jest": "^27.3.1",
+    "jest-diff": "^27.3.1",
+    "npm": "^8.1.1",
     "semantic-release": "^18.0.0",
     "ts-jest": "^27.0.7",
     "ts-node": "^10.4.0",

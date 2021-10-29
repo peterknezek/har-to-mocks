@@ -10,6 +10,7 @@
     "target": "es2017",
     "removeComments": true,
     "declarationDir": "./lib_types",
+    "resolveJsonModule": true,
   },
   "include": [
     "src/**/*"

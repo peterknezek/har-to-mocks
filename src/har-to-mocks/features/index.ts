@@ -1,2 +1,2 @@
-export * from './result-table'
-export * from './write-mocks'
+export * from './result-table';
+export * from './write-mocks';

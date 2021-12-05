@@ -1,1 +1,1 @@
-export * from './folder-tree'
+export * from './folder-tree';

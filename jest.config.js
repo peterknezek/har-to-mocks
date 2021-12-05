@@ -4,7 +4,7 @@ module.exports = {
   testMatch: ['<rootDir>/tests/**/*.ts', '<rootDir>/src/**/*.test.ts'],
   transform: {'\\.ts$': 'ts-jest'},
   coverageReporters: ['lcov', 'text-summary'],
-  // collectCoverage: !!`Boolean(process.env.CI)`,
+  collectCoverage: false, // !!`Boolean(process.env.CI)`,
   collectCoverageFrom: ['src/**/*.ts'],
   coveragePathIgnorePatterns: ['/templates/'],
   coverageThreshold: {

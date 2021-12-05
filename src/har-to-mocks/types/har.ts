@@ -1,4 +1,4 @@
-import {Method, ResourceType} from './filter'
+import type { Method, ResourceType } from './filter';
 
 export interface Har {
   log: Log;
@@ -7,7 +7,7 @@ export interface Har {
 interface Log {
   version: string;
   creator: Creator;
-  pages: any[];
+  pages: unknown[];
   entries: Entry[];
 }
 
@@ -15,7 +15,7 @@ export interface Entry {
   _initiator: Initiator;
   _priority: string;
   _resourceType: ResourceType;
-  cache: {};
+  cache: unknown;
   connection?: string;
   request: Request;
   response: Response;
@@ -47,7 +47,7 @@ interface Response {
   headersSize: number;
   bodySize: number;
   _transferSize: number;
-  _error?: any;
+  _error?: unknown;
 }
 
 interface Content {

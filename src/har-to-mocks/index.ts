@@ -1,2 +1,3 @@
-export {HarToMocksProcess} from './har-to-mocks'
-export {Har, Method, ResourceType} from './types'
+export { HarToMocksProcess } from './har-to-mocks';
+export type { Har } from './types';
+export { Method, ResourceType } from './types';

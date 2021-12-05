@@ -1,1 +1,1 @@
-export {writeMocks} from './write-mocks'
+export { writeMocks } from './write-mocks';

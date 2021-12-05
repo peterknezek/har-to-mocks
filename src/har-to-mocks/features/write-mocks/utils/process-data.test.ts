@@ -1,5 +1,5 @@
-import {Entry} from '../../../types'
-import {entrysToPathsWithData} from './process-data'
+import type { Entry } from '../../../types';
+import { entrysToPathsWithData } from './process-data';
 
 describe('Write mocks - process data', () => {
   it('should be Entry prepared for saving files', () => {
@@ -15,9 +15,8 @@ describe('Write mocks - process data', () => {
           },
         },
       },
-    ] as Entry[]
-    const result = entrysToPathsWithData(mockEntrys, './mocks')
-    expect(result).toEqual([{fileData: '{}', fileName: 'GET.json', filePath: 'mocks/api/service/a'}])
-  })
-})
-
+    ] as Entry[];
+    const result = entrysToPathsWithData(mockEntrys, './mocks');
+    expect(result).toEqual([{ fileData: '{}', fileName: 'GET.json', filePath: 'mocks/api/service/a' }]);
+  });
+});

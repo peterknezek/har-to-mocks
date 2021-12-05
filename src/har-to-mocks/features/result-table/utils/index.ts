@@ -1,1 +1,1 @@
-export {extractToColumns, Columns} from './extract-to-columns'
+export { Columns, extractToColumns } from './extract-to-columns';

@@ -7,7 +7,7 @@ describe('Write mocks - process data', () => {
       {
         request: {
           method: 'GET',
-          url: '/api/service/a',
+          url: 'https://sample.com/api/service/a',
         },
         response: {
           content: {

@@ -6,11 +6,11 @@ export const folderTree = (pathList: string[]) => {
   pathList.forEach((path: string) => {
     const parts = path.split('/');
     let level = tree;
-    for (let index = 0; index < parts.length; index++) {
-      if (!level.nodes[parts[index]]) {
-        level.insert(parts[index]);
+    for (const part of parts) {
+      if (!level.nodes[part]) {
+        level.insert(part);
       }
-      level = level.nodes[parts[index]];
+      level = level.nodes[part];
     }
   });
 

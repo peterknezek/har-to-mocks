@@ -5,9 +5,6 @@ import updateNotifier, { Package } from 'update-notifier';
 import type { Har } from './har-to-mocks';
 import { HarToMocksProcess, Method, ResourceType } from './har-to-mocks';
 
-// eslint-disable-next-line @typescript-eslint/no-var-requires
-const pkg = require('../package.json') as Package;
-
 class HarToMocks extends Command {
   static description = 'Extract response from .har file and create JSON mocks for mock server.';
 
@@ -43,6 +40,8 @@ class HarToMocks extends Command {
   ];
 
   async run() {
+    // eslint-disable-next-line @typescript-eslint/no-var-requires
+    const pkg = require('../package.json') as Package;
     updateNotifier({
       pkg,
       updateCheckInterval: 100,
@@ -51,15 +50,15 @@ class HarToMocks extends Command {
 
     const log = this.log.bind(this);
     const process = new HarToMocksProcess(log);
-    const { args, flags } = this.parse(HarToMocks);
+    const { args, flags: usedFlags } = this.parse(HarToMocks);
 
     if (args.file && typeof args.file === 'string') {
       const data = (await readJson(args.file)) as Har;
-      process.extractor(data, { method: flags.method, resourceType: flags.type, url: flags.url });
+      process.extractor(data, { method: usedFlags.method, resourceType: usedFlags.type, url: usedFlags.url });
     }
 
     if (args.to && typeof args.to === 'string') {
-      process.writer(args.to, flags['dry-run']);
+      process.writer(args.to, usedFlags['dry-run']);
     }
 
     // this is bottom padding

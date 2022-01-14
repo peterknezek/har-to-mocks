@@ -4,9 +4,7 @@ import type { Entry, Filter, Har, Logger } from './types';
 export class HarToMocksProcess {
   public data: Entry[] = [];
 
-  private log: Logger;
-
-  constructor(log: Logger) {
+  constructor(private log: Logger) {
     this.log = log;
   }
 

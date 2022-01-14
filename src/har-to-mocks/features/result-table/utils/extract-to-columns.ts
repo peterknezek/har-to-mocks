@@ -1,4 +1,4 @@
-import url from 'url';
+import { URL } from 'url';
 
 import type { Entry, Method } from '../../../types';
 
@@ -9,11 +9,11 @@ export interface Columns {
 }
 
 export const extractToColumns = (entry: Entry): Columns => {
-  const parsedUrl = url.parse(entry.request.url);
-  const lastPartOfPath = parsedUrl.pathname?.split('/').pop();
+  const parsedUrl = new URL(entry.request.url);
+  const lastPartOfPath = parsedUrl.pathname.split('/').pop();
   return {
     name: lastPartOfPath ?? '',
     method: entry.request.method,
-    path: parsedUrl.pathname ?? '',
+    path: parsedUrl.pathname,
   };
 };

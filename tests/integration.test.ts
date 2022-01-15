@@ -1,5 +1,6 @@
 import { test } from '@oclif/test';
 import cmd = require('../src');
+import fsExtra from 'fs-extra';
 
 describe('Defined path to .har', () => {
   test
@@ -61,6 +62,36 @@ Folder tree which will be applied:
                └─ GET.json
 
 No files was writed. If you want to write files remove (--dry-run) flag.
+
+`);
+    });
+
+  test
+    .stdout()
+    .do(() => cmd.run(['./tests/mocks/sample.har', './mocks']))
+    .it('should write files to fs', (ctx) => {
+      expect(fsExtra.writeFileSync).toBeCalledTimes(3);
+      expect(ctx.stdout).toBe(`
+Filtered requests:
+
+ Name                    Method Path                        
+ ─────────────────────── ────── ─────────────────────────── 
+ userRoles               GET    /api/service/userRoles      
+ currentUserId           GET    /api/service/currentUserId  
+ active                  GET    /api/service/clients/active 
+
+Folder tree which will be applied:
+
+└─ mocks
+   └─ api
+      └─ service
+         ├─ userRoles
+         │  └─ GET.json
+         ├─ currentUserId
+         │  └─ GET.json
+         └─ clients
+            └─ active
+               └─ GET.json
 
 `);
     });

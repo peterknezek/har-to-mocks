@@ -79,5 +79,5 @@ Folder tree which will be applied:
             └─ active
                └─ GET.json
 
-No files was writed. If you want to write files remove (--dry-run) flag.
+No files were written. If you want to write files remove the (--dry-run) flag.
 ```

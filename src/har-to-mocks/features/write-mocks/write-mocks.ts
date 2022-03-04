@@ -16,7 +16,7 @@ export const writeMocks = (targetPath: string, data: Entry[], log: Logger, optio
   folderTree(newFiles.map(({ filePath, fileName }) => path.join(filePath, fileName)));
 
   if (options.isDryRun) {
-    log('\nNo files was writed. If you want to write files remove (--dry-run) flag.');
+    log('\nNo files were written. If you want to write files remove the (--dry-run) flag.');
   } else {
     cli.action.start('\nwriting files');
     newFiles.forEach(({ filePath, fileName, fileData }) => {

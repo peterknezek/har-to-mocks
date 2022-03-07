@@ -4,16 +4,14 @@ import type { Entry, Filter, Har, Logger } from './types';
 export class HarToMocksProcess {
   public data: Entry[] = [];
 
-  constructor(private log: Logger) {
-    this.log = log;
-  }
+  constructor(private log: Logger) {}
 
   /**
    * Extract `Entrys`, filter by flags and return to another process
    * @param {JSON} fileContent har as JSON
    * @param {object} filter flags
    */
-  extractor(fileContent: Har, filter: Filter) {
+  extract(fileContent: Har, filter: Filter) {
     const { method, resourceType, url } = filter;
     const { entries } = fileContent.log;
     let filtred: Entry[] = entries;
@@ -38,7 +36,7 @@ export class HarToMocksProcess {
     this.data = filtred;
   }
 
-  writer(targetPath: string, isDryRun = false) {
+  write(targetPath: string, isDryRun = false) {
     writeMocks(targetPath, this.data, this.log, { isDryRun });
   }
 }

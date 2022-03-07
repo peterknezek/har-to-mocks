@@ -14,13 +14,13 @@ const columns: Table.table.Columns<Columns> = {
     minWidth: 14,
   },
 };
+
 /**
  * Log table with content to the console. Table with columns:
  * [`Name` (last part of path), `Method` (regest method), `Path` (path of reguest)]
  * @param data filtered Entry form .har
  * @param log method to print to the console
  */
-
 export const resultTable = (data: Entry[], log: Logger) => {
   cli.table(data.map(extractToColumns), columns, {
     printLine: log,

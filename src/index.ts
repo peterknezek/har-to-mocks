@@ -48,17 +48,16 @@ class HarToMocks extends Command {
       shouldNotifyInNpmScript: true,
     }).notify();
 
-    const log = this.log.bind(this);
-    const process = new HarToMocksProcess(log);
+    const process = new HarToMocksProcess(this.log.bind(this));
     const { args, flags: usedFlags } = this.parse(HarToMocks);
 
     if (args.file && typeof args.file === 'string') {
       const data = (await readJson(args.file)) as Har;
-      process.extractor(data, { method: usedFlags.method, resourceType: usedFlags.type, url: usedFlags.url });
+      process.extract(data, { method: usedFlags.method, resourceType: usedFlags.type, url: usedFlags.url });
     }
 
     if (args.to && typeof args.to === 'string') {
-      process.writer(args.to, usedFlags['dry-run']);
+      process.write(args.to, usedFlags['dry-run']);
     }
 
     // this is bottom padding

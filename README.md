@@ -27,6 +27,7 @@ File can contain hundreds of requests so it's important to be able filter data. 
 - (`-m`, `--method=GET`) for filter specific method. Default value is 'GET'
 - (`-t`, `--type=xhr`) for filtering request type. Default value is 'xhr'
 
+Video example: [YouTube har-to-mocks@1.1.1](https://youtu.be/Pc2J8aHRKNY).
 
 example:
 ```

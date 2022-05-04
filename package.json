@@ -55,6 +55,10 @@
     "cli",
     "har",
     "mocks",
+    "mock",
+    "testing",
+    "mocking",
+    "requests",
     "connect-api-mocker"
   ],
   "license": "MIT",

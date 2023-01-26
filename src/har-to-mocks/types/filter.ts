@@ -12,6 +12,7 @@ export enum Method {
 
 export enum ResourceType {
   xhr = 'xhr',
+  fetch = 'fetch',
   // js = 'script',
   // css = 'stylesheet',
   // svg = 'text/plain',

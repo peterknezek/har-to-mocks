@@ -1,24 +1,29 @@
 ---
 name: Bug report
-about: Create a report to help us improve
+about: Create a bug report for har-to-mocks
 title: ''
 labels: bug
 assignees: ''
 
 ---
 
-**Describe the bug**
-A clear and concise description of what the bug is.
+# Bug report
 
-**To Reproduce**
+## Description / Observed Behavior
+
+What kind of issues did you encounter with `har-to-mocks`?
+
+## Expected Behavior
+
+How did you expect har-to-mocks to behave here?
+
+## Reproduction
+
 Steps to reproduce the behavior:
 1. Go to '...'
 2. Click on '....'
 3. Scroll down to '....'
 4. See error
-
-**Expected behavior**
-A clear and concise description of what you expected to happen.
 
 **Screenshots**
 If applicable, add screenshots to help explain your problem.
@@ -27,5 +32,8 @@ If applicable, add screenshots to help explain your problem.
  - OS: [e.g. iOS]
  - Version [e.g. 22]
 
-**Additional context or .har file**
 Add any other context about the problem here.
+
+## Additional Context or .har file
+
+The `har-to-mocks` version, and any other context about the problem here.

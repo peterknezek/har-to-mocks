@@ -24,7 +24,7 @@ npx har-to-mocks [path to .har] [path mock/api folder] --dry-run
 
 File can contain hundreds of requests so it's important to be able filter data. For filtering you can use flags:
 - (`--url`) for filtering by match in the url. Search is case sensitive
-- (`-m`, `--method=GET`) for filter specific method. Default value is 'GET'
+- (`-m`, `--method=GET --method=POST`) for filter specific method. Supported: 'GET', 'POST', 'PUT', 'DELETE' and 'PATCH' methods. Default value is 'GET'. 
 - (`-t`, `--type=xhr`) for filtering request type. Default value is 'xhr'
 
 Video example: [YouTube har-to-mocks@1.1.1](https://youtu.be/Pc2J8aHRKNY).

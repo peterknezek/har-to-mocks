@@ -96,3 +96,38 @@ Folder tree which will be applied:
 `);
     });
 });
+
+describe('Check multiple `--method` options', () => {
+  test
+    .stdout()
+    .do(() => cmd.run(['./tests/mocks/sample.har', './mocks', '--method=GET', '--method=POST']))
+    .it('should render with GET and POST requests', (ctx) => {
+      expect(ctx.stdout).toBe(`
+Filtered requests:
+
+ Name                    Method Path                        
+ ─────────────────────── ────── ─────────────────────────── 
+ userRoles               GET    /api/service/userRoles      
+ currentUserId           GET    /api/service/currentUserId  
+ active                  GET    /api/service/clients/active 
+ send                    POST   /api/service/send           
+
+Folder tree which will be applied:
+
+└─ mocks
+   └─ api
+      └─ service
+         ├─ userRoles
+         │  └─ GET.json
+         ├─ currentUserId
+         │  └─ GET.json
+         ├─ clients
+         │  └─ active
+         │     └─ GET.json
+         └─ send
+            └─ POST.json
+
+`);
+    });
+
+});

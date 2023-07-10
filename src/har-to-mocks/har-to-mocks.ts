@@ -12,7 +12,7 @@ export class HarToMocksProcess {
    * @param {object} filter flags
    */
   extract(fileContent: Har, filter: Filter) {
-    const { method, resourceType, url } = filter;
+    const { methods, resourceType, url } = filter;
     const { entries } = fileContent.log;
     let filtred: Entry[] = entries;
 
@@ -25,8 +25,8 @@ export class HarToMocksProcess {
       filtred = filtred.filter((e) => e._resourceType === resourceType);
     }
 
-    if (method) {
-      filtred = filtred.filter((e) => e.request.method === method);
+    if (methods) {
+      filtred = filtred.filter((e) => methods.includes(e.request.method));
     }
 
     // Log table with content

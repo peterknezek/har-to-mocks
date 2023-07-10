@@ -23,7 +23,7 @@ export enum ResourceType {
   // ws = 'websocket',
 }
 export interface Filter {
-  method?: Method;
+  methods?: Method[];
   resourceType?: ResourceType;
   url?: string;
 }

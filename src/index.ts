@@ -16,11 +16,12 @@ class HarToMocks extends Command {
     // flag to filter by url
     url: flags.string({ char: 'u', description: 'filter by url' }),
     // flag to filter method (-m, --method=GET)
-    method: flags.enum<Method>({
+    method: flags.string({
       char: 'm',
       options: Object.values(Method),
-      description: 'filter by method',
-      default: Method.GET,
+      description: 'filter by method. You can use multiple options, for example: --method=GET --method=POST',
+      default: [Method.GET],
+      multiple: true,
     }),
     // flag to filter resourceType (-t, --type=xhr)
     type: flags.enum<ResourceType>({
@@ -53,7 +54,11 @@ class HarToMocks extends Command {
 
     if (args.file && typeof args.file === 'string') {
       const data = (await readJson(args.file)) as Har;
-      process.extract(data, { method: usedFlags.method, resourceType: usedFlags.type, url: usedFlags.url });
+      process.extract(data, {
+        methods: usedFlags.method as Method[],
+        resourceType: usedFlags.type,
+        url: usedFlags.url,
+      });
     }
 
     if (args.to && typeof args.to === 'string') {

@@ -49,7 +49,7 @@ If output folder is not specified mocks will not be written.
 
 ### Extract data from .har to mock/api folder
 
-Export structure is prepared for [connect-api-mocker](https://www.npmjs.com/package/connect-api-mocker). After successful filtering request just add second argument which will be path to `connect-api-mocker`'s folder for mock/api.
+The second argument should be path to `mock`'s folder. Export structure is prepared for [mocks-to-msw](https://github.com/peterknezek/mocks-to-msw) which helps with integration with MSW (Mock Service Worker) and [connect-api-mocker](https://www.npmjs.com/package/connect-api-mocker). 
 
 WARNING: When second argument is defined cli will write files. To avoid unwanted overwrite use `--dry-run` flag to skip writing part of process.
 

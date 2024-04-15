@@ -5,6 +5,7 @@ import path from 'path';
 import type { Entry, Logger } from '../../types';
 import { folderTree } from '../folder-tree';
 import { entrysToPathsWithData } from './utils';
+import { getUniqueFileName } from './utils/unique-filename';
 
 interface Options {
   isDryRun: boolean;
@@ -21,7 +22,12 @@ export const writeMocks = (targetPath: string, data: Entry[], log: Logger, optio
     cli.action.start('\nwriting files');
     newFiles.forEach(({ filePath, fileName, fileData }) => {
       ensureDirSync(filePath);
-      writeFileSync(path.join(filePath, fileName), fileData);
+      try {
+        const uniqueFileName = getUniqueFileName(fileName, filePath);
+        writeFileSync(path.join(filePath, uniqueFileName), fileData);
+      } catch (error) {
+        console.error('Error writing file:', error);
+      }
     });
     cli.action.stop();
   }

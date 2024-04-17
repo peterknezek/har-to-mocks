@@ -58,7 +58,10 @@ Folder tree which will be applied:
          ├─ userRoles
          │  └─ GET.json
          ├─ currentUserId
-         │  └─ GET.json
+         │  ├─ ?abc=123
+         │  │  └─ GET.json
+         │  └─ ?filter=test
+         │     └─ GET.json
          └─ clients
             └─ active
                └─ GET.json
@@ -91,7 +94,10 @@ Folder tree which will be applied:
          ├─ userRoles
          │  └─ GET.json
          ├─ currentUserId
-         │  └─ GET.json
+         │  ├─ ?abc=123
+         │  │  └─ GET.json
+         │  └─ ?filter=test
+         │     └─ GET.json
          └─ clients
             └─ active
                └─ GET.json
@@ -124,7 +130,10 @@ Folder tree which will be applied:
          ├─ userRoles
          │  └─ GET.json
          ├─ currentUserId
-         │  └─ GET.json
+         │  ├─ ?abc=123
+         │  │  └─ GET.json
+         │  └─ ?filter=test
+         │     └─ GET.json
          ├─ clients
          │  └─ active
          │     └─ GET.json
@@ -133,5 +142,4 @@ Folder tree which will be applied:
 
 `);
     });
-
 });

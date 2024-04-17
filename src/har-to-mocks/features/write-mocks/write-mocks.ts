@@ -9,6 +9,7 @@ import { getUniqueFileName } from './utils/unique-filename';
 
 interface Options {
   isDryRun: boolean;
+  shouldCreateUnique: boolean;
 }
 
 export const writeMocks = (targetPath: string, data: Entry[], log: Logger, options: Options): void => {
@@ -23,7 +24,7 @@ export const writeMocks = (targetPath: string, data: Entry[], log: Logger, optio
     newFiles.forEach(({ filePath, fileName, fileData }) => {
       ensureDirSync(filePath);
       try {
-        const uniqueFileName = getUniqueFileName(fileName, filePath);
+        const uniqueFileName = options.shouldCreateUnique ? getUniqueFileName(fileName, filePath) : fileName;
         writeFileSync(path.join(filePath, uniqueFileName), fileData);
       } catch (error) {
         console.error('Error writing file:', error);

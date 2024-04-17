@@ -30,6 +30,7 @@ class HarToMocks extends Command {
       description: 'filter by resourceType',
       default: ResourceType.xhr,
     }),
+    uniqueFiles: flags.boolean({ description: 'to create unique files per each xhr' }),
 
     // flag to not write files, just show results (--dry-run)
     'dry-run': flags.boolean({ description: 'to not write files, just show results' }),
@@ -62,7 +63,7 @@ class HarToMocks extends Command {
     }
 
     if (args.to && typeof args.to === 'string') {
-      process.write(args.to, usedFlags['dry-run']);
+      process.write(args.to, usedFlags['dry-run'], usedFlags.uniqueFiles);
     }
 
     // this is bottom padding

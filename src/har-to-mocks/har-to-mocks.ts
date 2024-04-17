@@ -36,7 +36,7 @@ export class HarToMocksProcess {
     this.data = filtred;
   }
 
-  write(targetPath: string, isDryRun = false) {
-    writeMocks(targetPath, this.data, this.log, { isDryRun });
+  write(targetPath: string, isDryRun = false, shouldCreateUnique = false) {
+    writeMocks(targetPath, this.data, this.log, { isDryRun, shouldCreateUnique });
   }
 }

@@ -22,6 +22,9 @@ export const writeMocks = (targetPath: string, data: Entry[], log: Logger, optio
   } else {
     cli.action.start('\nwriting files');
     newFiles.forEach(({ filePath, fileName, fileData }) => {
+      if (!fileData) {
+        return;
+      }
       ensureDirSync(filePath);
       try {
         const uniqueFileName = options.shouldCreateUnique ? getUniqueFileName(fileName, filePath) : fileName;

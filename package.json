@@ -2,11 +2,11 @@
   "name": "@sbimochan/har-to-mocks",
   "version": "0.0.1",
   "description": "Extract response from .har file and create JSON mocks for mock server.",
-  "author": "Bimochan Shrestha @sbimochan",
+  "author": "Bimochan Shrestha <@sbimochan>",
   "bin": {
-    "har-to-mocks": "./bin/run"
+    "har2mocks": "./bin/run"
   },
-  "bugs": "https://github.com/peterknezek/har-to-mocks/issues",
+  "bugs": "https://github.com/sbimochan/har-to-mocks/issues",
   "dependencies": {
     "@oclif/command": "^1.8.0",
     "cli-ux": "^5.6.7",
@@ -48,7 +48,7 @@
     "/bin",
     "/lib"
   ],
-  "homepage": "https://github.com/peterknezek/har-to-mocks",
+  "homepage": "https://github.com/sbimochan/har-to-mocks",
   "keywords": [
     "cli",
     "har",
@@ -64,7 +64,7 @@
   "oclif": {
     "bin": "har-to-mocks"
   },
-  "repository": "peterknezek/har-to-mocks",
+  "repository": "sbimochan/har-to-mocks",
   "scripts": {
     "prepack": "rm -rf lib && rm -rf lib_types && tsc -b",
     "test": "jest --watchAll",

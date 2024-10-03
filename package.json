@@ -1,6 +1,6 @@
 {
   "name": "@sbimochan/har-to-mocks",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "Extract response from .har file and create JSON mocks for mock server.",
   "author": "Bimochan Shrestha <@sbimochan>",
   "bin": {

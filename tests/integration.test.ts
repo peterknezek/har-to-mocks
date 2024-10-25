@@ -14,6 +14,7 @@ Filtered requests:
  ─────────────────────── ────── ─────────────────────────── 
  userRoles               GET    /api/service/userRoles      
  currentUserId           GET    /api/service/currentUserId  
+ currentUserId           GET    /api/service/currentUserId  
  active                  GET    /api/service/clients/active 
 
 `);
@@ -46,6 +47,7 @@ Filtered requests:
  ─────────────────────── ────── ─────────────────────────── 
  userRoles               GET    /api/service/userRoles      
  currentUserId           GET    /api/service/currentUserId  
+ currentUserId           GET    /api/service/currentUserId  
  active                  GET    /api/service/clients/active 
 
 Folder tree which will be applied:
@@ -56,7 +58,10 @@ Folder tree which will be applied:
          ├─ userRoles
          │  └─ GET.json
          ├─ currentUserId
-         │  └─ GET.json
+         │  ├─ ?abc=123
+         │  │  └─ GET.json
+         │  └─ ?filter=test
+         │     └─ GET.json
          └─ clients
             └─ active
                └─ GET.json
@@ -70,13 +75,14 @@ No files were written. If you want to write files remove the (--dry-run) flag.
     .stdout()
     .do(() => cmd.run(['./tests/mocks/sample.har', './mocks']))
     .it('should write files to fs', (ctx) => {
-      expect(fsExtra.writeFileSync).toBeCalledTimes(3);
+      expect(fsExtra.writeFileSync).toBeCalledTimes(4);
       expect(ctx.stdout).toBe(`
 Filtered requests:
 
  Name                    Method Path                        
  ─────────────────────── ────── ─────────────────────────── 
  userRoles               GET    /api/service/userRoles      
+ currentUserId           GET    /api/service/currentUserId  
  currentUserId           GET    /api/service/currentUserId  
  active                  GET    /api/service/clients/active 
 
@@ -88,7 +94,10 @@ Folder tree which will be applied:
          ├─ userRoles
          │  └─ GET.json
          ├─ currentUserId
-         │  └─ GET.json
+         │  ├─ ?abc=123
+         │  │  └─ GET.json
+         │  └─ ?filter=test
+         │     └─ GET.json
          └─ clients
             └─ active
                └─ GET.json
@@ -109,6 +118,7 @@ Filtered requests:
  ─────────────────────── ────── ─────────────────────────── 
  userRoles               GET    /api/service/userRoles      
  currentUserId           GET    /api/service/currentUserId  
+ currentUserId           GET    /api/service/currentUserId  
  active                  GET    /api/service/clients/active 
  send                    POST   /api/service/send           
 
@@ -120,7 +130,10 @@ Folder tree which will be applied:
          ├─ userRoles
          │  └─ GET.json
          ├─ currentUserId
-         │  └─ GET.json
+         │  ├─ ?abc=123
+         │  │  └─ GET.json
+         │  └─ ?filter=test
+         │     └─ GET.json
          ├─ clients
          │  └─ active
          │     └─ GET.json
@@ -129,5 +142,4 @@ Folder tree which will be applied:
 
 `);
     });
-
 });

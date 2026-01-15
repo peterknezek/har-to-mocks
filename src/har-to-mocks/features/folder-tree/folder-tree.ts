@@ -1,18 +1,36 @@
-import { cli } from 'cli-ux';
+import archy from 'archy';
+
+interface TreeNode {
+  label: string;
+  nodes: (TreeNode | string)[];
+}
 
 export const folderTree = (pathList: string[]) => {
-  const tree = cli.tree();
+  const root: TreeNode = { label: '.', nodes: [] };
 
   pathList.forEach((path: string) => {
-    const parts = path.split('/');
-    let level = tree;
-    for (const part of parts) {
-      if (!level.nodes[part]) {
-        level.insert(part);
+    const parts = path.split('/').filter(Boolean);
+    let currentLevel = root.nodes;
+
+    parts.forEach((part: string, index: number) => {
+      const existingNode = currentLevel.find(
+        (node) => typeof node !== 'string' && node.label === part
+      ) as TreeNode | undefined;
+
+      if (existingNode) {
+        currentLevel = existingNode.nodes;
+      } else {
+        const isLastPart = index === parts.length - 1;
+        if (isLastPart) {
+          currentLevel.push(part);
+        } else {
+          const newNode: TreeNode = { label: part, nodes: [] };
+          currentLevel.push(newNode);
+          currentLevel = newNode.nodes;
+        }
       }
-      level = level.nodes[part];
-    }
+    });
   });
 
-  tree.display();
+  console.log(archy(root));
 };

@@ -2,7 +2,7 @@ import { URL } from 'url';
 
 import type { Entry, Method } from '../../../types';
 
-export interface Columns {
+export interface Columns extends Record<string, unknown> {
   name: string;
   method: Method;
   path: string;

@@ -1,4 +1,4 @@
-import { cli } from 'cli-ux';
+import { ux } from '@oclif/core';
 import { ensureDirSync, writeFileSync } from 'fs-extra';
 import path from 'path';
 
@@ -18,11 +18,11 @@ export const writeMocks = (targetPath: string, data: Entry[], log: Logger, optio
   if (options.isDryRun) {
     log('\nNo files were written. If you want to write files remove the (--dry-run) flag.');
   } else {
-    cli.action.start('\nwriting files');
+    ux.action.start('\nwriting files');
     newFiles.forEach(({ filePath, fileName, fileData }) => {
       ensureDirSync(filePath);
       writeFileSync(path.join(filePath, fileName), fileData);
     });
-    cli.action.stop();
+    ux.action.stop();
   }
 };

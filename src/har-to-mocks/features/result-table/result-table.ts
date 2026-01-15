@@ -1,19 +1,7 @@
-import { cli, Table } from 'cli-ux';
+import Table from 'cli-table3';
 
 import type { Entry, Logger } from '../../types';
 import { Columns, extractToColumns } from './utils';
-
-const columns: Table.table.Columns<Columns> = {
-  name: {
-    minWidth: 24,
-  },
-  method: {
-    minWidth: 7,
-  },
-  path: {
-    minWidth: 14,
-  },
-};
 
 /**
  * Log table with content to the console. Table with columns:
@@ -22,7 +10,14 @@ const columns: Table.table.Columns<Columns> = {
  * @param log method to print to the console
  */
 export const resultTable = (data: Entry[], log: Logger) => {
-  cli.table(data.map(extractToColumns), columns, {
-    printLine: log,
+  const table = new Table({
+    head: ['Name', 'Method', 'Path'],
+    colWidths: [24, 7, 28],
   });
+
+  data.map(extractToColumns).forEach((row) => {
+    table.push([row.name, row.method, row.path]);
+  });
+
+  log(table.toString());
 };

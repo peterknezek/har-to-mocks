@@ -1,4 +1,4 @@
-import { Command, flags } from '@oclif/command';
+import { Args, Command, Flags } from '@oclif/core';
 import { readJson } from 'fs-extra';
 import updateNotifier, { Package } from 'update-notifier';
 
@@ -10,13 +10,13 @@ class HarToMocks extends Command {
 
   static flags = {
     // add --version flag to show CLI version
-    version: flags.version({ char: 'v' }),
-    help: flags.help({ char: 'h' }),
+    version: Flags.version({ char: 'v' }),
+    help: Flags.help({ char: 'h' }),
 
     // flag to filter by url
-    url: flags.string({ char: 'u', description: 'filter by url' }),
+    url: Flags.string({ char: 'u', description: 'filter by url' }),
     // flag to filter method (-m, --method=GET)
-    method: flags.string({
+    method: Flags.string({
       char: 'm',
       options: Object.values(Method),
       description: 'filter by method. You can use multiple options, for example: --method=GET --method=POST',
@@ -24,21 +24,22 @@ class HarToMocks extends Command {
       multiple: true,
     }),
     // flag to filter resourceType (-t, --type=xhr)
-    type: flags.enum<ResourceType>({
+    type: Flags.custom<ResourceType>({
       char: 't',
       options: Object.values(ResourceType),
       description: 'filter by resourceType',
-      default: ResourceType.xhr,
-    }),
+      default: async () => ResourceType.xhr,
+      parse: async (input) => input as ResourceType,
+    })(),
 
     // flag to not write files, just show results (--dry-run)
-    'dry-run': flags.boolean({ description: 'to not write files, just show results' }),
+    'dry-run': Flags.boolean({ description: 'to not write files, just show results' }),
   };
 
-  static args = [
-    { name: 'file', description: 'sorce file (.har) path', require: true },
-    { name: 'to', description: 'path to your mocks/api folder' },
-  ];
+  static args = {
+    file: Args.string({ description: 'source file (.har) path', required: true }),
+    to: Args.string({ description: 'path to your mocks/api folder' }),
+  };
 
   async run() {
     // eslint-disable-next-line @typescript-eslint/no-var-requires
@@ -50,11 +51,11 @@ class HarToMocks extends Command {
     }).notify();
 
     const process = new HarToMocksProcess(this.log.bind(this));
-    const { args, flags: usedFlags } = this.parse(HarToMocks);
+    const { args, flags: usedFlags } = await this.parse(HarToMocks);
 
     if (args.file && typeof args.file === 'string') {
       const data = (await readJson(args.file)) as Har;
-      process.extract(data, {
+      await process.extract(data, {
         methods: usedFlags.method as Method[],
         resourceType: usedFlags.type,
         url: usedFlags.url,

@@ -31,7 +31,7 @@ export class HarToMocksProcess {
 
     // Log table with content
     this.log('\nFiltered requests:\n');
-    resultTable(filtred, this.log);
+    await resultTable(filtred, this.log);
 
     this.data = filtred;
   }

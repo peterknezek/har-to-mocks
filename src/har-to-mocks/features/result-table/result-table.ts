@@ -1,7 +1,5 @@
-import Table from 'cli-table3';
-
 import type { Entry, Logger } from '../../types';
-import { Columns, extractToColumns } from './utils';
+import { extractToColumns } from './utils';
 
 /**
  * Log table with content to the console. Table with columns:
@@ -9,15 +7,18 @@ import { Columns, extractToColumns } from './utils';
  * @param data filtered Entry form .har
  * @param log method to print to the console
  */
-export const resultTable = (data: Entry[], log: Logger) => {
-  const table = new Table({
-    head: ['Name', 'Method', 'Path'],
-    colWidths: [24, 7, 28],
+export const resultTable = async (data: Entry[], log: Logger) => {
+  // Dynamic import of @oclif/table (ESM module) from CommonJS
+  const { makeTable } = await import('@oclif/table');
+
+  const tableString = makeTable({
+    data: data.map(extractToColumns),
+    columns: [
+      { key: 'name', name: 'Name' },
+      { key: 'method', name: 'Method' },
+      { key: 'path', name: 'Path' },
+    ],
   });
 
-  data.map(extractToColumns).forEach((row) => {
-    table.push([row.name, row.method, row.path]);
-  });
-
-  log(table.toString());
+  log(tableString);
 };

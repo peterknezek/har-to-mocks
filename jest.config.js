@@ -15,4 +15,7 @@ module.exports = {
       statements: 100,
     },
   },
+  moduleNameMapper: {
+    '^@oclif/table$': '<rootDir>/tests/__mocks__/@oclif/table.js',
+  },
 }

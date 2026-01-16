@@ -1,18 +1,31 @@
 #!/usr/bin/env node
 
-const path = require('path')
-const project = path.join(__dirname, '..', 'tsconfig.json')
-const dev = require('fs').existsSync(project)
+import { fileURLToPath } from 'url';
+import { dirname, join } from 'path';
+import { existsSync } from 'fs';
+import { Config } from '@oclif/core';
+import flush from '@oclif/core/flush';
+import handle from '@oclif/core/handle';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
+
+// Check if lib directory exists (production) or use src (development)
+const libPath = join(__dirname, '..', 'lib');
+const dev = !existsSync(libPath);
 
 if (dev) {
-  require('ts-node').register({project})
+  // In development, use tsx or ts-node/esm loader
+  // For now, we require the project to be built
+  console.error('Error: Please build the project first with "npm run build"');
+  process.exit(1);
 }
 
 // For single-command CLI, run the command directly
-const { Config } = require('@oclif/core')
-const Command = require(`../${dev ? 'src' : 'lib'}`)
+const module = await import(`../${dev ? 'src' : 'lib'}/index.js`);
+const Command = module.default;
 
 Config.load().then(async (config) => {
-  const cmd = new Command(process.argv.slice(2), config)
-  return cmd.run()
-}).then(require('@oclif/core/flush')).catch(require('@oclif/core/handle'))
+  const cmd = new Command(process.argv.slice(2), config);
+  return cmd.run();
+}).then(flush).catch(handle);

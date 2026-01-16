@@ -1,4 +1,4 @@
-import { folderTree } from './folder-tree';
+import { folderTree } from './folder-tree.js';
 
 describe('Folder tree', () => {
   it('sub-trees should be generate correctly', () => {

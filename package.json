@@ -1,6 +1,7 @@
 {
   "name": "har-to-mocks",
   "version": "0.0.0",
+  "type": "module",
   "description": "Extract response from .har file and create JSON mocks for mock server.",
   "author": "Peter Knezek @peterknezek",
   "bin": {

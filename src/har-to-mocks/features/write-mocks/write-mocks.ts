@@ -1,10 +1,12 @@
 import { ux } from '@oclif/core';
-import { ensureDirSync, writeFileSync } from 'fs-extra';
+import fsExtra from 'fs-extra';
 import path from 'path';
 
-import type { Entry, Logger } from '../../types';
-import { folderTree } from '../folder-tree';
-import { entrysToPathsWithData } from './utils';
+const { ensureDirSync, writeFileSync } = fsExtra;
+
+import type { Entry, Logger } from '../../types/index.js';
+import { folderTree } from '../folder-tree/index.js';
+import { entrysToPathsWithData } from './utils/index.js';
 
 interface Options {
   isDryRun: boolean;

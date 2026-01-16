@@ -1,1 +1,1 @@
-export { Columns, extractToColumns } from './extract-to-columns';
+export { Columns, extractToColumns } from './extract-to-columns.js';

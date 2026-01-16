@@ -1,5 +1,7 @@
-import type { Entry, Logger } from '../../types';
-import { extractToColumns } from './utils';
+import { makeTable } from '@oclif/table';
+
+import type { Entry, Logger } from '../../types/index.js';
+import { extractToColumns } from './utils/index.js';
 
 /**
  * Log table with content to the console. Table with columns:
@@ -7,12 +9,9 @@ import { extractToColumns } from './utils';
  * @param data filtered Entry form .har
  * @param log method to print to the console
  */
-export const resultTable = async (data: Entry[], log: Logger) => {
-  // Dynamic import of @oclif/table (ESM module) from CommonJS
-  const { makeTable } = await import('@oclif/table');
-
+export const resultTable = (data: Entry[], log: Logger) => {
   const tableString = makeTable({
-    data: data.map(extractToColumns),
+    data: data.map(extractToColumns) as Record<string, unknown>[],
     columns: [
       { key: 'name', name: 'Name' },
       { key: 'method', name: 'Method' },

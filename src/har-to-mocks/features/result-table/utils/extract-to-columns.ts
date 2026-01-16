@@ -1,6 +1,6 @@
 import { URL } from 'url';
 
-import type { Entry, Method } from '../../../types';
+import type { Entry, Method } from '../../../types/index.js';
 
 export interface Columns extends Record<string, unknown> {
   name: string;

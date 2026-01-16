@@ -1,5 +1,5 @@
-import type { Entry } from '../../../types';
-import { entrysToPathsWithData } from './process-data';
+import type { Entry } from '../../../types/index.js';
+import { entrysToPathsWithData } from './process-data.js';
 
 describe('Write mocks - process data', () => {
   it('should be Entry prepared for saving files', () => {

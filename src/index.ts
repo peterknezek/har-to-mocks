@@ -1,9 +1,12 @@
 import { Args, Command, Flags } from '@oclif/core';
-import { readJson } from 'fs-extra';
+import fsExtra from 'fs-extra';
+import { join } from 'path';
 import updateNotifier, { Package } from 'update-notifier';
 
-import type { Har } from './har-to-mocks';
-import { HarToMocksProcess, Method, ResourceType } from './har-to-mocks';
+const { readJson } = fsExtra;
+
+import type { Har } from './har-to-mocks/index.js';
+import { HarToMocksProcess, Method, ResourceType } from './har-to-mocks/index.js';
 
 class HarToMocks extends Command {
   static description = 'Extract response from .har file and create JSON mocks for mock server.';
@@ -42,8 +45,7 @@ class HarToMocks extends Command {
   };
 
   async run() {
-    // eslint-disable-next-line @typescript-eslint/no-var-requires
-    const pkg = require('../package.json') as Package;
+    const pkg = (await readJson(join(this.config.root, 'package.json'))) as Package;
     updateNotifier({
       pkg,
       updateCheckInterval: 100,
@@ -71,4 +73,4 @@ class HarToMocks extends Command {
   }
 }
 
-export = HarToMocks;
+export default HarToMocks;

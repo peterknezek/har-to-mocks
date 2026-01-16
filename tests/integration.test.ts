@@ -1,5 +1,5 @@
 import { Config } from '@oclif/core';
-import HarToMocks from '../src';
+import HarToMocks from '../src/index.js';
 import fsExtra from 'fs-extra';
 
 let config: Config;

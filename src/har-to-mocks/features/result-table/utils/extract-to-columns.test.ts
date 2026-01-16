@@ -1,5 +1,5 @@
-import { extractToColumns } from './extract-to-columns';
-import type { Entry } from '../../../types';
+import { extractToColumns } from './extract-to-columns.js';
+import type { Entry } from '../../../types/index.js';
 
 describe('Result table - extract to columns', () => {
   it('should be Entry prepared for saving files', () => {

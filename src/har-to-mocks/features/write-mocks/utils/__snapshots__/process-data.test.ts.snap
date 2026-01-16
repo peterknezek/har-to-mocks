@@ -1,0 +1,11 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Write mocks - process data should be Entry prepared for saving files 1`] = `
+[
+  {
+    "fileData": "{}",
+    "fileName": "GET.json",
+    "filePath": "mocks/api/service/a",
+  },
+]
+`;

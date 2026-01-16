@@ -10,7 +10,7 @@ describe('Result table - extract to columns', () => {
       },
     } as Entry;
     const result = extractToColumns(mockEntrys);
-    expect(result).toEqual({ method: 'GET', name: 'a', path: '/api/service/a' });
+    expect(result).toMatchSnapshot();
   });
 
   it('should be Entry prepared for saving files also when url is just domain', () => {
@@ -21,6 +21,6 @@ describe('Result table - extract to columns', () => {
       },
     } as Entry;
     const result = extractToColumns(mockEntrys);
-    expect(result).toEqual({ method: 'GET', name: '', path: '/' });
+    expect(result).toMatchSnapshot();
   });
 });

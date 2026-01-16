@@ -17,6 +17,6 @@ describe('Write mocks - process data', () => {
       },
     ] as Entry[];
     const result = entrysToPathsWithData(mockEntrys, './mocks');
-    expect(result).toEqual([{ fileData: '{}', fileName: 'GET.json', filePath: 'mocks/api/service/a' }]);
+    expect(result).toMatchSnapshot();
   });
 });

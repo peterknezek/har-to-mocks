@@ -1,0 +1,17 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Folder tree sub-trees should be generate correctly 1`] = `
+".
+└─┬ a
+  ├─┬ b
+  │ └── c
+  ├─┬ bb
+  │ ├── c
+  │ └── cc
+  └─┬ dd
+    ├── bb
+    └─┬ bb
+      ├── x
+      └── y
+"
+`;

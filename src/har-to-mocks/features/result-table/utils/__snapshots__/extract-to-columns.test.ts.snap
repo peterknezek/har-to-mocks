@@ -1,0 +1,17 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Result table - extract to columns should be Entry prepared for saving files 1`] = `
+{
+  "method": "GET",
+  "name": "a",
+  "path": "/api/service/a",
+}
+`;
+
+exports[`Result table - extract to columns should be Entry prepared for saving files also when url is just domain 1`] = `
+{
+  "method": "GET",
+  "name": "",
+  "path": "/",
+}
+`;

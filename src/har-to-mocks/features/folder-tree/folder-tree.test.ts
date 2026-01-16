@@ -7,15 +7,6 @@ describe('Folder tree', () => {
     folderTree(mockPaths);
     const output = (global.console.log as jest.Mock).mock.calls[0][0];
 
-    // Check that output contains the expected paths
-    expect(output).toContain('.');
-    expect(output).toContain('a');
-    expect(output).toContain('b');
-    expect(output).toContain('bb');
-    expect(output).toContain('c');
-    expect(output).toContain('cc');
-    expect(output).toContain('dd');
-    expect(output).toContain('x');
-    expect(output).toContain('y');
+    expect(output).toMatchSnapshot();
   });
 });

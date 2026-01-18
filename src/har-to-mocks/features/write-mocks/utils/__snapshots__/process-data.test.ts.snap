@@ -1,6 +1,6 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`Write mocks - process data should be Entry prepared for saving files 1`] = `
+exports[`Write mocks - process data > should be Entry prepared for saving files 1`] = `
 [
   {
     "fileData": "{}",

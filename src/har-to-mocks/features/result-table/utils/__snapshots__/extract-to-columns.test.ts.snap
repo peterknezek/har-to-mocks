@@ -1,6 +1,6 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`Result table - extract to columns should be Entry prepared for saving files 1`] = `
+exports[`Result table - extract to columns > should be Entry prepared for saving files 1`] = `
 {
   "method": "GET",
   "name": "a",
@@ -8,7 +8,7 @@ exports[`Result table - extract to columns should be Entry prepared for saving f
 }
 `;
 
-exports[`Result table - extract to columns should be Entry prepared for saving files also when url is just domain 1`] = `
+exports[`Result table - extract to columns > should be Entry prepared for saving files also when url is just domain 1`] = `
 {
   "method": "GET",
   "name": "",

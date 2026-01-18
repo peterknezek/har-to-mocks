@@ -1,6 +1,6 @@
-// Jest Snapshot v1, https://goo.gl/fbAQLP
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
-exports[`Folder tree sub-trees should be generate correctly 1`] = `
+exports[`Folder tree > sub-trees should be generate correctly 1`] = `
 ".
 └─┬ a
   ├─┬ b

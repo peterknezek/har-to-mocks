@@ -1,6 +1,7 @@
 import fsExtra from 'fs-extra';
+import { vi } from 'vitest';
 
-fsExtra.ensureDirSync = jest.fn();
-fsExtra.writeFileSync = jest.fn();
+fsExtra.ensureDirSync = vi.fn();
+fsExtra.writeFileSync = vi.fn();
 
-module.exports = fsExtra;
+export default fsExtra;

@@ -82,3 +82,75 @@ Folder tree which will be applied:
 
 No files were written. If you want to write files remove the (--dry-run) flag.
 ```
+
+## Development
+
+### Prerequisites
+
+- Node.js >= 18.0.0
+- npm >= 7.0.0
+
+### Tech Stack
+
+This project uses modern JavaScript tooling:
+
+- **Framework**: [@oclif/core](https://oclif.io/) v4 - Modern CLI framework
+- **Module System**: ES Modules (ESM)
+- **Testing**: [Vitest](https://vitest.dev/) with snapshot testing
+- **TypeScript**: NodeNext module resolution for ESM compatibility
+- **Linting**: ESLint with TypeScript support
+
+### Getting Started
+
+1. Clone the repository
+2. Install dependencies:
+   ```bash
+   npm install
+   ```
+
+3. Build the project:
+   ```bash
+   npm run build
+   ```
+
+4. Run the CLI locally:
+   ```bash
+   ./bin/dev [args]
+   ```
+
+### Available Scripts
+
+- `npm run build` - Compile TypeScript to JavaScript
+- `npm run lint` - Run ESLint
+- `npm run lint:fix` - Fix ESLint issues automatically
+- `npm test` - Run tests in watch mode
+- `npm run test:ci` - Run tests once (for CI)
+- `npm run test:ui` - Open Vitest UI for interactive testing
+- `npm run coverage` - Generate test coverage report
+
+### Testing
+
+The project maintains 100% test coverage with:
+
+- **Unit tests** using Vitest with snapshot assertions
+- **Integration tests** that verify CLI behavior end-to-end
+- **Snapshot testing** to catch unintended output changes
+
+Run tests:
+```bash
+npm test
+```
+
+Generate coverage report:
+```bash
+npm run coverage
+```
+
+### Contributing
+
+1. Create a feature branch
+2. Make your changes
+3. Ensure all tests pass: `npm run test:ci`
+4. Ensure linting passes: `npm run lint`
+5. Ensure build succeeds: `npm run build`
+6. Submit a pull request

@@ -145,12 +145,3 @@ Generate coverage report:
 ```bash
 npm run coverage
 ```
-
-### Contributing
-
-1. Create a feature branch
-2. Make your changes
-3. Ensure all tests pass: `npm run test:ci`
-4. Ensure linting passes: `npm run lint`
-5. Ensure build succeeds: `npm run build`
-6. Submit a pull request

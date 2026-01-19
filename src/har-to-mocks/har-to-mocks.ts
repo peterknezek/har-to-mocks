@@ -11,7 +11,7 @@ export class HarToMocksProcess {
    * @param {JSON} fileContent har as JSON
    * @param {object} filter flags
    */
-  async extract(fileContent: Har, filter: Filter) {
+  extract(fileContent: Har, filter: Filter) {
     const { methods, resourceType, url } = filter;
     const { entries } = fileContent.log;
     let filtred: Entry[] = entries;

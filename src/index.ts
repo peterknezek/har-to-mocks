@@ -31,8 +31,8 @@ class HarToMocks extends Command {
       char: 't',
       options: Object.values(ResourceType),
       description: 'filter by resourceType',
-      default: async () => ResourceType.xhr,
-      parse: async (input) => input as ResourceType,
+      default: () => ResourceType.xhr,
+      parse: (input) => input as ResourceType,
     })(),
 
     // flag to not write files, just show results (--dry-run)
@@ -57,7 +57,7 @@ class HarToMocks extends Command {
 
     if (args.file && typeof args.file === 'string') {
       const data = (await readJson(args.file)) as Har;
-      await process.extract(data, {
+      process.extract(data, {
         methods: usedFlags.method as Method[],
         resourceType: usedFlags.type,
         url: usedFlags.url,

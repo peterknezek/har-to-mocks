@@ -13,9 +13,9 @@ export const folderTree = (pathList: string[]) => {
     let currentLevel = root.nodes;
 
     parts.forEach((part: string, index: number) => {
-      const existingNode = currentLevel.find(
-        (node) => typeof node !== 'string' && node.label === part
-      ) as TreeNode | undefined;
+      const existingNode = currentLevel.find((node) => typeof node !== 'string' && node.label === part) as
+        | TreeNode
+        | undefined;
 
       if (existingNode) {
         currentLevel = existingNode.nodes;

@@ -31,8 +31,10 @@ class HarToMocks extends Command {
       char: 't',
       options: Object.values(ResourceType),
       description: 'filter by resourceType',
-      default: () => ResourceType.xhr,
-      parse: (input) => input as ResourceType,
+      // eslint-disable-next-line @typescript-eslint/require-await
+      default: async () => ResourceType.xhr,
+      // eslint-disable-next-line @typescript-eslint/require-await
+      parse: async (input) => input as ResourceType,
     })(),
 
     // flag to not write files, just show results (--dry-run)

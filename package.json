@@ -77,7 +77,7 @@
   "repository": "peterknezek/har-to-mocks",
   "scripts": {
     "prepack": "npm run build",
-    "build": "rm -rf lib && node esbuild.config.js && tsc --emitDeclarationOnly --declaration --declarationDir lib",
+    "build": "rm -rf lib && node esbuild.config.js",
     "test": "vitest",
     "test:ci": "vitest run",
     "test:ui": "vitest --ui",
@@ -85,7 +85,6 @@
     "lint": "eslint \"src/**/*.{js,ts,tsx}\"",
     "lint:fix": "eslint \"src/**/*.{js,ts,tsx}\" --fix"
   },
-  "types": "lib/index.d.ts",
   "release": {
     "branches": [
       "master",

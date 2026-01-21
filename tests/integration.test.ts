@@ -1,7 +1,16 @@
 import { Config } from '@oclif/core';
 import HarToMocks from '../src/index.js';
-import fsExtra from 'fs-extra';
 import type { MockInstance } from 'vitest';
+
+// Mock only writeFileSync and mkdirSync
+vi.mock('node:fs', async () => {
+  const actual = await vi.importActual<typeof import('node:fs')>('node:fs');
+  return {
+    ...actual,
+    writeFileSync: vi.fn(),
+    mkdirSync: vi.fn(),
+  };
+});
 
 // Lazy-load config once for all tests
 let config: Config | undefined;
@@ -71,7 +80,8 @@ describe('Integration Tests', () => {
 
   it('should write files to fs', async () => {
     const cfg = await getConfig();
-    const writeFileSpy = vi.mocked(fsExtra.writeFileSync);
+    const { writeFileSync } = await import('node:fs');
+    const writeFileSpy = vi.mocked(writeFileSync);
     const cmd = new HarToMocks(['./tests/mocks/sample.har', './mocks'], cfg);
     await expect(cmd.run()).resolves.not.toThrow();
     const output = captureOutput();

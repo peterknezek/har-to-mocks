@@ -6,17 +6,14 @@
     "module": "NodeNext",
     "moduleResolution": "NodeNext",
     "outDir": "lib",
-    "rootDir": "src",
     "strict": true,
     "target": "ES2022",
     "removeComments": true,
-    "declarationDir": "./lib_types",
     "resolveJsonModule": true,
+    "types": ["node", "vitest/globals"]
   },
   "include": [
-    "src/**/*"
-  ],
-  "exclude": [
-    "src/**/*.test.ts"
+    "src/**/*",
+    "tests/**/*"
   ]
 }

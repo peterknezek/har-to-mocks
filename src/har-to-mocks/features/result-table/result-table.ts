@@ -1,19 +1,7 @@
-import { cli, Table } from 'cli-ux';
+import { makeTable } from '@oclif/table';
 
-import type { Entry, Logger } from '../../types';
-import { Columns, extractToColumns } from './utils';
-
-const columns: Table.table.Columns<Columns> = {
-  name: {
-    minWidth: 24,
-  },
-  method: {
-    minWidth: 7,
-  },
-  path: {
-    minWidth: 14,
-  },
-};
+import type { Entry, Logger } from '../../types/index.js';
+import { extractToColumns } from './utils/index.js';
 
 /**
  * Log table with content to the console. Table with columns:
@@ -22,7 +10,14 @@ const columns: Table.table.Columns<Columns> = {
  * @param log method to print to the console
  */
 export const resultTable = (data: Entry[], log: Logger) => {
-  cli.table(data.map(extractToColumns), columns, {
-    printLine: log,
+  const tableString = makeTable({
+    data: data.map(extractToColumns) as Record<string, unknown>[],
+    columns: [
+      { key: 'name', name: 'Name' },
+      { key: 'method', name: 'Method' },
+      { key: 'path', name: 'Path' },
+    ],
   });
+
+  log(tableString);
 };

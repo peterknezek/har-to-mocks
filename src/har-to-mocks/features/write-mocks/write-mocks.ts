@@ -1,10 +1,12 @@
-import { cli } from 'cli-ux';
-import { ensureDirSync, writeFileSync } from 'fs-extra';
+import { ux } from '@oclif/core';
+import fsExtra from 'fs-extra';
 import path from 'path';
 
-import type { Entry, Logger } from '../../types';
-import { folderTree } from '../folder-tree';
-import { entrysToPathsWithData } from './utils';
+const { ensureDirSync, writeFileSync } = fsExtra;
+
+import type { Entry, Logger } from '../../types/index.js';
+import { folderTree } from '../folder-tree/index.js';
+import { entrysToPathsWithData } from './utils/index.js';
 
 interface Options {
   isDryRun: boolean;
@@ -18,11 +20,11 @@ export const writeMocks = (targetPath: string, data: Entry[], log: Logger, optio
   if (options.isDryRun) {
     log('\nNo files were written. If you want to write files remove the (--dry-run) flag.');
   } else {
-    cli.action.start('\nwriting files');
+    ux.action.start('\nwriting files');
     newFiles.forEach(({ filePath, fileName, fileData }) => {
       ensureDirSync(filePath);
       writeFileSync(path.join(filePath, fileName), fileData);
     });
-    cli.action.stop();
+    ux.action.stop();
   }
 };

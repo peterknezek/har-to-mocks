@@ -1,4 +1,4 @@
-import type { Method, ResourceType } from './filter';
+import type { Method, ResourceType } from './filter.js';
 
 export interface Har {
   log: Log;

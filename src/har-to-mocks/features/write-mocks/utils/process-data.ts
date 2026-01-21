@@ -1,7 +1,7 @@
 import path from 'path';
 import { URL } from 'url';
 
-import type { Entry } from '../../../types';
+import type { Entry } from '../../../types/index.js';
 
 export const entrysToPathsWithData = (entrys: Entry[], targetPath: string) =>
   entrys.map((entry) => {

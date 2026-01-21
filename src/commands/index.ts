@@ -5,20 +5,18 @@ import updateNotifier, { Package } from 'update-notifier';
 
 const { readJson } = fsExtra;
 
-import type { Har } from './har-to-mocks/index.js';
-import { HarToMocksProcess, Method, ResourceType } from './har-to-mocks/index.js';
+import type { Har } from '../har-to-mocks/index.js';
+import { HarToMocksProcess, Method, ResourceType } from '../har-to-mocks/index.js';
 
-class HarToMocks extends Command {
+export default class Index extends Command {
   static description = 'Extract response from .har file and create JSON mocks for mock server.';
 
+  static strict = false;
+
   static flags = {
-    // add --version flag to show CLI version
     version: Flags.version({ char: 'v' }),
     help: Flags.help({ char: 'h' }),
-
-    // flag to filter by url
     url: Flags.string({ char: 'u', description: 'filter by url' }),
-    // flag to filter method (-m, --method=GET)
     method: Flags.string({
       char: 'm',
       options: Object.values(Method),
@@ -26,7 +24,6 @@ class HarToMocks extends Command {
       default: [Method.GET],
       multiple: true,
     }),
-    // flag to filter resourceType (-t, --type=xhr)
     type: Flags.custom<ResourceType>({
       char: 't',
       options: Object.values(ResourceType),
@@ -36,8 +33,6 @@ class HarToMocks extends Command {
       // eslint-disable-next-line @typescript-eslint/require-await
       parse: async (input) => input as ResourceType,
     })(),
-
-    // flag to not write files, just show results (--dry-run)
     'dry-run': Flags.boolean({ description: 'to not write files, just show results' }),
   };
 
@@ -48,14 +43,10 @@ class HarToMocks extends Command {
 
   async run() {
     const pkg = (await readJson(join(this.config.root, 'package.json'))) as Package;
-    updateNotifier({
-      pkg,
-      updateCheckInterval: 100,
-      shouldNotifyInNpmScript: true,
-    }).notify();
+    updateNotifier({ pkg }).notify({ defer: false });
 
     const process = new HarToMocksProcess(this.log.bind(this));
-    const { args, flags: usedFlags } = await this.parse(HarToMocks);
+    const { args, flags: usedFlags } = await this.parse(Index);
 
     if (args.file && typeof args.file === 'string') {
       const data = (await readJson(args.file)) as Har;
@@ -70,9 +61,6 @@ class HarToMocks extends Command {
       process.write(args.to, usedFlags['dry-run']);
     }
 
-    // this is bottom padding
     this.log('');
   }
 }
-
-export default HarToMocks;

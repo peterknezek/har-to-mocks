@@ -3,8 +3,8 @@ import HarToMocks from '../src/index.js';
 import type { MockInstance } from 'vitest';
 
 // Mock only writeFileSync and mkdirSync
-vi.mock('fs', async () => {
-  const actual = await vi.importActual<typeof import('fs')>('fs');
+vi.mock('node:fs', async () => {
+  const actual = await vi.importActual<typeof import('node:fs')>('node:fs');
   return {
     ...actual,
     writeFileSync: vi.fn(),
@@ -80,7 +80,7 @@ describe('Integration Tests', () => {
 
   it('should write files to fs', async () => {
     const cfg = await getConfig();
-    const { writeFileSync } = await import('fs');
+    const { writeFileSync } = await import('node:fs');
     const writeFileSpy = vi.mocked(writeFileSync);
     const cmd = new HarToMocks(['./tests/mocks/sample.har', './mocks'], cfg);
     await expect(cmd.run()).resolves.not.toThrow();

@@ -1,4 +1,4 @@
-import { URL } from 'url';
+import { URL } from 'node:url';
 
 import type { Entry, Method } from '../../../types/index.js';
 

@@ -1,6 +1,6 @@
 import { Config } from '@oclif/core';
-import { fileURLToPath } from 'url';
-import { dirname, join } from 'path';
+import { fileURLToPath } from 'node:url';
+import { dirname, join } from 'node:path';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
@@ -17,7 +17,7 @@ export async function executeCLI(options = {}) {
   const libCommandPath = join(__dirname, '..', 'lib', 'index.js');
 
   if (requireBuild) {
-    const { existsSync } = await import('fs');
+    const { existsSync } = await import('node:fs');
     if (!existsSync(libCommandPath)) {
       console.error('Error: Please build the project first with "npm run build"');
       console.error('For development, run: npm run build && ./bin/dev [args]');

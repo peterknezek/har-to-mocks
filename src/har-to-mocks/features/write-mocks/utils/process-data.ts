@@ -1,5 +1,5 @@
-import path from 'path';
-import { URL } from 'url';
+import path from 'node:path';
+import { URL } from 'node:url';
 
 import type { Entry } from '../../../types/index.js';
 

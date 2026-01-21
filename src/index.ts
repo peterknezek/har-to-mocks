@@ -1,6 +1,7 @@
+import { readFileSync } from 'node:fs';
+import { join } from 'node:path';
+
 import { Args, Command, Flags } from '@oclif/core';
-import { readFileSync } from 'fs';
-import { join } from 'path';
 import updateNotifier, { Package } from 'update-notifier';
 
 import type { Har } from './har-to-mocks/index.js';

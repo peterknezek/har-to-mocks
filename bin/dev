@@ -1,51 +1,5 @@
 #!/usr/bin/env node
 
-import { Config } from '@oclif/core';
-import { fileURLToPath } from 'url';
-import { dirname, join } from 'path';
-import { existsSync } from 'fs';
+import { executeCLI } from './common.js';
 
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = dirname(__filename);
-
-async function main() {
-  // Check if lib directory exists
-  const libCommandPath = join(__dirname, '..', 'lib', 'commands', 'index.js');
-
-  if (!existsSync(libCommandPath)) {
-    console.error('Error: Please build the project first with "npm run build"');
-    console.error('For development, run: npm run build && ./bin/dev [args]');
-    process.exit(1);
-  }
-
-  // Suppress warnings during config load
-  const originalEmitWarning = process.emitWarning;
-  process.emitWarning = () => {};
-
-  // Load the single command
-  const module = await import(libCommandPath);
-  const Command = module.default;
-
-  // Load config and run the command directly
-  const config = await Config.load({ root: join(__dirname, '..'), devPlugins: false, userPlugins: false });
-
-  // Restore warning emitter
-  process.emitWarning = originalEmitWarning;
-
-  const cmd = new Command(process.argv.slice(2), config);
-
-  try {
-    await cmd.run();
-    process.exit(0);
-  } catch (error) {
-    // Handle ExitError which is thrown for --help and --version
-    if (error.oclif && error.oclif.exit !== undefined) {
-      process.exit(error.oclif.exit);
-    }
-    // Handle other errors
-    console.error(error);
-    process.exit(1);
-  }
-}
-
-main();
+executeCLI({ requireBuild: true });

@@ -6,6 +6,7 @@ export interface Columns extends Record<string, unknown> {
   name: string;
   method: Method;
   path: string;
+  query: string;
 }
 
 export const extractToColumns = (entry: Entry): Columns => {
@@ -15,5 +16,6 @@ export const extractToColumns = (entry: Entry): Columns => {
     name: lastPartOfPath,
     method: entry.request.method,
     path: parsedUrl.pathname,
+    query: parsedUrl.search,
   };
 };

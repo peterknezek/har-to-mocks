@@ -96,4 +96,37 @@ describe('Integration Tests', () => {
     const output = captureOutput();
     expect(output).toMatchSnapshot();
   });
+
+  it('should display query strings in the Query column for duplicate routes', async () => {
+    const cfg = await getConfig();
+    const cmd = new HarToMocks(['./tests/mocks/sample-with-query.har'], cfg);
+    await expect(cmd.run()).resolves.not.toThrow();
+    const output = captureOutput();
+    expect(output).toMatchSnapshot();
+    // Verify that both search queries are shown
+    expect(output).toContain('?q=javascript');
+    expect(output).toContain('?q=python');
+  });
+
+  it('should filter by url including query string', async () => {
+    const cfg = await getConfig();
+    const cmd = new HarToMocks(['./tests/mocks/sample-with-query.har', '--url=?q=javascript'], cfg);
+    await expect(cmd.run()).resolves.not.toThrow();
+    const output = captureOutput();
+    expect(output).toMatchSnapshot();
+    // Should only include the javascript query
+    expect(output).toContain('?q=javascript');
+    expect(output).not.toContain('?q=python');
+  });
+
+  it('should filter by url with path and query string', async () => {
+    const cfg = await getConfig();
+    const cmd = new HarToMocks(['./tests/mocks/sample-with-query.har', '--url=/complete/search?q=python'], cfg);
+    await expect(cmd.run()).resolves.not.toThrow();
+    const output = captureOutput();
+    expect(output).toMatchSnapshot();
+    // Should only include the python query
+    expect(output).toContain('?q=python');
+    expect(output).not.toContain('?q=javascript');
+  });
 });

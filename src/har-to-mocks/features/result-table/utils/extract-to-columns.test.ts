@@ -23,4 +23,26 @@ describe('Result table - extract to columns', () => {
     const result = extractToColumns(mockEntrys);
     expect(result).toMatchSnapshot();
   });
+
+  it('should extract query parameters from URL', () => {
+    const mockEntrys = {
+      request: {
+        method: 'GET',
+        url: 'https://sample.com/complete/search?q=test&limit=10',
+      },
+    } as Entry;
+    const result = extractToColumns(mockEntrys);
+    expect(result).toMatchSnapshot();
+  });
+
+  it('should handle empty query string', () => {
+    const mockEntrys = {
+      request: {
+        method: 'GET',
+        url: 'https://sample.com/api/service/users',
+      },
+    } as Entry;
+    const result = extractToColumns(mockEntrys);
+    expect(result.query).toBe('');
+  });
 });

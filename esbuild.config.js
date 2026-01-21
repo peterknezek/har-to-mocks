@@ -1,15 +1,9 @@
 import * as esbuild from 'esbuild';
-import { readFile } from 'fs/promises';
-
-const packageJson = JSON.parse(await readFile('./package.json', 'utf-8'));
 
 // External packages that should NOT be bundled
 // @oclif/core needs to be external to work properly
 // update-notifier uses CommonJS and causes issues when bundled in ESM
-const external = [
-  '@oclif/core',
-  'update-notifier',
-];
+const external = ['@oclif/core', 'update-notifier'];
 
 await esbuild.build({
   entryPoints: ['src/index.ts'],

@@ -1,0 +1,124 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`Integration Tests > should render result table with folder tree without writing files 1`] = `
+"
+
+Filtered requests:
+
+┌────────────┼────────────┼────────────┐
+│ Name │ Method │ Path │
+├────────────┼────────────┼────────────┤
+│ userRoles │ GET │ /api/service/userRoles │
+│ currentUserId │ GET │ /api/service/currentUserId │
+│ active │ GET │ /api/service/clients/active │
+└────────────┼────────────┼────────────┘
+
+Folder tree which will be applied:
+
+.
+└─┬ mocks
+  └─┬ api
+    └─┬ service
+      ├─┬ userRoles
+      │ └── GET.json
+      ├─┬ currentUserId
+      │ └── GET.json
+      └─┬ clients
+        └─┬ active
+          └── GET.json
+
+
+No files were written. If you want to write files remove the (--dry-run) flag.
+"
+`;
+
+exports[`Integration Tests > should render with GET and POST requests 1`] = `
+"
+
+Filtered requests:
+
+┌────────────┼────────────┼────────────┐
+│ Name │ Method │ Path │
+├────────────┼────────────┼────────────┤
+│ userRoles │ GET │ /api/service/userRoles │
+│ currentUserId │ GET │ /api/service/currentUserId │
+│ active │ GET │ /api/service/clients/active │
+│ send │ POST │ /api/service/send │
+└────────────┼────────────┼────────────┘
+
+Folder tree which will be applied:
+
+.
+└─┬ mocks
+  └─┬ api
+    └─┬ service
+      ├─┬ userRoles
+      │ └── GET.json
+      ├─┬ currentUserId
+      │ └── GET.json
+      ├─┬ clients
+      │ └─┬ active
+      │   └── GET.json
+      └─┬ send
+        └── POST.json
+
+"
+`;
+
+exports[`Integration Tests > should write files to fs 1`] = `
+"
+
+Filtered requests:
+
+┌────────────┼────────────┼────────────┐
+│ Name │ Method │ Path │
+├────────────┼────────────┼────────────┤
+│ userRoles │ GET │ /api/service/userRoles │
+│ currentUserId │ GET │ /api/service/currentUserId │
+│ active │ GET │ /api/service/clients/active │
+└────────────┼────────────┼────────────┘
+
+Folder tree which will be applied:
+
+.
+└─┬ mocks
+  └─┬ api
+    └─┬ service
+      ├─┬ userRoles
+      │ └── GET.json
+      ├─┬ currentUserId
+      │ └── GET.json
+      └─┬ clients
+        └─┬ active
+          └── GET.json
+
+"
+`;
+
+exports[`Integration Tests > with url flag should filter requests based on url with case sensitive 1`] = `
+"
+
+Filtered requests:
+
+┌────────────┼────────────┼────────────┐
+│ Name │ Method │ Path │
+├────────────┼────────────┼────────────┤
+│ userRoles │ GET │ /api/service/userRoles │
+└────────────┼────────────┼────────────┘
+"
+`;
+
+exports[`Integration Tests > without any flag show all requests in .har 1`] = `
+"
+
+Filtered requests:
+
+┌────────────┼────────────┼────────────┐
+│ Name │ Method │ Path │
+├────────────┼────────────┼────────────┤
+│ userRoles │ GET │ /api/service/userRoles │
+│ currentUserId │ GET │ /api/service/currentUserId │
+│ active │ GET │ /api/service/clients/active │
+└────────────┼────────────┼────────────┘
+"
+`;

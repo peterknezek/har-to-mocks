@@ -1,5 +1,5 @@
-import { resultTable, writeMocks } from './features';
-import type { Entry, Filter, Har, Logger } from './types';
+import { resultTable, writeMocks } from './features/index.js';
+import type { Entry, Filter, Har, Logger } from './types/index.js';
 
 export class HarToMocksProcess {
   public data: Entry[] = [];

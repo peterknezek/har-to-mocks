@@ -1,0 +1,11 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`Write mocks - process data > should be Entry prepared for saving files 1`] = `
+[
+  {
+    "fileData": "{}",
+    "fileName": "GET.json",
+    "filePath": "mocks/api/service/a",
+  },
+]
+`;

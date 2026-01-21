@@ -1,4 +1,4 @@
-export type { Filter } from './filter';
-export { Method, ResourceType } from './filter';
-export type { Entry, Har } from './har';
-export type { Logger } from './utils';
+export type { Filter } from './filter.js';
+export { Method, ResourceType } from './filter.js';
+export type { Entry, Har } from './har.js';
+export type { Logger } from './utils.js';

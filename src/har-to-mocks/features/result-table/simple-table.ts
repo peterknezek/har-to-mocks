@@ -28,7 +28,14 @@ export function makeSimpleTable({ data, columns }: TableOptions): string {
 
   data.forEach((row) => {
     columns.forEach((col) => {
-      const value = String(row[col.key] ?? '');
+      const cellValue = row[col.key];
+      const value =
+        cellValue == null
+          ? ''
+          : typeof cellValue === 'object'
+            ? JSON.stringify(cellValue)
+            : // eslint-disable-next-line @typescript-eslint/no-base-to-string
+              String(cellValue);
       widths[col.key] = Math.max(widths[col.key], value.length);
     });
   });
@@ -37,21 +44,27 @@ export function makeSimpleTable({ data, columns }: TableOptions): string {
   const lines: string[] = [];
 
   // Header row
-  const headerRow = columns
-    .map((col) => col.name.padEnd(widths[col.key]))
-    .join(' │ ');
+  const headerRow = columns.map((col) => col.name.padEnd(widths[col.key])).join(' │ ');
   lines.push(headerRow);
 
   // Separator
-  const separator = columns
-    .map((col) => '─'.repeat(widths[col.key]))
-    .join('─┼─');
+  const separator = columns.map((col) => '─'.repeat(widths[col.key])).join('─┼─');
   lines.push(separator);
 
   // Data rows
   data.forEach((row) => {
     const dataRow = columns
-      .map((col) => String(row[col.key] ?? '').padEnd(widths[col.key]))
+      .map((col) => {
+        const cellValue = row[col.key];
+        const stringValue =
+          cellValue == null
+            ? ''
+            : typeof cellValue === 'object'
+              ? JSON.stringify(cellValue)
+              : // eslint-disable-next-line @typescript-eslint/no-base-to-string
+                String(cellValue);
+        return stringValue.padEnd(widths[col.key]);
+      })
       .join(' │ ');
     lines.push(dataRow);
   });

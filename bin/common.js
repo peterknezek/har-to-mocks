@@ -14,7 +14,7 @@ export async function executeCLI(options = {}) {
   const { requireBuild = false } = options;
 
   // Check if lib directory exists
-  const libCommandPath = join(__dirname, '..', 'lib', 'commands', 'index.js');
+  const libCommandPath = join(__dirname, '..', 'lib', 'index.js');
 
   if (requireBuild) {
     const { existsSync } = await import('fs');

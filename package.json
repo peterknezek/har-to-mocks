@@ -62,15 +62,16 @@
   "oclif": {
     "bin": "har-to-mocks",
     "dirname": "har-to-mocks",
-    "commands": "./lib/commands",
-    "default": "index",
+    "commands": {
+      "strategy": "single",
+      "target": "./lib/index.js"
+    },
     "additionalHelpFlags": [
       "-h"
     ],
     "additionalVersionFlags": [
       "-v"
-    ],
-    "topicSeparator": " "
+    ]
   },
   "repository": "peterknezek/har-to-mocks",
   "scripts": {

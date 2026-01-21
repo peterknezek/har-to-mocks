@@ -1,5 +1,5 @@
 import { Config } from '@oclif/core';
-import HarToMocks from '../src/commands/index.js';
+import HarToMocks from '../src/index.js';
 import fsExtra from 'fs-extra';
 import type { MockInstance } from 'vitest';
 

@@ -5,8 +5,8 @@ import updateNotifier, { Package } from 'update-notifier';
 
 const { readJson } = fsExtra;
 
-import type { Har } from '../har-to-mocks/index.js';
-import { HarToMocksProcess, Method, ResourceType } from '../har-to-mocks/index.js';
+import type { Har } from './har-to-mocks/index.js';
+import { HarToMocksProcess, Method, ResourceType } from './har-to-mocks/index.js';
 
 export default class Index extends Command {
   static description = 'Extract response from .har file and create JSON mocks for mock server.';

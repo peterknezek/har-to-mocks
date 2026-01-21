@@ -9,17 +9,21 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 
 async function main() {
+  // Check if lib directory exists
+  const libCommandPath = join(__dirname, '..', 'lib', 'commands', 'index.js');
+
+  if (!existsSync(libCommandPath)) {
+    console.error('Error: Please build the project first with "npm run build"');
+    console.error('For development, run: npm run build && ./bin/dev [args]');
+    process.exit(1);
+  }
+
   // Suppress warnings during config load
   const originalEmitWarning = process.emitWarning;
   process.emitWarning = () => {};
 
-  // Load the single command (in dev mode, check both src and lib)
-  const libCommandPath = join(__dirname, '..', 'lib', 'commands', 'index.js');
-  const srcCommandPath = join(__dirname, '..', 'src', 'commands', 'index.ts');
-
-  // Try to use lib first, fall back to src for development
-  const commandPath = existsSync(libCommandPath) ? libCommandPath : srcCommandPath;
-  const module = await import(commandPath);
+  // Load the single command
+  const module = await import(libCommandPath);
   const Command = module.default;
 
   // Load config and run the command directly

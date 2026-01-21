@@ -1,8 +1,6 @@
 import { ux } from '@oclif/core';
-import fsExtra from 'fs-extra';
+import { mkdirSync, writeFileSync } from 'fs';
 import path from 'path';
-
-const { ensureDirSync, writeFileSync } = fsExtra;
 
 import type { Entry, Logger } from '../../types/index.js';
 import { folderTree } from '../folder-tree/index.js';
@@ -22,7 +20,7 @@ export const writeMocks = (targetPath: string, data: Entry[], log: Logger, optio
   } else {
     ux.action.start('\nwriting files');
     newFiles.forEach(({ filePath, fileName, fileData }) => {
-      ensureDirSync(filePath);
+      mkdirSync(filePath, { recursive: true });
       writeFileSync(path.join(filePath, fileName), fileData);
     });
     ux.action.stop();

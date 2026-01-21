@@ -1,9 +1,7 @@
 import { Args, Command, Flags } from '@oclif/core';
-import fsExtra from 'fs-extra';
+import { readFileSync } from 'fs';
 import { join } from 'path';
 import updateNotifier, { Package } from 'update-notifier';
-
-const { readJson } = fsExtra;
 
 import type { Har } from './har-to-mocks/index.js';
 import { HarToMocksProcess, Method, ResourceType } from './har-to-mocks/index.js';
@@ -42,14 +40,14 @@ export default class Index extends Command {
   };
 
   async run() {
-    const pkg = (await readJson(join(this.config.root, 'package.json'))) as Package;
+    const pkg = JSON.parse(readFileSync(join(this.config.root, 'package.json'), 'utf-8')) as Package;
     updateNotifier({ pkg }).notify({ defer: false });
 
     const process = new HarToMocksProcess(this.log.bind(this));
     const { args, flags: usedFlags } = await this.parse(Index);
 
     if (args.file && typeof args.file === 'string') {
-      const data = (await readJson(args.file)) as Har;
+      const data = JSON.parse(readFileSync(args.file, 'utf-8')) as Har;
       process.extract(data, {
         methods: usedFlags.method as Method[],
         resourceType: usedFlags.type,

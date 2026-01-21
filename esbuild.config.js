@@ -5,10 +5,9 @@ const packageJson = JSON.parse(await readFile('./package.json', 'utf-8'));
 
 // External packages that should NOT be bundled
 // @oclif/core needs to be external to work properly
-// fs-extra and update-notifier use CommonJS and cause issues when bundled in ESM
+// update-notifier uses CommonJS and causes issues when bundled in ESM
 const external = [
   '@oclif/core',
-  'fs-extra',
   'update-notifier',
 ];
 

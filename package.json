@@ -10,7 +10,6 @@
   "bugs": "https://github.com/peterknezek/har-to-mocks/issues",
   "dependencies": {
     "@oclif/core": "^4.0.0",
-    "fs-extra": "^11.2.0",
     "update-notifier": "^5.1.0"
   },
   "devDependencies": {

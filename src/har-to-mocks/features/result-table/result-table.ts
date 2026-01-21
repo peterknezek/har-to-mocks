@@ -1,6 +1,5 @@
-import { makeTable } from '@oclif/table';
-
 import type { Entry, Logger } from '../../types/index.js';
+import { makeSimpleTable } from './simple-table.js';
 import { extractToColumns } from './utils/index.js';
 
 /**
@@ -10,7 +9,7 @@ import { extractToColumns } from './utils/index.js';
  * @param log method to print to the console
  */
 export const resultTable = (data: Entry[], log: Logger) => {
-  const tableString = makeTable({
+  const tableString = makeSimpleTable({
     data: data.map(extractToColumns) as Record<string, unknown>[],
     columns: [
       { key: 'name', name: 'Name' },

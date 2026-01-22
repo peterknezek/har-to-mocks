@@ -11,6 +11,12 @@ search │ GET    │ /complete/search │ ?q=javascript │ skip
 search │ GET    │ /complete/search │ ?q=python     │ write 
 bgasy  │ GET    │ /async/bgasy     │ ?id=123       │ write 
 id     │ GET    │ /pagead/id       │               │ write 
+
+Note: Some endpoints have status "skip" because they share the same path and method.
+The last occurrence will be written. To select specific endpoints, use interactive mode:
+
+  har-to-mocks <file.har> <output-folder> --interactive
+
 "
 `;
 

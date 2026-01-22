@@ -23,4 +23,12 @@ export const resultTable = (data: Entry[], log: Logger) => {
   });
 
   log(tableString);
+
+  // Check if there are any duplicates (entries that will be skipped)
+  const hasDuplicates = entriesWithStatus.some((entry) => !entry.willBeWritten);
+  if (hasDuplicates) {
+    log('\nNote: Some endpoints have status "skip" because they share the same path and method.');
+    log('The last occurrence will be written. To select specific endpoints, use interactive mode:');
+    log('\n  har-to-mocks <file.har> <output-folder> --interactive\n');
+  }
 };

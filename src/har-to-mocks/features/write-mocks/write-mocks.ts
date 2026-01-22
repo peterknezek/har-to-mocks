@@ -5,6 +5,7 @@ import { ux } from '@oclif/core';
 
 import type { Entry, Logger } from '../../types/index.js';
 import { folderTree } from '../folder-tree/index.js';
+import type { FileExistenceMap } from './utils/check-file-existence.js';
 import { entrysToPathsWithData } from './utils/index.js';
 
 interface Options {
@@ -24,6 +25,31 @@ export const previewMocks = (targetPath: string, data: Entry[], log: Logger): nu
   const newFiles = entrysToPathsWithData(data, targetPath);
   log('\nFolder tree which will be applied:\n');
   folderTree(newFiles.map(({ filePath, fileName }) => path.join(filePath, fileName)));
+  return newFiles.length;
+};
+
+/**
+ * Shows a preview of the folder tree with file status markers.
+ * Existing files are marked with [UPDATE].
+ *
+ * @param targetPath - The target directory path
+ * @param data - Array of HAR entries
+ * @param existenceMap - Map of file paths to existence status
+ * @param log - Logger function
+ * @returns Number of files that would be written
+ */
+export const previewMocksWithStatus = (
+  targetPath: string,
+  data: Entry[],
+  existenceMap: FileExistenceMap,
+  log: Logger,
+): number => {
+  const newFiles = entrysToPathsWithData(data, targetPath);
+  log('\nFolder tree which will be applied:\n');
+  folderTree(
+    newFiles.map(({ filePath, fileName }) => path.join(filePath, fileName)),
+    existenceMap,
+  );
   return newFiles.length;
 };
 

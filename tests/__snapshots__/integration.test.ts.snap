@@ -5,18 +5,12 @@ exports[`Integration Tests > should display query strings in the Query column fo
 
 Filtered requests:
 
-Name   │ Method │ Path             │ Query         │ Status
-───────┼────────┼──────────────────┼───────────────┼───────
-search │ GET    │ /complete/search │ ?q=javascript │ skip  
-search │ GET    │ /complete/search │ ?q=python     │ write 
-bgasy  │ GET    │ /async/bgasy     │ ?id=123       │ write 
-id     │ GET    │ /pagead/id       │               │ write 
-
-Note: Some endpoints have status "skip" because they share the same path and method.
-The last occurrence will be written. To select specific endpoints, use interactive mode:
-
-  har-to-mocks <file.har> <output-folder> --interactive
-
+Name   │ Method │ Path             │ Query        
+───────┼────────┼──────────────────┼──────────────
+search │ GET    │ /complete/search │ ?q=javascript
+search │ GET    │ /complete/search │ ?q=python    
+bgasy  │ GET    │ /async/bgasy     │ ?id=123      
+id     │ GET    │ /pagead/id       │              
 "
 `;
 
@@ -25,9 +19,9 @@ exports[`Integration Tests > should filter by url including query string 1`] = `
 
 Filtered requests:
 
-Name   │ Method │ Path             │ Query         │ Status
-───────┼────────┼──────────────────┼───────────────┼───────
-search │ GET    │ /complete/search │ ?q=javascript │ write 
+Name   │ Method │ Path             │ Query        
+───────┼────────┼──────────────────┼──────────────
+search │ GET    │ /complete/search │ ?q=javascript
 "
 `;
 
@@ -36,9 +30,9 @@ exports[`Integration Tests > should filter by url with path and query string 1`]
 
 Filtered requests:
 
-Name   │ Method │ Path             │ Query     │ Status
-───────┼────────┼──────────────────┼───────────┼───────
-search │ GET    │ /complete/search │ ?q=python │ write 
+Name   │ Method │ Path             │ Query    
+───────┼────────┼──────────────────┼──────────
+search │ GET    │ /complete/search │ ?q=python
 "
 `;
 
@@ -49,9 +43,9 @@ Filtered requests:
 
 Name          │ Method │ Path                        │ Query │ Status
 ──────────────┼────────┼─────────────────────────────┼───────┼───────
-userRoles     │ GET    │ /api/service/userRoles      │       │ write 
-currentUserId │ GET    │ /api/service/currentUserId  │       │ write 
-active        │ GET    │ /api/service/clients/active │       │ write 
+userRoles     │ GET    │ /api/service/userRoles      │       │ create
+currentUserId │ GET    │ /api/service/currentUserId  │       │ create
+active        │ GET    │ /api/service/clients/active │       │ create
 
 Folder tree which will be applied:
 
@@ -79,10 +73,10 @@ Filtered requests:
 
 Name          │ Method │ Path                        │ Query │ Status
 ──────────────┼────────┼─────────────────────────────┼───────┼───────
-userRoles     │ GET    │ /api/service/userRoles      │       │ write 
-currentUserId │ GET    │ /api/service/currentUserId  │       │ write 
-active        │ GET    │ /api/service/clients/active │       │ write 
-send          │ POST   │ /api/service/send           │       │ write 
+userRoles     │ GET    │ /api/service/userRoles      │       │ create
+currentUserId │ GET    │ /api/service/currentUserId  │       │ create
+active        │ GET    │ /api/service/clients/active │       │ create
+send          │ POST   │ /api/service/send           │       │ create
 
 Folder tree which will be applied:
 
@@ -112,9 +106,9 @@ Filtered requests:
 
 Name          │ Method │ Path                        │ Query │ Status
 ──────────────┼────────┼─────────────────────────────┼───────┼───────
-userRoles     │ GET    │ /api/service/userRoles      │       │ write 
-currentUserId │ GET    │ /api/service/currentUserId  │       │ write 
-active        │ GET    │ /api/service/clients/active │       │ write 
+userRoles     │ GET    │ /api/service/userRoles      │       │ create
+currentUserId │ GET    │ /api/service/currentUserId  │       │ create
+active        │ GET    │ /api/service/clients/active │       │ create
 
 Folder tree which will be applied:
 
@@ -140,9 +134,9 @@ exports[`Integration Tests > with url flag should filter requests based on url w
 
 Filtered requests:
 
-Name      │ Method │ Path                   │ Query │ Status
-──────────┼────────┼────────────────────────┼───────┼───────
-userRoles │ GET    │ /api/service/userRoles │       │ write 
+Name      │ Method │ Path                   │ Query
+──────────┼────────┼────────────────────────┼──────
+userRoles │ GET    │ /api/service/userRoles │      
 "
 `;
 
@@ -151,10 +145,10 @@ exports[`Integration Tests > without any flag show all requests in .har 1`] = `
 
 Filtered requests:
 
-Name          │ Method │ Path                        │ Query │ Status
-──────────────┼────────┼─────────────────────────────┼───────┼───────
-userRoles     │ GET    │ /api/service/userRoles      │       │ write 
-currentUserId │ GET    │ /api/service/currentUserId  │       │ write 
-active        │ GET    │ /api/service/clients/active │       │ write 
+Name          │ Method │ Path                        │ Query
+──────────────┼────────┼─────────────────────────────┼──────
+userRoles     │ GET    │ /api/service/userRoles      │      
+currentUserId │ GET    │ /api/service/currentUserId  │      
+active        │ GET    │ /api/service/clients/active │      
 "
 `;

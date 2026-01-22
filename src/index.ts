@@ -61,11 +61,15 @@ export default class Index extends Command {
     }
 
     if (args.to && typeof args.to === 'string') {
+      // Target path provided - show enhanced table with Status column
       if (usedFlags.interactive) {
         await process.writeInteractive(args.to, usedFlags['dry-run']);
       } else {
         process.write(args.to, usedFlags['dry-run']);
       }
+    } else {
+      // No target path - show basic table for inspection only
+      process.showResults();
     }
 
     this.log('');

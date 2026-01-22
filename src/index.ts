@@ -33,6 +33,10 @@ export default class Index extends Command {
       parse: async (input) => input as ResourceType,
     })(),
     'dry-run': Flags.boolean({ description: 'to not write files, just show results' }),
+    interactive: Flags.boolean({
+      char: 'i',
+      description: 'interactive mode to select which endpoints to write',
+    }),
   };
 
   static args = {
@@ -57,7 +61,11 @@ export default class Index extends Command {
     }
 
     if (args.to && typeof args.to === 'string') {
-      process.write(args.to, usedFlags['dry-run']);
+      if (usedFlags.interactive) {
+        await process.writeInteractive(args.to, usedFlags['dry-run']);
+      } else {
+        process.write(args.to, usedFlags['dry-run']);
+      }
     }
 
     this.log('');

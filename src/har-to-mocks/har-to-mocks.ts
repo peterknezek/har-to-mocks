@@ -1,4 +1,11 @@
-import { resultTable, writeMocks } from './features/index.js';
+import {
+  confirmWrite,
+  executeWriteMocks,
+  interactiveSelect,
+  previewMocks,
+  resultTable,
+  writeMocks,
+} from './features/index.js';
 import type { Entry, Filter, Har, Logger } from './types/index.js';
 
 export class HarToMocksProcess {
@@ -38,5 +45,45 @@ export class HarToMocksProcess {
 
   write(targetPath: string, isDryRun = false) {
     writeMocks(targetPath, this.data, this.log, { isDryRun });
+  }
+
+  /**
+   * Interactive mode: allows user to select which endpoints to write
+   * @param {string} targetPath path to write mocks
+   * @param {boolean} isDryRun if true, do not write files
+   */
+  async writeInteractive(targetPath: string, isDryRun = false) {
+    if (this.data.length === 0) {
+      this.log('\nNo endpoints to select.');
+      return;
+    }
+
+    this.log('');
+    const selectedEntries = await interactiveSelect(this.data);
+
+    if (selectedEntries === null || selectedEntries.length === 0) {
+      this.log('\nNo endpoints selected. Exiting.');
+      return;
+    }
+
+    this.log(`\n${selectedEntries.length} endpoint(s) selected.`);
+
+    // Show preview of what will be created
+    const fileCount = previewMocks(targetPath, selectedEntries, this.log);
+
+    if (isDryRun) {
+      this.log('\nNo files were written. If you want to write files remove the (--dry-run) flag.');
+      return;
+    }
+
+    // Ask for confirmation before writing
+    const shouldWrite = await confirmWrite(fileCount);
+    if (!shouldWrite) {
+      this.log('\nOperation cancelled.');
+      return;
+    }
+
+    // Actually write the files
+    executeWriteMocks(targetPath, selectedEntries, this.log);
   }
 }

@@ -5,12 +5,12 @@ exports[`Integration Tests > should display query strings in the Query column fo
 
 Filtered requests:
 
-Name   │ Method │ Path             │ Query        
-───────┼────────┼──────────────────┼──────────────
-search │ GET    │ /complete/search │ ?q=javascript
-search │ GET    │ /complete/search │ ?q=python    
-bgasy  │ GET    │ /async/bgasy     │ ?id=123      
-id     │ GET    │ /pagead/id       │              
+Name   │ Method │ Path             │ Query         │ Status
+───────┼────────┼──────────────────┼───────────────┼───────
+search │ GET    │ /complete/search │ ?q=javascript │ skip  
+search │ GET    │ /complete/search │ ?q=python     │ write 
+bgasy  │ GET    │ /async/bgasy     │ ?id=123       │ write 
+id     │ GET    │ /pagead/id       │               │ write 
 "
 `;
 
@@ -19,9 +19,9 @@ exports[`Integration Tests > should filter by url including query string 1`] = `
 
 Filtered requests:
 
-Name   │ Method │ Path             │ Query        
-───────┼────────┼──────────────────┼──────────────
-search │ GET    │ /complete/search │ ?q=javascript
+Name   │ Method │ Path             │ Query         │ Status
+───────┼────────┼──────────────────┼───────────────┼───────
+search │ GET    │ /complete/search │ ?q=javascript │ write 
 "
 `;
 
@@ -30,9 +30,9 @@ exports[`Integration Tests > should filter by url with path and query string 1`]
 
 Filtered requests:
 
-Name   │ Method │ Path             │ Query    
-───────┼────────┼──────────────────┼──────────
-search │ GET    │ /complete/search │ ?q=python
+Name   │ Method │ Path             │ Query     │ Status
+───────┼────────┼──────────────────┼───────────┼───────
+search │ GET    │ /complete/search │ ?q=python │ write 
 "
 `;
 
@@ -41,11 +41,11 @@ exports[`Integration Tests > should render result table with folder tree without
 
 Filtered requests:
 
-Name          │ Method │ Path                        │ Query
-──────────────┼────────┼─────────────────────────────┼──────
-userRoles     │ GET    │ /api/service/userRoles      │      
-currentUserId │ GET    │ /api/service/currentUserId  │      
-active        │ GET    │ /api/service/clients/active │      
+Name          │ Method │ Path                        │ Query │ Status
+──────────────┼────────┼─────────────────────────────┼───────┼───────
+userRoles     │ GET    │ /api/service/userRoles      │       │ write 
+currentUserId │ GET    │ /api/service/currentUserId  │       │ write 
+active        │ GET    │ /api/service/clients/active │       │ write 
 
 Folder tree which will be applied:
 
@@ -71,12 +71,12 @@ exports[`Integration Tests > should render with GET and POST requests 1`] = `
 
 Filtered requests:
 
-Name          │ Method │ Path                        │ Query
-──────────────┼────────┼─────────────────────────────┼──────
-userRoles     │ GET    │ /api/service/userRoles      │      
-currentUserId │ GET    │ /api/service/currentUserId  │      
-active        │ GET    │ /api/service/clients/active │      
-send          │ POST   │ /api/service/send           │      
+Name          │ Method │ Path                        │ Query │ Status
+──────────────┼────────┼─────────────────────────────┼───────┼───────
+userRoles     │ GET    │ /api/service/userRoles      │       │ write 
+currentUserId │ GET    │ /api/service/currentUserId  │       │ write 
+active        │ GET    │ /api/service/clients/active │       │ write 
+send          │ POST   │ /api/service/send           │       │ write 
 
 Folder tree which will be applied:
 
@@ -104,11 +104,11 @@ exports[`Integration Tests > should write files to fs 1`] = `
 
 Filtered requests:
 
-Name          │ Method │ Path                        │ Query
-──────────────┼────────┼─────────────────────────────┼──────
-userRoles     │ GET    │ /api/service/userRoles      │      
-currentUserId │ GET    │ /api/service/currentUserId  │      
-active        │ GET    │ /api/service/clients/active │      
+Name          │ Method │ Path                        │ Query │ Status
+──────────────┼────────┼─────────────────────────────┼───────┼───────
+userRoles     │ GET    │ /api/service/userRoles      │       │ write 
+currentUserId │ GET    │ /api/service/currentUserId  │       │ write 
+active        │ GET    │ /api/service/clients/active │       │ write 
 
 Folder tree which will be applied:
 
@@ -134,9 +134,9 @@ exports[`Integration Tests > with url flag should filter requests based on url w
 
 Filtered requests:
 
-Name      │ Method │ Path                   │ Query
-──────────┼────────┼────────────────────────┼──────
-userRoles │ GET    │ /api/service/userRoles │      
+Name      │ Method │ Path                   │ Query │ Status
+──────────┼────────┼────────────────────────┼───────┼───────
+userRoles │ GET    │ /api/service/userRoles │       │ write 
 "
 `;
 
@@ -145,10 +145,10 @@ exports[`Integration Tests > without any flag show all requests in .har 1`] = `
 
 Filtered requests:
 
-Name          │ Method │ Path                        │ Query
-──────────────┼────────┼─────────────────────────────┼──────
-userRoles     │ GET    │ /api/service/userRoles      │      
-currentUserId │ GET    │ /api/service/currentUserId  │      
-active        │ GET    │ /api/service/clients/active │      
+Name          │ Method │ Path                        │ Query │ Status
+──────────────┼────────┼─────────────────────────────┼───────┼───────
+userRoles     │ GET    │ /api/service/userRoles      │       │ write 
+currentUserId │ GET    │ /api/service/currentUserId  │       │ write 
+active        │ GET    │ /api/service/clients/active │       │ write 
 "
 `;

@@ -37,23 +37,50 @@ will display:
 ```
 Filtered requests:
 
- Name          │ Method │ Path                        │ Query
- ──────────────┼────────┼─────────────────────────────┼──────
- userRoles     │ GET    │ /api/service/userRoles      │
- currentUserId │ GET    │ /api/service/currentUserId  │
- active        │ GET    │ /api/service/clients/active │
+ Name          │ Method │ Path                        │ Query │ Status
+ ──────────────┼────────┼─────────────────────────────┼───────┼───────
+ userRoles     │ GET    │ /api/service/userRoles      │       │ write
+ currentUserId │ GET    │ /api/service/currentUserId  │       │ write
+ active        │ GET    │ /api/service/clients/active │       │ write
 ```
 
-The Query column displays URL query parameters, making it easy to distinguish between requests to the same endpoint with different parameters:
+The Query column displays URL query parameters, and the Status column shows which endpoints will be written:
 ```
- Name   │ Method │ Path             │ Query
- ───────┼────────┼──────────────────┼──────────────
- search │ GET    │ /complete/search │ ?q=javascript
- search │ GET    │ /complete/search │ ?q=python
+ Name   │ Method │ Path             │ Query         │ Status
+ ───────┼────────┼──────────────────┼───────────────┼───────
+ search │ GET    │ /complete/search │ ?q=javascript │ skip
+ search │ GET    │ /complete/search │ ?q=python     │ write
+```
+
+When multiple requests share the same path and method (but have different query parameters), they would write to the same file. The Status column indicates:
+- **write** - This endpoint will be written to disk
+- **skip** - This endpoint will be skipped (a later entry writes to the same file)
+
+When duplicates are detected, a helpful hint is displayed:
+```
+Note: Some endpoints have status "skip" because they share the same path and method.
+The last occurrence will be written. To select specific endpoints, use interactive mode:
+
+  har-to-mocks <file.har> <output-folder> --interactive
 ```
 
 If output folder is not specified mocks will not be written.
 
+### Interactive Mode
+
+Use the `--interactive` (or `-i`) flag to manually select which endpoints to write:
+
+```
+$ har-to-mocks ./file.har ./mocks --interactive
+```
+
+In interactive mode:
+1. A checkbox list appears with all endpoints (use arrow keys to navigate, space to toggle, enter to confirm)
+2. Endpoints that would be written by default are pre-selected
+3. After selection, a folder tree preview is shown
+4. You're asked to confirm before files are written
+
+This is useful when you have duplicate routes and want to choose a specific response variant.
 
 ### Extract data from .har to mock/api folder
 
@@ -69,11 +96,11 @@ will display:
 ```
 Filtered requests:
 
- Name          │ Method │ Path                        │ Query
- ──────────────┼────────┼─────────────────────────────┼──────
- userRoles     │ GET    │ /api/service/userRoles      │
- currentUserId │ GET    │ /api/service/currentUserId  │
- active        │ GET    │ /api/service/clients/active │
+ Name          │ Method │ Path                        │ Query │ Status
+ ──────────────┼────────┼─────────────────────────────┼───────┼───────
+ userRoles     │ GET    │ /api/service/userRoles      │       │ write
+ currentUserId │ GET    │ /api/service/currentUserId  │       │ write
+ active        │ GET    │ /api/service/clients/active │       │ write
 
 Folder tree which will be applied:
 

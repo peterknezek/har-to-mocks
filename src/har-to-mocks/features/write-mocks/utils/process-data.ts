@@ -8,7 +8,8 @@ export const entrysToPathsWithData = (entrys: Entry[], targetPath: string) =>
     const parsedUrl = new URL(entry.request.url);
     const filePath = path.join(targetPath, parsedUrl.pathname);
     const fileName = `${entry.request.method.toUpperCase()}.json`;
-    const fileData = entry.response.content.text;
+    // Handle missing text content (can happen with binary content, errors, or uncaptured responses)
+    const fileData = entry.response.content.text ?? '';
     return {
       filePath,
       fileName,

@@ -58,6 +58,8 @@ Folder tree which will be applied:
       └─┬ send
         └── POST.json
 
+
+✓ Successfully wrote 4 file(s)
 "
 `;
 
@@ -86,6 +88,8 @@ Folder tree which will be applied:
         └─┬ active
           └── GET.json
 
+
+✓ Successfully wrote 3 file(s)
 "
 `;
 

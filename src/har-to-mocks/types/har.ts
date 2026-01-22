@@ -53,7 +53,7 @@ interface Response {
 interface Content {
   size: number;
   mimeType: string;
-  text: string;
+  text?: string;
   encoding?: string;
 }
 

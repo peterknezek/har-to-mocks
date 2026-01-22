@@ -57,12 +57,20 @@ $ har-to-mocks ./file.har ./mocks --interactive
 ```
 
 In interactive mode:
-1. A checkbox list appears with all endpoints (use arrow keys to navigate, space to toggle, enter to confirm)
-2. Endpoints that would be written by default are pre-selected
-3. After selection, a folder tree preview is shown
-4. You're asked to confirm before files are written
+1. A checkbox list appears with all endpoints
+2. **Response Preview**: As you navigate with arrow keys, the JSON response of the focused endpoint is displayed below the list
+3. Endpoints that would be written by default are pre-selected
+4. After selection, a folder tree preview is shown
+5. You're asked to confirm before files are written
 
-This is useful when you have duplicate routes and want to choose a specific response variant.
+**Keyboard shortcuts:**
+- `↑/↓` - Navigate through endpoints (updates response preview)
+- `Space` - Toggle selection
+- `a` - Toggle all
+- `i` - Invert selection
+- `Enter` - Confirm selection
+
+The response preview helps you distinguish between multiple responses from the same endpoint with different data - useful when duplicate routes return different responses and you need to choose the right one.
 
 ### Extract data from .har to mock/api folder
 

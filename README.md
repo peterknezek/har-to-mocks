@@ -23,8 +23,8 @@ npx har-to-mocks [path to .har] [path mock/api folder] --dry-run
 ### Inspect and filter requests in .har files
 
 File can contain hundreds of requests so it's important to be able filter data. For filtering you can use flags:
-- (`--url`) for filtering by match in the url. Search is case sensitive
-- (`-m`, `--method=GET --method=POST`) for filter specific method. Supported: 'GET', 'POST', 'PUT', 'DELETE' and 'PATCH' methods. Default value is 'GET'. 
+- (`--url`) for filtering by match in the url. Search is case sensitive and matches against the full URL including query parameters (e.g., `--url=?q=search` or `--url=/api/search?id=123`)
+- (`-m`, `--method=GET --method=POST`) for filter specific method. Supported: 'GET', 'POST', 'PUT', 'DELETE' and 'PATCH' methods. Default value is 'GET'.
 - (`-t`, `--type=xhr`) for filtering request type. Default value is 'xhr'
 
 Video example: [YouTube har-to-mocks@1.1.1](https://youtu.be/Pc2J8aHRKNY).
@@ -37,11 +37,19 @@ will display:
 ```
 Filtered requests:
 
- Name                    Method Path                        
- ─────────────────────── ────── ─────────────────────────── 
- userRoles               GET    /api/service/userRoles      
- currentUserId           GET    /api/service/currentUserId  
- active                  GET    /api/service/clients/active 
+ Name          │ Method │ Path                        │ Query
+ ──────────────┼────────┼─────────────────────────────┼──────
+ userRoles     │ GET    │ /api/service/userRoles      │
+ currentUserId │ GET    │ /api/service/currentUserId  │
+ active        │ GET    │ /api/service/clients/active │
+```
+
+The Query column displays URL query parameters, making it easy to distinguish between requests to the same endpoint with different parameters:
+```
+ Name   │ Method │ Path             │ Query
+ ───────┼────────┼──────────────────┼──────────────
+ search │ GET    │ /complete/search │ ?q=javascript
+ search │ GET    │ /complete/search │ ?q=python
 ```
 
 If output folder is not specified mocks will not be written.
@@ -61,11 +69,11 @@ will display:
 ```
 Filtered requests:
 
- Name                    Method Path                        
- ─────────────────────── ────── ─────────────────────────── 
- userRoles               GET    /api/service/userRoles      
- currentUserId           GET    /api/service/currentUserId  
- active                  GET    /api/service/clients/active 
+ Name          │ Method │ Path                        │ Query
+ ──────────────┼────────┼─────────────────────────────┼──────
+ userRoles     │ GET    │ /api/service/userRoles      │
+ currentUserId │ GET    │ /api/service/currentUserId  │
+ active        │ GET    │ /api/service/clients/active │
 
 Folder tree which will be applied:
 

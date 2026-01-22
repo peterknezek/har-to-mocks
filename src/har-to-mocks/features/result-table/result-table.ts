@@ -4,7 +4,7 @@ import { extractToColumns } from './utils/index.js';
 
 /**
  * Log table with content to the console. Table with columns:
- * [`Name` (last part of path), `Method` (regest method), `Path` (path of reguest)]
+ * [`Name` (last part of path), `Method` (regest method), `Path` (path of reguest), `Query` (query string)]
  * @param data filtered Entry form .har
  * @param log method to print to the console
  */
@@ -15,6 +15,7 @@ export const resultTable = (data: Entry[], log: Logger) => {
       { key: 'name', name: 'Name' },
       { key: 'method', name: 'Method' },
       { key: 'path', name: 'Path' },
+      { key: 'query', name: 'Query' },
     ],
   });
 

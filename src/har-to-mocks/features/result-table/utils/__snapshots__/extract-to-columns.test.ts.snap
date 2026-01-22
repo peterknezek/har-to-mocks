@@ -5,6 +5,7 @@ exports[`Result table - extract to columns > should be Entry prepared for saving
   "method": "GET",
   "name": "a",
   "path": "/api/service/a",
+  "query": "",
 }
 `;
 
@@ -13,5 +14,15 @@ exports[`Result table - extract to columns > should be Entry prepared for saving
   "method": "GET",
   "name": "",
   "path": "/",
+  "query": "",
+}
+`;
+
+exports[`Result table - extract to columns > should extract query parameters from URL 1`] = `
+{
+  "method": "GET",
+  "name": "search",
+  "path": "/complete/search",
+  "query": "?q=test&limit=10",
 }
 `;

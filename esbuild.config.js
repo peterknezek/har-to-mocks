@@ -3,7 +3,8 @@ import * as esbuild from 'esbuild';
 // External packages that should NOT be bundled
 // @oclif/core needs to be external to work properly
 // update-notifier uses CommonJS and causes issues when bundled in ESM
-const external = ['@oclif/core', 'update-notifier'];
+// @inquirer/prompts uses CommonJS internals that don't bundle properly
+const external = ['@oclif/core', 'update-notifier', '@inquirer/prompts'];
 
 await esbuild.build({
   entryPoints: ['src/index.ts'],

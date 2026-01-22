@@ -41,11 +41,11 @@ exports[`Integration Tests > should render result table with folder tree without
 
 Filtered requests:
 
-Name          │ Method │ Path                        │ Query
-──────────────┼────────┼─────────────────────────────┼──────
-userRoles     │ GET    │ /api/service/userRoles      │      
-currentUserId │ GET    │ /api/service/currentUserId  │      
-active        │ GET    │ /api/service/clients/active │      
+Name          │ Method │ Path                        │ Query │ Status
+──────────────┼────────┼─────────────────────────────┼───────┼───────
+userRoles     │ GET    │ /api/service/userRoles      │       │ create
+currentUserId │ GET    │ /api/service/currentUserId  │       │ create
+active        │ GET    │ /api/service/clients/active │       │ create
 
 Folder tree which will be applied:
 
@@ -71,12 +71,12 @@ exports[`Integration Tests > should render with GET and POST requests 1`] = `
 
 Filtered requests:
 
-Name          │ Method │ Path                        │ Query
-──────────────┼────────┼─────────────────────────────┼──────
-userRoles     │ GET    │ /api/service/userRoles      │      
-currentUserId │ GET    │ /api/service/currentUserId  │      
-active        │ GET    │ /api/service/clients/active │      
-send          │ POST   │ /api/service/send           │      
+Name          │ Method │ Path                        │ Query │ Status
+──────────────┼────────┼─────────────────────────────┼───────┼───────
+userRoles     │ GET    │ /api/service/userRoles      │       │ create
+currentUserId │ GET    │ /api/service/currentUserId  │       │ create
+active        │ GET    │ /api/service/clients/active │       │ create
+send          │ POST   │ /api/service/send           │       │ create
 
 Folder tree which will be applied:
 
@@ -104,11 +104,11 @@ exports[`Integration Tests > should write files to fs 1`] = `
 
 Filtered requests:
 
-Name          │ Method │ Path                        │ Query
-──────────────┼────────┼─────────────────────────────┼──────
-userRoles     │ GET    │ /api/service/userRoles      │      
-currentUserId │ GET    │ /api/service/currentUserId  │      
-active        │ GET    │ /api/service/clients/active │      
+Name          │ Method │ Path                        │ Query │ Status
+──────────────┼────────┼─────────────────────────────┼───────┼───────
+userRoles     │ GET    │ /api/service/userRoles      │       │ create
+currentUserId │ GET    │ /api/service/currentUserId  │       │ create
+active        │ GET    │ /api/service/clients/active │       │ create
 
 Folder tree which will be applied:
 

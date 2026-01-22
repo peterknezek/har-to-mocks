@@ -44,22 +44,36 @@ Filtered requests:
  active        │ GET    │ /api/service/clients/active │
 ```
 
-The Query column displays URL query parameters, making it easy to distinguish between requests to the same endpoint with different parameters:
+The Query column displays URL query parameters for easy identification of similar requests.
+
+If output folder is not specified, mocks will not be written and no Status column is shown.
+
+### Interactive Mode
+
+Use the `--interactive` (or `-i`) flag to manually select which endpoints to write:
+
 ```
- Name   │ Method │ Path             │ Query
- ───────┼────────┼──────────────────┼──────────────
- search │ GET    │ /complete/search │ ?q=javascript
- search │ GET    │ /complete/search │ ?q=python
+$ har-to-mocks ./file.har ./mocks --interactive
 ```
 
-If output folder is not specified mocks will not be written.
+In interactive mode:
+1. A checkbox list appears with all endpoints (use arrow keys to navigate, space to toggle, enter to confirm)
+2. Endpoints that would be written by default are pre-selected
+3. After selection, a folder tree preview is shown
+4. You're asked to confirm before files are written
 
+This is useful when you have duplicate routes and want to choose a specific response variant.
 
 ### Extract data from .har to mock/api folder
 
-The second argument should be path to `mock`'s folder. Export structure is prepared for [mocks-to-msw](https://github.com/peterknezek/mocks-to-msw) which helps with integration with MSW (Mock Service Worker) and [connect-api-mocker](https://www.npmjs.com/package/connect-api-mocker). 
+The second argument should be path to `mock`'s folder. Export structure is prepared for [mocks-to-msw](https://github.com/peterknezek/mocks-to-msw) which helps with integration with MSW (Mock Service Worker) and [connect-api-mocker](https://www.npmjs.com/package/connect-api-mocker).
 
 WARNING: When second argument is defined cli will write files. To avoid unwanted overwrite use `--dry-run` flag to skip writing part of process.
+
+When a target folder is specified, the Status column shows what will happen to each file:
+- **create** - File doesn't exist, will be created
+- **update** - File already exists, will be overwritten
+- **skip** - Duplicate endpoint, will be skipped (a later entry writes to the same file)
 
 example:
 ```
@@ -69,11 +83,11 @@ will display:
 ```
 Filtered requests:
 
- Name          │ Method │ Path                        │ Query
- ──────────────┼────────┼─────────────────────────────┼──────
- userRoles     │ GET    │ /api/service/userRoles      │
- currentUserId │ GET    │ /api/service/currentUserId  │
- active        │ GET    │ /api/service/clients/active │
+ Name          │ Method │ Path                        │ Query │ Status
+ ──────────────┼────────┼─────────────────────────────┼───────┼───────
+ userRoles     │ GET    │ /api/service/userRoles      │       │ create
+ currentUserId │ GET    │ /api/service/currentUserId  │       │ create
+ active        │ GET    │ /api/service/clients/active │       │ create
 
 Folder tree which will be applied:
 
@@ -89,6 +103,30 @@ Folder tree which will be applied:
                └─ GET.json
 
 No files were written. If you want to write files remove the (--dry-run) flag.
+```
+
+If files already exist, the tree shows which will be updated:
+```
+Folder tree which will be applied:
+
+└─ mocks
+   └─ api
+      └─ service
+         ├─ userRoles
+         │  └─ GET.json [UPDATE]
+         ├─ currentUserId
+         │  └─ GET.json
+         └─ clients
+            └─ active
+               └─ GET.json [UPDATE]
+```
+
+When multiple requests share the same path and method (but have different query parameters), they would write to the same file. A helpful hint is displayed:
+```
+Note: Some endpoints have status "skip" because they share the same path and method.
+The last occurrence will be written. To select specific endpoints, use interactive mode:
+
+  har-to-mocks <file.har> <output-folder> --interactive
 ```
 
 ## Development

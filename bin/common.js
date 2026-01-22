@@ -1,4 +1,4 @@
-import { Config } from '@oclif/core';
+import { Config, handle, flush } from '@oclif/core';
 import { fileURLToPath } from 'node:url';
 import { dirname, join } from 'node:path';
 
@@ -52,12 +52,10 @@ export async function executeCLI(options = {}) {
     // Restore warning emitter in case of error
     process.emitWarning = originalEmitWarning;
 
-    // Handle ExitError which is thrown for --help and --version
-    if (error.oclif && error.oclif.exit !== undefined) {
-      process.exit(error.oclif.exit);
-    }
-    // Handle other errors
-    console.error(error);
-    process.exit(1);
+    // Use oclif's error handler for consistent error formatting and handling
+    await handle(error);
+  } finally {
+    // Ensure cleanup is performed
+    await flush();
   }
 }

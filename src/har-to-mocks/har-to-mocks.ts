@@ -18,10 +18,27 @@ const filterWritableEntries = (entries: Entry[]): Entry[] => {
   return entriesWithStatus.filter((e) => e.willBeWritten).map((e) => e.entry);
 };
 
+/**
+ * Entries with a request URL that cannot be parsed would crash every downstream
+ * step (deduplication, table rendering, file path resolution), so they are
+ * filtered out up front.
+ */
+const hasParsableUrl = (entry: Entry): boolean => {
+  try {
+    new URL(entry.request.url);
+    return true;
+  } catch {
+    return false;
+  }
+};
+
 export class HarToMocksProcess {
   public data: Entry[] = [];
 
-  constructor(private log: Logger) {}
+  constructor(
+    private log: Logger,
+    private warn: Logger = log,
+  ) {}
 
   /**
    * Extract `Entrys`, filter by flags and return to another process
@@ -31,7 +48,12 @@ export class HarToMocksProcess {
   extract(fileContent: Har, filter: Filter) {
     const { methods, resourceType, url } = filter;
     const { entries } = fileContent.log;
-    let filtred: Entry[] = entries;
+    let filtred: Entry[] = entries.filter(hasParsableUrl);
+
+    const invalidCount = entries.length - filtred.length;
+    if (invalidCount > 0) {
+      this.warn(`Skipped ${invalidCount} entr${invalidCount === 1 ? 'y' : 'ies'} with an invalid request URL.`);
+    }
 
     // Filter by user input in the flow:
     if (url) {

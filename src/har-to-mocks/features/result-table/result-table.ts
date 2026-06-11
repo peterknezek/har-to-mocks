@@ -15,7 +15,7 @@ import { extractToColumns, extractToColumnsWithFileStatus, markDuplicates } from
  */
 export const resultTable = (data: Entry[], log: Logger) => {
   const tableString = makeSimpleTable({
-    data: data.map(extractToColumns) as Record<string, unknown>[],
+    data: data.map(extractToColumns),
     columns: [
       { key: 'name', name: 'Name' },
       { key: 'method', name: 'Method' },
@@ -53,7 +53,7 @@ export const resultTableWithFileStatus = (
   });
 
   const tableString = makeSimpleTable({
-    data: tableData as Record<string, unknown>[],
+    data: tableData,
     columns: [
       { key: 'name', name: 'Name' },
       { key: 'method', name: 'Method' },

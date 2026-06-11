@@ -44,21 +44,52 @@ export default class Index extends Command {
     to: Args.string({ description: 'path to your mocks/api folder' }),
   };
 
+  /**
+   * Read and parse the .har file, exiting with a user-friendly error message
+   * instead of a raw stack trace when the file is missing or malformed.
+   */
+  private readHarFile(filePath: string): Har {
+    let fileContent: string;
+    try {
+      fileContent = readFileSync(filePath, 'utf-8');
+    } catch (error) {
+      const code = (error as NodeJS.ErrnoException).code;
+      if (code === 'ENOENT') {
+        this.error(`File not found: ${filePath}`);
+      }
+      if (code === 'EISDIR') {
+        this.error(`Expected a file but found a directory: ${filePath}`);
+      }
+      this.error(`Could not read file ${filePath}: ${error instanceof Error ? error.message : String(error)}`);
+    }
+
+    let data: Har;
+    try {
+      data = JSON.parse(fileContent) as Har;
+    } catch {
+      this.error(`File is not valid JSON: ${filePath}`);
+    }
+
+    if (!Array.isArray(data?.log?.entries)) {
+      this.error(`File is not a valid HAR file (missing "log.entries"): ${filePath}`);
+    }
+
+    return data;
+  }
+
   async run() {
     const pkg = JSON.parse(readFileSync(join(this.config.root, 'package.json'), 'utf-8')) as Package;
     updateNotifier({ pkg }).notify({ defer: false });
 
-    const process = new HarToMocksProcess(this.log.bind(this));
+    const process = new HarToMocksProcess(this.log.bind(this), this.warn.bind(this));
     const { args, flags: usedFlags } = await this.parse(Index);
 
-    if (args.file && typeof args.file === 'string') {
-      const data = JSON.parse(readFileSync(args.file, 'utf-8')) as Har;
-      process.extract(data, {
-        methods: usedFlags.method as Method[],
-        resourceType: usedFlags.type,
-        url: usedFlags.url,
-      });
-    }
+    const data = this.readHarFile(args.file);
+    process.extract(data, {
+      methods: usedFlags.method as Method[],
+      resourceType: usedFlags.type,
+      url: usedFlags.url,
+    });
 
     if (args.to && typeof args.to === 'string') {
       // Target path provided - show enhanced table with Status column

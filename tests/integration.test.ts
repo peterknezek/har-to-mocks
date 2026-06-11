@@ -130,3 +130,46 @@ describe('Integration Tests', () => {
     expect(output).not.toContain('?q=javascript');
   });
 });
+
+describe('Error handling', () => {
+  it('should show friendly error when file does not exist', async () => {
+    const cfg = await getConfig();
+    const cmd = new HarToMocks(['./tests/mocks/does-not-exist.har'], cfg);
+    await expect(cmd.run()).rejects.toThrow('File not found: ./tests/mocks/does-not-exist.har');
+  });
+
+  it('should show friendly error when file is not valid JSON', async () => {
+    const cfg = await getConfig();
+    const cmd = new HarToMocks(['./tests/mocks/invalid-json.har'], cfg);
+    await expect(cmd.run()).rejects.toThrow('File is not valid JSON: ./tests/mocks/invalid-json.har');
+  });
+
+  it('should show friendly error when JSON is not a HAR file', async () => {
+    const cfg = await getConfig();
+    const cmd = new HarToMocks(['./tests/mocks/not-har.har'], cfg);
+    await expect(cmd.run()).rejects.toThrow(
+      'File is not a valid HAR file (missing "log.entries"): ./tests/mocks/not-har.har',
+    );
+  });
+
+  it('should skip entries with invalid request URL and warn instead of crashing', async () => {
+    const cfg = await getConfig();
+    const stderrSpy = vi.spyOn(process.stderr, 'write').mockImplementation(() => true);
+    const consoleErrorSpy = vi.spyOn(console, 'error').mockImplementation(() => undefined);
+    try {
+      const cmd = new HarToMocks(['./tests/mocks/sample-invalid-url.har'], cfg);
+      await expect(cmd.run()).resolves.not.toThrow();
+      const output = captureOutput();
+      // Valid entry is still listed, invalid one is skipped
+      expect(output).toContain('/api/service/users');
+      expect(output).not.toContain('not-a-valid-url');
+      const stderrOutput = [...stderrSpy.mock.calls, ...consoleErrorSpy.mock.calls]
+        .map((call) => String(call[0]))
+        .join('');
+      expect(stderrOutput).toContain('Skipped 1 entry with an invalid request URL.');
+    } finally {
+      stderrSpy.mockRestore();
+      consoleErrorSpy.mockRestore();
+    }
+  });
+});

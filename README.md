@@ -137,6 +137,40 @@ The last occurrence will be written. To select specific endpoints, use interacti
   har-to-mocks <file.har> <output-folder> --interactive
 ```
 
+### Chrome DevTools Local Overrides
+
+Chrome can replace network responses with files from a local folder ([Local Overrides](https://developer.chrome.com/docs/devtools/overrides)). Use `--format=chrome-overrides` (or `-f chrome-overrides`) to write the responses in the folder layout Chrome expects:
+
+```
+$ har-to-mocks ./file.har ./overrides --format=chrome-overrides --dry-run
+```
+
+```
+Folder tree which will be applied:
+
+└─ overrides
+   └─ sample.com
+      ├─ api
+      │  └─ service
+      │     ├─ userRoles
+      │     └─ clients
+      │        └─ active
+      └─ complete
+         ├─ search?q=javascript
+         └─ search?q=python
+```
+
+Then, in Chrome DevTools, open **Sources > Overrides**, click **Select folder for overrides**, pick the same folder, allow access and reload the page.
+
+The files are named the way Chrome names them: `<host>/<path>`, with the query string kept in the file name and `index.html` for paths ending with `/`. Special characters are escaped, and very long URLs go into a `longurls` folder.
+
+Things to know about this format:
+- Chrome picks the file by URL only, not by method. If a GET and a POST go to the same URL, they share one file and only the last one is written (status **skip**). Different query strings get separate files.
+- Chrome returns overridden responses with status 200 and uses the response headers of the real request.
+- A URL path can't be both a file and a folder. For example, `/api/users` and `/api/users/1` can't both be written: the second one fails with `A file and a folder would have the same path`.
+- Binary responses (base64 in the .har file) are decoded, so images and fonts are written as the original bytes.
+- Point DevTools at the folder you wrote to. The `longurls` file names depend on the full path of that folder.
+
 ## Development
 
 ### Prerequisites

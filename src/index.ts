@@ -5,7 +5,7 @@ import { Args, Command, Flags } from '@oclif/core';
 import updateNotifier, { Package } from 'update-notifier';
 
 import type { Har } from './har-to-mocks/index.js';
-import { HarToMocksProcess, Method, ResourceType } from './har-to-mocks/index.js';
+import { HarToMocksProcess, Method, OutputFormat, ResourceType } from './har-to-mocks/index.js';
 
 export default class Index extends Command {
   static description = 'Extract response from .har file and create JSON mocks for mock server.';
@@ -31,6 +31,16 @@ export default class Index extends Command {
       default: async () => ResourceType.xhr,
       // eslint-disable-next-line @typescript-eslint/require-await
       parse: async (input) => input as ResourceType,
+    })(),
+    format: Flags.custom<OutputFormat>({
+      char: 'f',
+      options: Object.values(OutputFormat),
+      description:
+        'folder layout: "mocks" (<path>/<METHOD>.json for mocks-to-msw, connect-api-mocker) or "chrome-overrides" (Chrome DevTools Local Overrides)',
+      // eslint-disable-next-line @typescript-eslint/require-await
+      default: async () => OutputFormat.mocks,
+      // eslint-disable-next-line @typescript-eslint/require-await
+      parse: async (input) => input as OutputFormat,
     })(),
     'dry-run': Flags.boolean({ description: 'to not write files, just show results' }),
     interactive: Flags.boolean({
@@ -94,9 +104,9 @@ export default class Index extends Command {
     if (args.to && typeof args.to === 'string') {
       // Target path provided - show enhanced table with Status column
       if (usedFlags.interactive) {
-        await process.writeInteractive(args.to, usedFlags['dry-run']);
+        await process.writeInteractive(args.to, usedFlags['dry-run'], usedFlags.format);
       } else {
-        process.write(args.to, usedFlags['dry-run']);
+        process.write(args.to, usedFlags['dry-run'], usedFlags.format);
       }
     } else {
       // No target path - show basic table for inspection only

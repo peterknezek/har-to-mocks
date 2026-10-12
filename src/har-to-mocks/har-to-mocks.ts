@@ -9,12 +9,13 @@ import {
 } from './features/index.js';
 import { markDuplicates } from './features/result-table/utils/index.js';
 import type { Entry, Filter, Har, Logger } from './types/index.js';
+import { OutputFormat } from './types/index.js';
 
 /**
  * Filter entries to only include those that will actually be written (not skipped due to duplicates)
  */
-const filterWritableEntries = (entries: Entry[]): Entry[] => {
-  const entriesWithStatus = markDuplicates(entries);
+const filterWritableEntries = (entries: Entry[], targetPath: string, format: OutputFormat): Entry[] => {
+  const entriesWithStatus = markDuplicates(entries, targetPath, format);
   return entriesWithStatus.filter((e) => e.willBeWritten).map((e) => e.entry);
 };
 
@@ -83,25 +84,26 @@ export class HarToMocksProcess {
    * Write mocks to the target path
    * @param {string} targetPath path to write mocks
    * @param {boolean} isDryRun if true, do not write files
+   * @param {OutputFormat} format folder layout of the mock files
    */
-  write(targetPath: string, isDryRun = false) {
+  write(targetPath: string, isDryRun = false, format = OutputFormat.mocks) {
     // Filter to only entries that will be written (not skipped due to duplicates)
-    const writableEntries = filterWritableEntries(this.data);
+    const writableEntries = filterWritableEntries(this.data, targetPath, format);
 
     // Check file existence once (only for writable entries)
-    const existenceMap = checkFileExistence(targetPath, writableEntries);
+    const existenceMap = checkFileExistence(targetPath, writableEntries, format);
 
     // Show enhanced table with create/update/skip status (shows all entries including skipped)
     this.log('\nFiltered requests:\n');
-    resultTableWithFileStatus(this.data, targetPath, existenceMap, this.log);
+    resultTableWithFileStatus(this.data, targetPath, existenceMap, this.log, format);
 
     // Show folder tree with [UPDATE] markers (only shows files that will be written)
-    previewMocksWithStatus(targetPath, writableEntries, existenceMap, this.log);
+    previewMocksWithStatus(targetPath, writableEntries, existenceMap, this.log, format);
 
     if (isDryRun) {
       this.log('\nNo files were written. If you want to write files remove the (--dry-run) flag.');
     } else {
-      executeWriteMocks(targetPath, writableEntries, this.log);
+      executeWriteMocks(targetPath, writableEntries, this.log, format);
     }
   }
 
@@ -109,15 +111,16 @@ export class HarToMocksProcess {
    * Interactive mode: allows user to select which endpoints to write
    * @param {string} targetPath path to write mocks
    * @param {boolean} isDryRun if true, do not write files
+   * @param {OutputFormat} format folder layout of the mock files
    */
-  async writeInteractive(targetPath: string, isDryRun = false) {
+  async writeInteractive(targetPath: string, isDryRun = false, format = OutputFormat.mocks) {
     if (this.data.length === 0) {
       this.log('\nNo endpoints to select.');
       return;
     }
 
     this.log('');
-    const selectedEntries = await interactiveSelect(this.data);
+    const selectedEntries = await interactiveSelect(this.data, targetPath, format);
 
     if (selectedEntries === null || selectedEntries.length === 0) {
       this.log('\nNo endpoints selected. Exiting.');
@@ -127,14 +130,14 @@ export class HarToMocksProcess {
     this.log(`\n${selectedEntries.length} endpoint(s) selected.`);
 
     // Check file existence once
-    const existenceMap = checkFileExistence(targetPath, selectedEntries);
+    const existenceMap = checkFileExistence(targetPath, selectedEntries, format);
 
     // Show enhanced table with create/update/skip status
     this.log('\nSelected endpoints:\n');
-    resultTableWithFileStatus(selectedEntries, targetPath, existenceMap, this.log);
+    resultTableWithFileStatus(selectedEntries, targetPath, existenceMap, this.log, format);
 
     // Show folder tree with [UPDATE] markers
-    previewMocksWithStatus(targetPath, selectedEntries, existenceMap, this.log);
+    previewMocksWithStatus(targetPath, selectedEntries, existenceMap, this.log, format);
 
     if (isDryRun) {
       this.log('\nNo files were written. If you want to write files remove the (--dry-run) flag.');
@@ -149,6 +152,6 @@ export class HarToMocksProcess {
     }
 
     // Actually write the files
-    executeWriteMocks(targetPath, selectedEntries, this.log);
+    executeWriteMocks(targetPath, selectedEntries, this.log, format);
   }
 }

@@ -1,6 +1,7 @@
 import path from 'node:path';
 
 import type { Entry, Logger } from '../../types/index.js';
+import { OutputFormat } from '../../types/index.js';
 import type { FileExistenceMap } from '../write-mocks/utils/check-file-existence.js';
 import { entrysToPathsWithData } from '../write-mocks/utils/process-data.js';
 import { makeSimpleTable } from './simple-table.js';
@@ -35,15 +36,17 @@ export const resultTable = (data: Entry[], log: Logger) => {
  * @param targetPath path where mocks will be written
  * @param existenceMap map of file paths to existence status
  * @param log method to print to the console
+ * @param format folder layout of the mock files
  */
 export const resultTableWithFileStatus = (
   data: Entry[],
   targetPath: string,
   existenceMap: FileExistenceMap,
   log: Logger,
+  format = OutputFormat.mocks,
 ) => {
-  const entriesWithStatus = markDuplicates(data);
-  const pathsData = entrysToPathsWithData(data, targetPath);
+  const entriesWithStatus = markDuplicates(data, targetPath, format);
+  const pathsData = entrysToPathsWithData(data, targetPath, format);
 
   const tableData = entriesWithStatus.map((entryWithStatus, index) => {
     const { filePath, fileName } = pathsData[index];
@@ -68,7 +71,8 @@ export const resultTableWithFileStatus = (
   // Check if there are any duplicates (entries that will be skipped)
   const hasDuplicates = entriesWithStatus.some((entry) => !entry.willBeWritten);
   if (hasDuplicates) {
-    log('\nNote: Some endpoints have status "skip" because they share the same path and method.');
+    const sharedBy = format === OutputFormat.chromeOverrides ? 'URL' : 'path and method';
+    log(`\nNote: Some endpoints have status "skip" because they share the same ${sharedBy}.`);
     log('The last occurrence will be written. To select specific endpoints, use interactive mode:');
     log('\n  har-to-mocks <file.har> <output-folder> --interactive\n');
   }

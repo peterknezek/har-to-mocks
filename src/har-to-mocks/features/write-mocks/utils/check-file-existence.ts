@@ -2,6 +2,7 @@ import { existsSync } from 'node:fs';
 import path from 'node:path';
 
 import type { Entry } from '../../../types/index.js';
+import { OutputFormat } from '../../../types/index.js';
 import { entrysToPathsWithData } from './process-data.js';
 
 export interface FileExistenceMap {
@@ -17,10 +18,15 @@ export interface FileExistenceMap {
  *
  * @param targetPath - The target directory path
  * @param data - Array of HAR entries
+ * @param format - Folder layout of the mock files
  * @returns Map of file paths to existence status
  */
-export const checkFileExistence = (targetPath: string, data: Entry[]): FileExistenceMap => {
-  const newFiles = entrysToPathsWithData(data, targetPath);
+export const checkFileExistence = (
+  targetPath: string,
+  data: Entry[],
+  format = OutputFormat.mocks,
+): FileExistenceMap => {
+  const newFiles = entrysToPathsWithData(data, targetPath, format);
   const exists = new Map<string, boolean>();
   let hasExistingFiles = false;
 

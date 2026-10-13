@@ -37,14 +37,14 @@ will display:
 ```
 Filtered requests:
 
- Name          │ Method │ Path                        │ Query
- ──────────────┼────────┼─────────────────────────────┼──────
- userRoles     │ GET    │ /api/service/userRoles      │
- currentUserId │ GET    │ /api/service/currentUserId  │
- active        │ GET    │ /api/service/clients/active │
+ # │ Name          │ Method │ Path                        │ Query
+ ──┼───────────────┼────────┼─────────────────────────────┼──────
+ 1 │ userRoles     │ GET    │ /api/service/userRoles      │
+ 2 │ currentUserId │ GET    │ /api/service/currentUserId  │
+ 3 │ active        │ GET    │ /api/service/clients/active │
 ```
 
-The Query column displays URL query parameters for easy identification of similar requests.
+The Query column displays URL query parameters for easy identification of similar requests. The `#` column numbers the requests, so you can [select them with `--select`](#select-requests-without-the-interactive-mode).
 
 If output folder is not specified, mocks will not be written and no Status column is shown.
 
@@ -60,8 +60,11 @@ In interactive mode:
 1. A checkbox list appears with all endpoints
 2. **Response Preview**: As you navigate with arrow keys, the JSON response of the focused endpoint is displayed below the list
 3. Endpoints that would be written by default are pre-selected
-4. After selection, a folder tree preview is shown
-5. You're asked to confirm before files are written
+4. After selection, the same selection is printed as a `--select` value, so you can repeat it without the interactive mode
+5. A folder tree preview is shown
+6. You're asked to confirm before files are written
+
+Add `--select` to pre-select specific endpoints instead of the default ones. Interactive mode works with both formats (`--format=mocks` and `--format=chrome-overrides`).
 
 **Keyboard shortcuts:**
 - `↑/↓` - Navigate through endpoints (updates response preview)
@@ -71,6 +74,26 @@ In interactive mode:
 - `Enter` - Confirm selection
 
 The response preview helps you distinguish between multiple responses from the same endpoint with different data - useful when duplicate routes return different responses and you need to choose the right one.
+
+### Select requests without the interactive mode
+
+Use `--select` (or `-s`) with the numbers from the `#` column to choose specific requests in a script or without a terminal UI. Separate numbers with commas, write ranges as `5-7` and repeat the flag if you like. The numbers refer to the list shown with the same filters (`--url`, `--method`, `--type`).
+
+```
+$ har-to-mocks ./file.har --url=api/service
+$ har-to-mocks ./file.har ./mocks --url=api/service --select=1,3
+$ har-to-mocks ./file.har ./overrides --url=api/service --select=1,3 --format=chrome-overrides
+```
+
+Only the selected requests are shown and written, with their original numbers:
+```
+Selected requests:
+
+ # │ Name      │ Method │ Path                        │ Query │ Status
+ ──┼───────────┼────────┼─────────────────────────────┼───────┼───────
+ 1 │ userRoles │ GET    │ /api/service/userRoles      │       │ create
+ 3 │ active    │ GET    │ /api/service/clients/active │       │ create
+```
 
 ### Extract data from .har to mock/api folder
 
@@ -91,11 +114,11 @@ will display:
 ```
 Filtered requests:
 
- Name          │ Method │ Path                        │ Query │ Status
- ──────────────┼────────┼─────────────────────────────┼───────┼───────
- userRoles     │ GET    │ /api/service/userRoles      │       │ create
- currentUserId │ GET    │ /api/service/currentUserId  │       │ create
- active        │ GET    │ /api/service/clients/active │       │ create
+ # │ Name          │ Method │ Path                        │ Query │ Status
+ ──┼───────────────┼────────┼─────────────────────────────┼───────┼───────
+ 1 │ userRoles     │ GET    │ /api/service/userRoles      │       │ create
+ 2 │ currentUserId │ GET    │ /api/service/currentUserId  │       │ create
+ 3 │ active        │ GET    │ /api/service/clients/active │       │ create
 
 Folder tree which will be applied:
 
@@ -132,10 +155,45 @@ Folder tree which will be applied:
 When multiple requests share the same path and method (but have different query parameters), they would write to the same file. A helpful hint is displayed:
 ```
 Note: Some endpoints have status "skip" because they share the same path and method.
-The last occurrence will be written. To select specific endpoints, use interactive mode:
+The last occurrence will be written. To select specific endpoints, use --select or interactive mode:
 
+  har-to-mocks <file.har> <output-folder> --select=1,3
   har-to-mocks <file.har> <output-folder> --interactive
 ```
+
+### Chrome DevTools Local Overrides
+
+Chrome can replace network responses with files from a local folder ([Local Overrides](https://developer.chrome.com/docs/devtools/overrides)). Use `--format=chrome-overrides` (or `-f chrome-overrides`) to write the responses in the folder layout Chrome expects:
+
+```
+$ har-to-mocks ./file.har ./overrides --format=chrome-overrides --dry-run
+```
+
+```
+Folder tree which will be applied:
+
+└─ overrides
+   └─ sample.com
+      ├─ api
+      │  └─ service
+      │     ├─ userRoles
+      │     └─ clients
+      │        └─ active
+      └─ complete
+         ├─ search?q=javascript
+         └─ search?q=python
+```
+
+Then, in Chrome DevTools, open **Sources > Overrides**, click **Select folder for overrides**, pick the same folder, allow access and reload the page.
+
+The files are named the way Chrome names them: `<host>/<path>`, with the query string kept in the file name and `index.html` for paths ending with `/`. Special characters are escaped, and very long URLs go into a `longurls` folder.
+
+Things to know about this format:
+- Chrome picks the file by URL only, not by method. If a GET and a POST go to the same URL, they share one file and only the last one is written (status **skip**). Different query strings get separate files.
+- Chrome returns overridden responses with status 200 and uses the response headers of the real request.
+- A URL path can't be both a file and a folder. For example, `/api/users` and `/api/users/1` can't both be written: the second one fails with `A file and a folder would have the same path`.
+- Binary responses (base64 in the .har file) are decoded, so images and fonts are written as the original bytes.
+- Point DevTools at the folder you wrote to. The `longurls` file names depend on the full path of that folder.
 
 ## Development
 

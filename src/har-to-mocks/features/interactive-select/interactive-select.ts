@@ -26,14 +26,17 @@ const getResponseText = (entry: Entry): string | undefined => {
 
 /**
  * Creates choices for the checkbox prompt from entries.
- * Pre-selects entries that would be written by default (last occurrence of each path+method).
+ * Pre-selects the given entries, or entries that would be written by default (last occurrence of each file).
  * Includes response preview data for each choice.
  */
-const createChoices = (entriesWithStatus: EntryWithWriteStatus[]): ChoiceWithPreview<number>[] => {
+const createChoices = (
+  entriesWithStatus: EntryWithWriteStatus[],
+  preselected?: number[],
+): ChoiceWithPreview<number>[] => {
   return entriesWithStatus.map((entryWithStatus, index) => ({
     name: formatEntryForDisplay(entryWithStatus.entry),
     value: index,
-    checked: entryWithStatus.willBeWritten,
+    checked: preselected ? preselected.includes(index) : entryWithStatus.willBeWritten,
     responsePreview: getResponseText(entryWithStatus.entry),
   }));
 };
@@ -46,19 +49,21 @@ const createChoices = (entriesWithStatus: EntryWithWriteStatus[]): ChoiceWithPre
  * @param entries - Array of HAR entries to select from
  * @param targetPath - The target directory path
  * @param format - Folder layout of the mock files
+ * @param preselected - Indexes of entries to pre-select instead of the default
  * @returns Selected entries or null if user cancels
  */
 export const interactiveSelect = async (
   entries: Entry[],
   targetPath = '',
   format = OutputFormat.mocks,
+  preselected?: number[],
 ): Promise<Entry[] | null> => {
   if (entries.length === 0) {
     return [];
   }
 
   const entriesWithStatus = markDuplicates(entries, targetPath, format);
-  const choices = createChoices(entriesWithStatus);
+  const choices = createChoices(entriesWithStatus, preselected);
 
   const selectedIndices = await checkboxWithPreview<number>({
     message: 'Select endpoints to write:',

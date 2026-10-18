@@ -36,6 +36,9 @@ const hasParsableUrl = (entry: Entry): boolean => {
 export class HarToMocksProcess {
   public data: Entry[] = [];
 
+  /** Indexes of entries chosen by `select()`, all entries when not set */
+  private selection?: number[];
+
   constructor(
     private log: Logger,
     private warn: Logger = log,
@@ -73,11 +76,31 @@ export class HarToMocksProcess {
   }
 
   /**
+   * Keep only the given entries for showing and writing
+   * @param {number[]} indexes zero-based indexes into the filtered entries
+   */
+  select(indexes: number[]) {
+    this.selection = indexes;
+  }
+
+  /**
+   * Selected entries with their row numbers (`#` column)
+   */
+  private selectedRows() {
+    const indexes = this.selection ?? this.data.map((_, index) => index);
+    return {
+      entries: indexes.map((index) => this.data[index]),
+      rowNumbers: indexes.map((index) => index + 1),
+    };
+  }
+
+  /**
    * Show filtered results table (without Status column - for inspection only when no target path)
    */
   showResults() {
-    this.log('\nFiltered requests:\n');
-    resultTable(this.data, this.log);
+    const { entries, rowNumbers } = this.selectedRows();
+    this.log(this.selection ? '\nSelected requests:\n' : '\nFiltered requests:\n');
+    resultTable(entries, this.log, rowNumbers);
   }
 
   /**
@@ -87,15 +110,17 @@ export class HarToMocksProcess {
    * @param {OutputFormat} format folder layout of the mock files
    */
   write(targetPath: string, isDryRun = false, format = OutputFormat.mocks) {
+    const { entries, rowNumbers } = this.selectedRows();
+
     // Filter to only entries that will be written (not skipped due to duplicates)
-    const writableEntries = filterWritableEntries(this.data, targetPath, format);
+    const writableEntries = filterWritableEntries(entries, targetPath, format);
 
     // Check file existence once (only for writable entries)
     const existenceMap = checkFileExistence(targetPath, writableEntries, format);
 
     // Show enhanced table with create/update/skip status (shows all entries including skipped)
-    this.log('\nFiltered requests:\n');
-    resultTableWithFileStatus(this.data, targetPath, existenceMap, this.log, format);
+    this.log(this.selection ? '\nSelected requests:\n' : '\nFiltered requests:\n');
+    resultTableWithFileStatus(entries, targetPath, existenceMap, this.log, format, rowNumbers);
 
     // Show folder tree with [UPDATE] markers (only shows files that will be written)
     previewMocksWithStatus(targetPath, writableEntries, existenceMap, this.log, format);
@@ -120,21 +145,23 @@ export class HarToMocksProcess {
     }
 
     this.log('');
-    const selectedEntries = await interactiveSelect(this.data, targetPath, format);
+    const selectedEntries = await interactiveSelect(this.data, targetPath, format, this.selection);
 
     if (selectedEntries === null || selectedEntries.length === 0) {
       this.log('\nNo endpoints selected. Exiting.');
       return;
     }
 
+    const rowNumbers = selectedEntries.map((entry) => this.data.indexOf(entry) + 1);
     this.log(`\n${selectedEntries.length} endpoint(s) selected.`);
+    this.log(`To select the same endpoints without the interactive mode, use: --select=${rowNumbers.join(',')}`);
 
     // Check file existence once
     const existenceMap = checkFileExistence(targetPath, selectedEntries, format);
 
     // Show enhanced table with create/update/skip status
     this.log('\nSelected endpoints:\n');
-    resultTableWithFileStatus(selectedEntries, targetPath, existenceMap, this.log, format);
+    resultTableWithFileStatus(selectedEntries, targetPath, existenceMap, this.log, format, rowNumbers);
 
     // Show folder tree with [UPDATE] markers
     previewMocksWithStatus(targetPath, selectedEntries, existenceMap, this.log, format);

@@ -1,5 +1,35 @@
 // Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
 
+exports[`Chrome overrides format > should render folder tree with one file per URL without writing files 1`] = `
+"
+
+Filtered requests:
+
+Name   │ Method │ Path             │ Query         │ Status
+───────┼────────┼──────────────────┼───────────────┼───────
+search │ GET    │ /complete/search │ ?q=javascript │ create
+search │ GET    │ /complete/search │ ?q=python     │ create
+bgasy  │ GET    │ /async/bgasy     │ ?id=123       │ create
+id     │ GET    │ /pagead/id       │               │ create
+
+Folder tree which will be applied:
+
+.
+└─┬ overrides
+  └─┬ sample.com
+    ├─┬ complete
+    │ ├── search?q=javascript
+    │ └── search?q=python
+    ├─┬ async
+    │ └── bgasy?id=123
+    └─┬ pagead
+      └── id
+
+
+No files were written. If you want to write files remove the (--dry-run) flag.
+"
+`;
+
 exports[`Integration Tests > should display query strings in the Query column for duplicate routes 1`] = `
 "
 

@@ -4,6 +4,7 @@ import path from 'node:path';
 import { ux } from '@oclif/core';
 
 import type { Entry, Logger } from '../../types/index.js';
+import { OutputFormat } from '../../types/index.js';
 import { folderTree } from '../folder-tree/index.js';
 import type { FileExistenceMap } from './utils/check-file-existence.js';
 import { entrysToPathsWithData } from './utils/index.js';
@@ -36,6 +37,7 @@ export const previewMocks = (targetPath: string, data: Entry[], log: Logger): nu
  * @param data - Array of HAR entries
  * @param existenceMap - Map of file paths to existence status
  * @param log - Logger function
+ * @param format - Folder layout of the mock files
  * @returns Number of files that would be written
  */
 export const previewMocksWithStatus = (
@@ -43,8 +45,9 @@ export const previewMocksWithStatus = (
   data: Entry[],
   existenceMap: FileExistenceMap,
   log: Logger,
+  format = OutputFormat.mocks,
 ): number => {
-  const newFiles = entrysToPathsWithData(data, targetPath);
+  const newFiles = entrysToPathsWithData(data, targetPath, format);
   log('\nFolder tree which will be applied:\n');
   folderTree(
     newFiles.map(({ filePath, fileName }) => path.join(filePath, fileName)),
@@ -60,9 +63,15 @@ export const previewMocksWithStatus = (
  * @param targetPath - The target directory path
  * @param data - Array of HAR entries
  * @param log - Logger function
+ * @param format - Folder layout of the mock files
  */
-export const executeWriteMocks = (targetPath: string, data: Entry[], log: Logger): void => {
-  const newFiles = entrysToPathsWithData(data, targetPath);
+export const executeWriteMocks = (
+  targetPath: string,
+  data: Entry[],
+  log: Logger,
+  format = OutputFormat.mocks,
+): void => {
+  const newFiles = entrysToPathsWithData(data, targetPath, format);
 
   ux.action.start('\nwriting files');
   const errors: Array<{ file: string; error: string }> = [];
@@ -85,6 +94,9 @@ export const executeWriteMocks = (targetPath: string, data: Entry[], log: Logger
         userFriendlyMessage = 'Permission denied';
       } else if (errorCode === 'ENOSPC') {
         userFriendlyMessage = 'No space left on device';
+      } else if (errorCode === 'EEXIST' || errorCode === 'ENOTDIR' || errorCode === 'EISDIR') {
+        // e.g. /api/users needs a file "users" while /api/users/1 needs a folder "users"
+        userFriendlyMessage = 'A file and a folder would have the same path';
       }
 
       errors.push({ file: fullPath, error: userFriendlyMessage });

@@ -3,6 +3,7 @@ import { URL } from 'node:url';
 import { confirm } from '@inquirer/prompts';
 
 import type { Entry } from '../../types/index.js';
+import { OutputFormat } from '../../types/index.js';
 import type { EntryWithWriteStatus } from '../result-table/utils/index.js';
 import { markDuplicates } from '../result-table/utils/index.js';
 import { checkboxWithPreview, type ChoiceWithPreview } from './checkbox-with-preview.js';
@@ -43,14 +44,20 @@ const createChoices = (entriesWithStatus: EntryWithWriteStatus[]): ChoiceWithPre
  * Returns the selected entries.
  *
  * @param entries - Array of HAR entries to select from
+ * @param targetPath - The target directory path
+ * @param format - Folder layout of the mock files
  * @returns Selected entries or null if user cancels
  */
-export const interactiveSelect = async (entries: Entry[]): Promise<Entry[] | null> => {
+export const interactiveSelect = async (
+  entries: Entry[],
+  targetPath = '',
+  format = OutputFormat.mocks,
+): Promise<Entry[] | null> => {
   if (entries.length === 0) {
     return [];
   }
 
-  const entriesWithStatus = markDuplicates(entries);
+  const entriesWithStatus = markDuplicates(entries, targetPath, format);
   const choices = createChoices(entriesWithStatus);
 
   const selectedIndices = await checkboxWithPreview<number>({

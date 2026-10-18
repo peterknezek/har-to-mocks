@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest';
 
 import type { Entry } from '../../../types/index.js';
-import { Method } from '../../../types/index.js';
+import { Method, OutputFormat } from '../../../types/index.js';
 import { markDuplicates } from './mark-duplicates.js';
 
 const createEntry = (url: string, method: Method = Method.GET): Entry =>
@@ -89,5 +89,41 @@ describe('markDuplicates', () => {
     const result = markDuplicates(entries);
 
     expect(result[0].entry).toBe(entries[0]);
+  });
+
+  describe('with Chrome overrides format', () => {
+    it('should keep entries with different query strings', () => {
+      const entries = [
+        createEntry('https://api.example.com/search?q=javascript'),
+        createEntry('https://api.example.com/search?q=python'),
+      ];
+
+      const result = markDuplicates(entries, './overrides', OutputFormat.chromeOverrides);
+
+      expect(result[0].willBeWritten).toBe(true);
+      expect(result[1].willBeWritten).toBe(true);
+    });
+
+    it('should mark entries with the same URL but different methods as duplicates', () => {
+      const entries = [
+        createEntry('https://api.example.com/users', Method.GET),
+        createEntry('https://api.example.com/users', Method.POST),
+      ];
+
+      const result = markDuplicates(entries, './overrides', OutputFormat.chromeOverrides);
+
+      // Chrome picks the override file by URL only
+      expect(result[0].willBeWritten).toBe(false);
+      expect(result[1].willBeWritten).toBe(true);
+    });
+
+    it('should keep entries with the same path on different hosts', () => {
+      const entries = [createEntry('https://a.example.com/users'), createEntry('https://b.example.com/users')];
+
+      const result = markDuplicates(entries, './overrides', OutputFormat.chromeOverrides);
+
+      expect(result[0].willBeWritten).toBe(true);
+      expect(result[1].willBeWritten).toBe(true);
+    });
   });
 });

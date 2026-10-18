@@ -131,6 +131,48 @@ describe('Integration Tests', () => {
   });
 });
 
+describe('Chrome overrides format', () => {
+  it('should render folder tree with one file per URL without writing files', async () => {
+    const cfg = await getConfig();
+    const cmd = new HarToMocks(
+      ['./tests/mocks/sample-with-query.har', './overrides', '--format=chrome-overrides', '--dry-run'],
+      cfg,
+    );
+    await expect(cmd.run()).resolves.not.toThrow();
+    const output = captureOutput();
+    expect(output).toMatchSnapshot();
+    // Query strings are part of the file name, so both searches are written
+    expect(output).toContain('search?q=javascript');
+    expect(output).toContain('search?q=python');
+    expect(output).not.toContain('skip');
+  });
+
+  it('should write files to host and path folders', async () => {
+    const cfg = await getConfig();
+    const { writeFileSync } = await import('node:fs');
+    const writeFileSpy = vi.mocked(writeFileSync);
+    const cmd = new HarToMocks(
+      ['./tests/mocks/sample.har', './overrides', '-f', 'chrome-overrides', '--method=GET', '--method=POST'],
+      cfg,
+    );
+    await expect(cmd.run()).resolves.not.toThrow();
+    expect(writeFileSpy).toHaveBeenCalledTimes(4);
+    expect(writeFileSpy).toHaveBeenCalledWith('overrides/sample.com/api/service/userRoles', expect.any(String));
+    expect(writeFileSpy).toHaveBeenCalledWith('overrides/sample.com/api/service/send', expect.any(String));
+  });
+
+  it('should explain when a file and a folder would have the same path', async () => {
+    const cfg = await getConfig();
+    const { writeFileSync } = await import('node:fs');
+    vi.mocked(writeFileSync).mockImplementationOnce(() => {
+      throw Object.assign(new Error('EISDIR: illegal operation on a directory'), { code: 'EISDIR' });
+    });
+    const cmd = new HarToMocks(['./tests/mocks/sample.har', './overrides', '--format=chrome-overrides'], cfg);
+    await expect(cmd.run()).rejects.toThrow('Failed to write 1 out of 3 file(s)');
+    expect(captureOutput()).toContain('A file and a folder would have the same path');
+  });
+});
+
 describe('Error handling', () => {
   it('should show friendly error when file does not exist', async () => {
     const cfg = await getConfig();

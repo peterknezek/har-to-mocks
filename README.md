@@ -199,14 +199,14 @@ Things to know about this format:
 
 ### Prerequisites
 
-- Node.js >= 18.0.0
+- Node.js >= 22.0.0
 - npm >= 7.0.0
 
 ### Tech Stack
 
 This project uses modern JavaScript tooling:
 
-- **Framework**: [@oclif/core](https://oclif.io/) v4 - Modern CLI framework
+- **Framework**: [@oclif/core](https://oclif.io/) v5 - Modern CLI framework
 - **Module System**: ES Modules (ESM)
 - **Testing**: [Vitest](https://vitest.dev/) with snapshot testing
 - **TypeScript**: NodeNext module resolution for ESM compatibility

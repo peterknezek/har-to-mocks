@@ -5,7 +5,7 @@ import { Args, Command, Flags } from '@oclif/core';
 import updateNotifier, { Package } from 'update-notifier';
 
 import type { Har } from './har-to-mocks/index.js';
-import { HarToMocksProcess, Method, OutputFormat, ResourceType } from './har-to-mocks/index.js';
+import { HarToMocksProcess, Method, OutputFormat, parseSelection, ResourceType } from './har-to-mocks/index.js';
 
 export default class Index extends Command {
   static description = 'Extract response from .har file and create JSON mocks for mock server.';
@@ -42,6 +42,14 @@ export default class Index extends Command {
       // eslint-disable-next-line @typescript-eslint/require-await
       parse: async (input) => input as OutputFormat,
     })(),
+    select: Flags.string({
+      char: 's',
+      description:
+        'select requests by the numbers in the # column, for example: --select=1,3,5-7. In interactive mode, they are pre-selected',
+      multiple: true,
+      // Take one value per flag, so `-s 1,3 ./mocks` keeps ./mocks as the target folder
+      multipleNonGreedy: true,
+    }),
     'dry-run': Flags.boolean({ description: 'to not write files, just show results' }),
     interactive: Flags.boolean({
       char: 'i',
@@ -100,6 +108,14 @@ export default class Index extends Command {
       resourceType: usedFlags.type,
       url: usedFlags.url,
     });
+
+    if (usedFlags.select) {
+      try {
+        process.select(parseSelection(usedFlags.select, process.data.length));
+      } catch (error) {
+        this.error((error as Error).message);
+      }
+    }
 
     if (args.to && typeof args.to === 'string') {
       // Target path provided - show enhanced table with Status column

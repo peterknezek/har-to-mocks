@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://peterknezek.github.io/har-to-mocks/sitemap.xml

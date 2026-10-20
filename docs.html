@@ -1,0 +1,288 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Docs — har-to-mocks</title>
+<meta name="description" content="har-to-mocks documentation: CLI reference, filters, dry run, interactive mode, --select, output formats for MSW and Chrome DevTools Local Overrides, how to export a HAR file, FAQ.">
+<link rel="canonical" href="https://peterknezek.github.io/har-to-mocks/docs.html">
+<meta property="og:type" content="article">
+<meta property="og:title" content="har-to-mocks docs — CLI reference, formats, HAR export guide">
+<meta property="og:description" content="Every flag, every feature with its real output, how to get a HAR file, and honest answers to the questions developers ask first.">
+<meta property="og:url" content="https://peterknezek.github.io/har-to-mocks/docs.html">
+<meta property="og:image" content="https://peterknezek.github.io/har-to-mocks/og.png">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="theme-color" content="#181818">
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<link rel="icon" href="favicon-32.png" sizes="32x32" type="image/png">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+<script>try{if(localStorage.getItem('h2m-theme')==='light')document.documentElement.setAttribute('data-theme','light')}catch(e){}</script>
+</head>
+<body>
+<div class="h2m" style="background: var(--bg); color: var(--text); font-family: 'Inter Tight', Inter, system-ui, sans-serif; font-size: 17px; line-height: 1.5; min-height: 100vh; -webkit-font-smoothing: antialiased">
+
+  <header>
+    <nav aria-label="Main" class="sec" style="max-width: 1360px; margin: 0 auto; padding: 0 40px; height: 72px; display: flex; align-items: center; justify-content: space-between; gap: 24px; border-bottom: 1px solid var(--line)">
+      <a href="./" class="link" style="text-decoration: none; font-family: 'JetBrains Mono', monospace; font-size: 14px; font-weight: 500">har-to-mocks</a>
+      <div class="nav-links" style="display: flex; gap: 32px; font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: .12em; text-transform: uppercase; color: var(--muted)">
+        <a href="./#features" class="link" style="text-decoration: none">Features</a>
+        <a href="./#formats" class="link" style="text-decoration: none">Formats</a>
+        <a href="./#use-cases" class="link" style="text-decoration: none">Use cases</a>
+        <a href="#faq" class="link" style="text-decoration: none">FAQ</a>
+        <a href="docs.html" class="link" style="text-decoration: none; color: var(--text)">Docs</a>
+      </div>
+      <div style="display: flex; align-items: center; gap: 24px; font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: .12em; text-transform: uppercase; color: var(--muted)">
+        <span class="nav-ver">v3.0.0 · MIT</span>
+        <button type="button" id="theme-toggle" class="pill" aria-label="Switch color theme" style="height: 40px; padding: 0 14px; border: 1px solid var(--line); border-radius: 999px; background: transparent; color: var(--muted); font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: .12em; text-transform: uppercase; cursor: pointer">Light</button>
+        <a href="https://github.com/peterknezek/har-to-mocks" class="pill" style="display: inline-flex; align-items: center; height: 40px; padding: 0 16px; border: 1px solid var(--text); border-radius: 999px; text-decoration: none; color: var(--text)">Star on GitHub</a>
+      </div>
+    </nav>
+  </header>
+
+  <div class="sec" style="max-width: 1360px; margin: 0 auto; padding: 64px 40px 120px; display: flex; flex-wrap: wrap; gap: 64px">
+
+    <aside class="doc-nav" aria-label="Docs sections" style="flex: 1 1 220px; max-width: 260px">
+      <span class="lbl" style="display: block; padding-bottom: 12px">Docs</span>
+      <a href="#install">Install</a>
+      <a href="#cli">CLI reference</a>
+      <a href="#features">Features with output</a>
+      <a href="#formats">Output formats</a>
+      <a href="#har">How to get a HAR file</a>
+      <a href="#companions">mocks-to-msw and the agent skill</a>
+      <a href="#faq">FAQ</a>
+      <a href="https://github.com/peterknezek/har-to-mocks/releases">Changelog ↗</a>
+    </aside>
+
+    <main class="doc" style="flex: 999 1 560px; min-width: 0; max-width: 820px">
+      <h1 style="margin: 0 0 16px; font-size: 56px; line-height: 0.98; letter-spacing: -0.04em; font-weight: 500">Docs</h1>
+      <p style="margin: 0 0 56px">Everything on this page is verified against the v3.0.0 source. If something here disagrees with <code>har-to-mocks --help</code>, the CLI wins and the docs have a bug: <a href="https://github.com/peterknezek/har-to-mocks/issues" class="link" style="color: var(--text)">open an issue</a>.</p>
+
+      <section id="install">
+        <h2>Install</h2>
+        <p>Requires Node.js 22 or newer for v3.0.0. The v2.x line supported Node.js 18 and newer.</p>
+        <div class="term"><pre><span style="color: var(--term-muted)"># run without installing</span>
+npx har-to-mocks [path to .har] [path mock/api folder] --dry-run
+
+<span style="color: var(--term-muted)"># or install globally</span>
+npm install -g har-to-mocks</pre></div>
+        <p>The CLI checks npm for a newer version on each run and prints an update notice (via <code>update-notifier</code>). There is no web UI, no cloud service, no account, and no telemetry beyond that check.</p>
+      </section>
+
+      <section id="cli">
+        <h2 style="margin-top: 72px">CLI reference</h2>
+        <div class="term"><pre>har-to-mocks &lt;file.har&gt; [output-folder] [flags]</pre></div>
+        <h3>Arguments</h3>
+        <ul style="margin: 0; padding-left: 18px">
+          <li><code>file</code> (required): path to the <code>.har</code> file.</li>
+          <li><code>to</code> (optional): path to your mocks/api folder. <strong style="color: var(--text)">If omitted, nothing is written</strong>; the CLI only lists matching requests. If provided, files are written unless <code>--dry-run</code> is set.</li>
+        </ul>
+        <h3>Flags</h3>
+        <div style="overflow-x: auto">
+          <table>
+            <thead><tr><th>Flag</th><th>Short</th><th>Description</th><th>Default</th></tr></thead>
+            <tbody>
+              <tr><td><code>--url</code></td><td><code>-u</code></td><td style="color: var(--muted)">Filter by substring match in the full URL (case-sensitive, includes the query string, e.g. <code>--url=?q=search</code>). Not a regex.</td><td>none</td></tr>
+              <tr><td><code>--method</code></td><td><code>-m</code></td><td style="color: var(--muted)">Filter by HTTP method, repeatable: <code>--method=GET --method=POST</code>. Supported: GET, POST, PUT, DELETE, PATCH.</td><td><code>GET</code></td></tr>
+              <tr><td><code>--type</code></td><td><code>-t</code></td><td style="color: var(--muted)">Filter by resource type: <code>xhr</code>, <code>fetch</code>, <code>document</code>. Pass <code>--type=fetch</code> or you will miss fetch requests.</td><td><code>xhr</code></td></tr>
+              <tr><td><code>--format</code></td><td><code>-f</code></td><td style="color: var(--muted)">Folder layout: <code>mocks</code> (<code>&lt;path&gt;/&lt;METHOD&gt;.json</code>) or <code>chrome-overrides</code> (<code>&lt;host&gt;/&lt;path&gt;[?query]</code>).</td><td><code>mocks</code></td></tr>
+              <tr><td><code>--select</code></td><td><code>-s</code></td><td style="color: var(--muted)">Pick rows by the <code>#</code> column: <code>--select=1,3,5-7</code>, repeatable. In interactive mode they become the pre-selection.</td><td>none</td></tr>
+              <tr><td><code>--interactive</code></td><td><code>-i</code></td><td style="color: var(--muted)">Checkbox picker with live JSON response preview and confirmation.</td><td>off</td></tr>
+              <tr><td><code>--dry-run</code></td><td></td><td style="color: var(--muted)">Show tables and folder tree, write nothing.</td><td>off</td></tr>
+              <tr><td><code>--version</code></td><td><code>-v</code></td><td style="color: var(--muted)">Print version.</td><td></td></tr>
+              <tr><td><code>--help</code></td><td><code>-h</code></td><td style="color: var(--muted)">Help.</td><td></td></tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <section id="features">
+        <h2 style="margin-top: 72px">Features with output</h2>
+
+        <h3>A. Inspect and filter a HAR file</h3>
+        <p>A HAR can contain hundreds of entries (scripts, images, fonts, analytics). Filters narrow it to the API calls you want.</p>
+        <div class="term"><pre><span style="color: var(--accent)">$</span> har-to-mocks ./file.har --url=api/service --method=GET
+
+Filtered requests:
+
+ # │ Name          │ Method │ Path                        │ Query
+ ──┼───────────────┼────────┼─────────────────────────────┼──────
+ 1 │ userRoles     │ GET    │ /api/service/userRoles      │
+ 2 │ currentUserId │ GET    │ /api/service/currentUserId  │
+ 3 │ active        │ GET    │ /api/service/clients/active │</pre></div>
+        <ul style="margin: 0; padding-left: 18px">
+          <li>The <code>#</code> column numbers rows so they can be referenced with <code>--select</code>.</li>
+          <li>The Query column shows query parameters so similar requests to the same path can be told apart.</li>
+          <li>Entries with unparsable URLs are skipped with a warning instead of crashing.</li>
+          <li>Missing, non-JSON, or non-HAR input files produce friendly errors: <code>File not found</code>, <code>File is not valid JSON</code>, <code>File is not a valid HAR file (missing "log.entries")</code>.</li>
+        </ul>
+
+        <h3>B. Dry run with a status column and folder-tree preview</h3>
+        <p>When an output folder is given, a Status column appears: <strong>create</strong> (new file), <strong>update</strong> (will overwrite an existing file), <strong>skip</strong> (duplicate endpoint; a later entry writes the same file). A folder tree shows exactly what will land on disk, with <code>[UPDATE]</code> markers for files that already exist.</p>
+        <div class="term"><pre><span style="color: var(--accent)">$</span> har-to-mocks ./file.har ./mocks --url=api/service --method=GET --dry-run
+
+Filtered requests:
+
+ # │ Name          │ Method │ Path                        │ Query │ Status
+ ──┼───────────────┼────────┼─────────────────────────────┼───────┼───────
+ 1 │ userRoles     │ GET    │ /api/service/userRoles      │       │ create
+ 2 │ currentUserId │ GET    │ /api/service/currentUserId  │       │ create
+ 3 │ active        │ GET    │ /api/service/clients/active │       │ create
+
+Folder tree which will be applied:
+
+└─ mocks
+   └─ api
+      └─ service
+         ├─ userRoles
+         │  └─ GET.json
+         ├─ currentUserId
+         │  └─ GET.json
+         └─ clients
+            └─ active
+               └─ GET.json
+
+No files were written. If you want to write files remove the (--dry-run) flag.</pre></div>
+        <p><strong>The tool never writes unless you give it a folder, and <code>--dry-run</code> lets you see every file it would create or overwrite before it does.</strong></p>
+
+        <h3>C. Interactive mode (<code>-i</code>) with live response preview</h3>
+        <div class="term"><pre><span style="color: var(--accent)">$</span> har-to-mocks ./file.har ./mocks --interactive</pre></div>
+        <ul style="margin: 0; padding-left: 18px">
+          <li>A checkbox list of all matching endpoints (<code>METHOD /path?query</code>).</li>
+          <li>As you move the cursor, the JSON response body of the focused endpoint is rendered below the list (up to 12 lines), so you can tell apart two calls to the same endpoint that returned different data.</li>
+          <li>Endpoints that would be written by default are pre-selected; <code>--select</code> overrides the pre-selection.</li>
+          <li>After choosing, the CLI prints the equivalent <code>--select=1,3</code> value so you can script the same choice later.</li>
+          <li>Folder tree preview, then an explicit confirm step before anything is written.</li>
+          <li>Keyboard: <code>↑/↓</code> navigate, <code>Space</code> toggle, <code>a</code> toggle all, <code>i</code> invert, <code>Enter</code> confirm.</li>
+          <li>Works with both output formats.</li>
+        </ul>
+
+        <h3>D. Non-interactive selection (<code>--select</code>) for scripts and CI</h3>
+        <div class="term"><pre><span style="color: var(--accent)">$</span> har-to-mocks ./file.har --url=api/service
+<span style="color: var(--accent)">$</span> har-to-mocks ./file.har ./mocks --url=api/service --select=1,3
+<span style="color: var(--accent)">$</span> har-to-mocks ./file.har ./overrides --url=api/service --select=1,3 --format=chrome-overrides</pre></div>
+        <p>Output keeps the original row numbers:</p>
+        <div class="term"><pre>Selected requests:
+
+ # │ Name      │ Method │ Path                        │ Query │ Status
+ ──┼───────────┼────────┼─────────────────────────────┼───────┼───────
+ 1 │ userRoles │ GET    │ /api/service/userRoles      │       │ create
+ 3 │ active    │ GET    │ /api/service/clients/active │       │ create</pre></div>
+        <p>Comma lists and ranges (<code>5-7</code>) are accepted; invalid numbers fail with a clear error.</p>
+
+        <h3>E. Duplicate detection with a hint</h3>
+        <p>When several requests share path and method (different query strings), they would collide on one file. The CLI marks the extras as <strong>skip</strong> and prints:</p>
+        <div class="term"><pre>Note: Some endpoints have status "skip" because they share the same path and method.
+The last occurrence will be written. To select specific endpoints, use --select or interactive mode:
+
+  har-to-mocks &lt;file.har&gt; &lt;output-folder&gt; --select=1,3
+  har-to-mocks &lt;file.har&gt; &lt;output-folder&gt; --interactive</pre></div>
+
+        <h3>F. Friendly errors and engineering quality</h3>
+        <ul style="margin: 0; padding-left: 18px">
+          <li>100 % test coverage: unit, integration and snapshot tests (Vitest).</li>
+          <li>CI on every pull request: lint, tests, build.</li>
+          <li>Automated releases with semantic-release, conventional commits, and npm provenance (OIDC-signed publishes from GitHub Actions).</li>
+          <li>Bundled with esbuild so the global install footprint is small. TypeScript, ES modules, <code>@oclif/core</code> v5, <code>@inquirer/prompts</code>, ESLint + Prettier.</li>
+          <li>Actively maintained: 10+ releases in 2026 alone (v2.0.0 through v3.0.0), including interactive mode, response preview, Chrome overrides, <code>--select</code>, friendly errors, and security dependency bumps. 21 versions published between October 2021 and October 2026.</li>
+        </ul>
+      </section>
+
+      <section id="formats">
+        <h2 style="margin-top: 72px">Output formats</h2>
+
+        <h3><code>mocks</code> (default) for MSW and connect-api-mocker</h3>
+        <p>Layout: <code>&lt;output&gt;/&lt;url path&gt;/&lt;METHOD&gt;.json</code>. The JSON file is the raw response body only (no headers, no status codes). This layout is what <code>mocks-to-msw</code> consumes and what <code>connect-api-mocker</code> (Express / webpack-dev-server middleware) serves.</p>
+        <div class="term"><pre>import { createMockHandler } from "mocks-to-msw";
+import mocks from "./mocks/mocks";
+
+const { mock } = createMockHandler&lt;keyof typeof mocks&gt;({ mocks, debug: true });
+
+export const handlers = [
+  mock.get("/client"),
+  mock.post("/client/application", (data) =&gt; ({ ...data, modified: true })),
+];</pre></div>
+        <p><code>mocks-to-msw</code> adds type-safe URL/method pairing, async loading, response modifiers, debug logging, origin configuration, and a CLI that generates a typed import file from the mocks folder.</p>
+
+        <h3><code>chrome-overrides</code> for Chrome DevTools Local Overrides</h3>
+        <div class="term"><pre><span style="color: var(--accent)">$</span> har-to-mocks ./file.har ./overrides --format=chrome-overrides --dry-run
+
+Folder tree which will be applied:
+
+└─ overrides
+   └─ sample.com
+      ├─ api
+      │  └─ service
+      │     ├─ userRoles
+      │     └─ clients
+      │        └─ active
+      └─ complete
+         ├─ search?q=javascript
+         └─ search?q=python</pre></div>
+        <p>Then in Chrome: <strong>Sources → Overrides → Select folder for overrides</strong>, pick that folder, allow access, reload. Chrome now serves those responses instead of the network, with no code changes to the app at all.</p>
+        <ul style="margin: 0; padding-left: 18px">
+          <li>Files are named the way Chrome names them: <code>&lt;host&gt;/&lt;path&gt;</code>, query string kept in the file name, <code>index.html</code> for paths ending in <code>/</code>, special characters escaped, very long URLs go to a <code>longurls</code> folder.</li>
+          <li>Chrome matches by URL only, not method, so a GET and POST to the same URL share one file (status skip). Different query strings get separate files.</li>
+          <li>Chrome returns overridden responses with status 200 and the real request's headers.</li>
+          <li>A path cannot be both a file and a folder (<code>/api/users</code> and <code>/api/users/1</code> conflict; the CLI reports <code>A file and a folder would have the same path</code>).</li>
+          <li>Binary responses (base64 in the HAR) are decoded, so images and fonts are written as original bytes.</li>
+          <li>Point DevTools at exactly the folder you wrote to.</li>
+        </ul>
+      </section>
+
+      <section id="har">
+        <h2 style="margin-top: 72px">Step 0: how to get a HAR file</h2>
+        <ul style="margin: 0; padding-left: 18px">
+          <li><strong>Chrome / Edge:</strong> DevTools → Network tab → make sure "Preserve log" is on → use the app → click the download icon "Export HAR..." (or right-click → "Save all as HAR with content"). Content must be included for responses to exist in the file.</li>
+          <li><strong>Firefox:</strong> DevTools → Network → gear icon → "Save All As HAR".</li>
+          <li><strong>Safari:</strong> Web Inspector → Network → "Export".</li>
+        </ul>
+        <p>HAR files can contain cookies and tokens. The mocks only keep response bodies, but review the output before committing it.</p>
+      </section>
+
+      <section id="companions">
+        <h2 style="margin-top: 72px">mocks-to-msw and the agent skill</h2>
+        <p><a href="https://github.com/peterknezek/mocks-to-msw" class="link" style="color: var(--text)">mocks-to-msw ↗</a> is an adapter that loads these mocks into Mock Service Worker with type-safe handlers and its own CLI. The <a href="https://medium.com/@peterknezek/streamline-your-storybook-api-mocking-with-mocks-to-msw-868f92f28fd6" class="link" style="color: var(--text)">Medium article ↗</a> walks through the Storybook flow.</p>
+        <p>The <code>har-extraction</code> skill in <a href="https://github.com/peterknezek/skills" class="link" style="color: var(--text)">peterknezek/skills ↗</a> lets Claude Code and other AI agents run the whole HAR → mocks → MSW workflow on request.</p>
+        <div class="term"><pre>npx skills add peterknezek/skills</pre></div>
+        <p>A video walkthrough is at <a href="https://youtu.be/Pc2J8aHRKNY" class="link" style="color: var(--text)">youtu.be/Pc2J8aHRKNY ↗</a> (recorded on v1.1.1, older UI).</p>
+      </section>
+
+      <section id="faq">
+        <h2 style="margin-top: 72px">FAQ</h2>
+        <h3>Will it overwrite my files?</h3>
+        <p>Not silently. Without an output folder nothing is written. With one, the Status column tells you what will be created, updated or skipped, <code>--dry-run</code> shows the full tree first, and interactive mode asks for confirmation.</p>
+        <h3>My HAR has 600 entries.</h3>
+        <p>Narrow it with <code>--url</code>, <code>--method</code> and <code>--type</code>, then pick rows with the interactive picker or <code>--select=1,3,5-7</code>.</p>
+        <h3>I use GraphQL.</h3>
+        <p>Requests are keyed by URL path and method, so multiple GraphQL operations on one endpoint collide today (<a href="https://github.com/peterknezek/har-to-mocks/issues/12" class="link" style="color: var(--text)">open issue #12</a>). Interactive mode and <code>--select</code> let you pick which one to keep. Operation splitting is not implemented.</p>
+        <h3>Same endpoint, different query params?</h3>
+        <p>The Query column shows them apart. The chrome-overrides format writes separate files per query string; in the mocks format use <code>--select</code> or interactive mode to choose. Automatic handling is tracked in <a href="https://github.com/peterknezek/har-to-mocks/issues/18" class="link" style="color: var(--text)">open issue #18</a>.</p>
+        <h3>Why don't I see my fetch requests?</h3>
+        <p>The default resource type is <code>xhr</code> and the default method is <code>GET</code>. Pass <code>--type=fetch</code> (and <code>--method=POST</code> etc.) to include them. <code>--url</code> is a case-sensitive substring match, not a regex.</p>
+        <h3>Is it maintained?</h3>
+        <p>21 versions since October 2021, 10+ releases in 2026, 100 % test coverage, CI on every pull request, semantic-release with npm provenance. See the <a href="https://github.com/peterknezek/har-to-mocks/releases" class="link" style="color: var(--text)">release list</a>.</p>
+        <h3>Does it leak secrets?</h3>
+        <p>HAR files can contain cookies and tokens. The mocks keep response bodies only, no headers. Still, review the output before committing it.</p>
+      </section>
+    </main>
+  </div>
+
+  <footer class="sec" style="max-width: 1360px; margin: 0 auto; padding: 40px 40px 48px; border-top: 1px solid var(--line); display: flex; flex-wrap: wrap; justify-content: space-between; gap: 20px; font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: .12em; text-transform: uppercase; color: var(--muted)">
+    <div style="display: flex; flex-wrap: wrap; gap: 28px">
+      <a href="https://github.com/peterknezek/har-to-mocks" class="link" style="text-decoration: none">GitHub</a>
+      <a href="https://www.npmjs.com/package/har-to-mocks" class="link" style="text-decoration: none">npm</a>
+      <a href="https://www.linkedin.com/in/peterknezek/" class="link" style="text-decoration: none">LinkedIn</a>
+      <a href="https://x.com/peter_knezek" class="link" style="text-decoration: none">X</a>
+      <a href="https://medium.com/@peterknezek/streamline-your-storybook-api-mocking-with-mocks-to-msw-868f92f28fd6" class="link" style="text-decoration: none">Medium</a>
+      <a href="https://youtu.be/Pc2J8aHRKNY" class="link" style="text-decoration: none">YouTube</a>
+    </div>
+    <span>MIT License © 2021 Peter Knezek</span>
+  </footer>
+</div>
+<script src="app.js" defer></script>
+</body>
+</html>

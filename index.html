@@ -1,0 +1,598 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>har-to-mocks — Record once. Mock forever.</title>
+<meta name="description" content="Convert a HAR file from your browser's Network tab into JSON mocks for MSW, connect-api-mocker and Chrome DevTools Local Overrides. One command, free, MIT.">
+<meta name="keywords" content="HAR to mocks, convert HAR file to JSON mocks, HAR to MSW, Chrome local overrides from HAR, mock API from network recording, har-to-mocks">
+<link rel="canonical" href="https://peterknezek.github.io/har-to-mocks/">
+<meta property="og:type" content="website">
+<meta property="og:title" content="har-to-mocks — Record once. Mock forever.">
+<meta property="og:description" content="Turn the HAR file from your Network tab into JSON mocks for MSW, connect-api-mocker and Chrome DevTools Local Overrides. One command, free, MIT.">
+<meta property="og:url" content="https://peterknezek.github.io/har-to-mocks/">
+<meta property="og:image" content="https://peterknezek.github.io/har-to-mocks/og.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:creator" content="@peter_knezek">
+<meta name="theme-color" content="#181818">
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<link rel="icon" href="favicon-32.png" sizes="32x32" type="image/png">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter+Tight:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles.css">
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"SoftwareApplication","name":"har-to-mocks","applicationCategory":"DeveloperApplication","operatingSystem":"Node.js 22+","license":"https://opensource.org/licenses/MIT","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"author":{"@type":"Person","name":"Peter Knezek","url":"https://github.com/peterknezek"},"url":"https://peterknezek.github.io/har-to-mocks/","downloadUrl":"https://www.npmjs.com/package/har-to-mocks","codeRepository":"https://github.com/peterknezek/har-to-mocks"}
+</script>
+<script>try{if(localStorage.getItem('h2m-theme')==='light')document.documentElement.setAttribute('data-theme','light')}catch(e){}</script>
+</head>
+<body>
+<div class="h2m" style="background: var(--bg); color: var(--text); font-family: 'Inter Tight', Inter, system-ui, sans-serif; font-size: 17px; line-height: 1.5; min-height: 100vh; -webkit-font-smoothing: antialiased">
+  <svg width="0" height="0" style="position: absolute" aria-hidden="true" focusable="false"><symbol id="rx-bars" viewBox="0 0 1280 260"><g style="fill: var(--wf-grid)"><rect x="0" y="0" width="1" height="260"/><rect x="128" y="0" width="1" height="260"/><rect x="256" y="0" width="1" height="260"/><rect x="384" y="0" width="1" height="260"/><rect x="512" y="0" width="1" height="260"/><rect x="640" y="0" width="1" height="260"/><rect x="768" y="0" width="1" height="260"/><rect x="896" y="0" width="1" height="260"/><rect x="1024" y="0" width="1" height="260"/><rect x="1152" y="0" width="1" height="260"/></g><g style="fill: var(--wf-wait)"><rect x="41" y="14" width="83" height="4" rx="1"/><rect x="42" y="22" width="48" height="4" rx="1"/><rect x="39" y="30" width="104" height="4" rx="1"/><rect x="54" y="38" width="42" height="4" rx="1"/><rect x="46" y="46" width="100" height="4" rx="1"/><rect x="50" y="54" width="103" height="4" rx="1"/><rect x="66" y="62" width="48" height="4" rx="1"/><rect x="117" y="70" width="80" height="4" rx="1"/><rect x="123" y="78" width="53" height="4" rx="1"/><rect x="107" y="86" width="108" height="4" rx="1"/><rect x="150" y="94" width="34" height="4" rx="1"/><rect x="140" y="102" width="89" height="4" rx="1"/><rect x="136" y="110" width="75" height="4" rx="1"/><rect x="163" y="118" width="24" height="4" rx="1"/><rect x="225" y="126" width="72" height="4" rx="1"/><rect x="236" y="134" width="110" height="4" rx="1"/><rect x="239" y="142" width="66" height="4" rx="1"/><rect x="233" y="150" width="41" height="4" rx="1"/><rect x="230" y="158" width="31" height="4" rx="1"/><rect x="259" y="166" width="81" height="4" rx="1"/><rect x="257" y="174" width="77" height="4" rx="1"/><rect x="265" y="182" width="77" height="4" rx="1"/><rect x="262" y="190" width="26" height="4" rx="1"/><rect x="316" y="198" width="36" height="4" rx="1"/><rect x="304" y="206" width="80" height="4" rx="1"/><rect x="308" y="214" width="61" height="4" rx="1"/><rect x="304" y="222" width="98" height="4" rx="1"/><rect x="346" y="230" width="103" height="4" rx="1"/><rect x="353" y="238" width="85" height="4" rx="1"/><rect x="369" y="246" width="63" height="4" rx="1"/><rect x="395" y="254" width="104" height="4" rx="1"/></g><g style="fill: var(--wf-dl)"><rect x="124" y="14" width="281" height="4" rx="1"/><rect x="90" y="22" width="144" height="4" rx="1"/><rect x="143" y="30" width="364" height="4" rx="1"/><rect x="96" y="38" width="96" height="4" rx="1"/><rect x="146" y="46" width="252" height="4" rx="1"/><rect x="153" y="54" width="57" height="4" rx="1"/><rect x="114" y="62" width="173" height="4" rx="1"/><rect x="197" y="70" width="352" height="4" rx="1"/><rect x="176" y="78" width="377" height="4" rx="1"/><rect x="215" y="86" width="93" height="4" rx="1"/><rect x="184" y="94" width="412" height="4" rx="1"/><rect x="229" y="102" width="688" height="4" rx="1"/><rect x="211" y="110" width="105" height="4" rx="1"/><rect x="187" y="118" width="159" height="4" rx="1"/><rect x="297" y="126" width="412" height="4" rx="1"/><rect x="346" y="134" width="188" height="4" rx="1"/><rect x="305" y="142" width="57" height="4" rx="1"/><rect x="274" y="150" width="176" height="4" rx="1"/><rect x="261" y="158" width="288" height="4" rx="1"/><rect x="340" y="166" width="310" height="4" rx="1"/><rect x="334" y="174" width="379" height="4" rx="1"/><rect x="342" y="182" width="703" height="4" rx="1"/><rect x="288" y="190" width="157" height="4" rx="1"/><rect x="352" y="198" width="71" height="4" rx="1"/><rect x="384" y="206" width="712" height="4" rx="1"/><rect x="369" y="214" width="446" height="4" rx="1"/><rect x="402" y="222" width="375" height="4" rx="1"/><rect x="449" y="230" width="282" height="4" rx="1"/><rect x="438" y="238" width="344" height="4" rx="1"/><rect x="432" y="246" width="166" height="4" rx="1"/><rect x="499" y="254" width="333" height="4" rx="1"/></g></symbol></svg>
+
+  <!-- NAV -->
+  <header>
+    <nav aria-label="Main" class="sec" style="max-width: 1360px; margin: 0 auto; padding: 0 40px; height: 72px; display: flex; align-items: center; justify-content: space-between; gap: 24px; border-bottom: 1px solid var(--line)">
+      <a href="#top" class="link" style="text-decoration: none; font-family: 'JetBrains Mono', monospace; font-size: 14px; font-weight: 500">har-to-mocks</a>
+      <div class="nav-links" style="display: flex; gap: 32px; font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: .12em; text-transform: uppercase; color: var(--muted)">
+        <a href="#features" class="link" style="text-decoration: none">Features</a>
+        <a href="#formats" class="link" style="text-decoration: none">Formats</a>
+        <a href="#use-cases" class="link" style="text-decoration: none">Use cases</a>
+        <a href="#faq" class="link" style="text-decoration: none">FAQ</a>
+        <a href="#docs" class="link" style="text-decoration: none">Docs</a>
+      </div>
+      <div style="display: flex; align-items: center; gap: 24px; font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: .12em; text-transform: uppercase; color: var(--muted)">
+        <span class="nav-ver">v3.0.0 · MIT</span>
+        <button type="button" id="theme-toggle" class="pill" aria-label="Switch color theme" style="height: 40px; padding: 0 14px; border: 1px solid var(--line); border-radius: 999px; background: transparent; color: var(--muted); font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: .12em; text-transform: uppercase; cursor: pointer">Light</button>
+        <a href="https://github.com/peterknezek/har-to-mocks" class="pill" style="display: inline-flex; align-items: center; height: 40px; padding: 0 16px; border: 1px solid var(--text); border-radius: 999px; text-decoration: none; color: var(--text)">Star on GitHub</a>
+      </div>
+    </nav>
+  </header>
+
+  <!-- HERO -->
+  <section id="top" class="sec" style="max-width: 1360px; margin: 0 auto; padding: 96px 40px 64px; display: flex; flex-direction: column; gap: 64px">
+    <div style="display: flex; flex-direction: column; gap: 32px">
+      <p class="a-up" style="margin: 0; font-family: 'JetBrains Mono', monospace; font-size: 14px; color: var(--muted)"><span style="color: var(--accent)">~ $</span> har-to-mocks ./your-file.har ./mocks<span class="cursor" aria-hidden="true" style="display: inline-block; width: 9px; height: 16px; background: var(--accent); vertical-align: -2px; margin-left: 4px"></span></p>
+      <h1 class="hero-h a-up d1" style="margin: 0; font-size: 152px; line-height: 0.92; letter-spacing: -0.045em; font-weight: 500; max-width: 1200px">Record once.<br><span class="stripe fringe a-wipe" style="display: inline-block; padding-bottom: 0.08em">Mock forever.</span></h1>
+    </div>
+
+    <div class="meta a-up d3" style="display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 24px; padding-top: 32px; border-top: 1px solid var(--line)">
+      <div style="display: flex; flex-direction: column; gap: 8px"><span class="lbl">Launch</span><span style="font-size: 18px">October 2021</span></div>
+      <div style="display: flex; flex-direction: column; gap: 8px"><span class="lbl">Latest</span><span style="font-size: 18px">v3.0.0 — 18 Oct 2026</span></div>
+      <div style="display: flex; flex-direction: column; gap: 8px"><span class="lbl">Runtime</span><span style="font-size: 18px">Node.js ≥ 22</span></div>
+      <div style="display: flex; flex-direction: column; gap: 8px"><span class="lbl">License</span><span style="font-size: 18px">MIT, free forever</span></div>
+    </div>
+
+    <div class="g2 a-up d4" style="display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); gap: 48px; align-items: end">
+      <p style="margin: 0; font-size: 26px; line-height: 1.35; letter-spacing: -0.01em; max-width: 520px">A command-line tool that turns the HAR file from your browser's Network tab into a folder of JSON mocks. Real responses, one file per endpoint, readable by MSW, connect-api-mocker and Chrome DevTools Local Overrides.</p>
+      <p style="margin: 0; font-size: 17px; color: var(--muted); max-width: 440px; justify-self: end">No account, no config file, no signup. Nothing is written unless you give it an output folder, and <code>--dry-run</code> shows every file before it does.</p>
+    </div>
+
+    <!-- COMMAND -->
+    <div class="a-up d5" style="display: flex; flex-direction: column; gap: 16px">
+      <span class="lbl">Try it, it writes nothing.</span>
+      <div style="display: flex; align-items: center; justify-content: space-between; gap: 24px; padding: 28px 0; border-top: 1px solid var(--line); border-bottom: 1px solid var(--line)">
+        <pre class="cmd-line" style="flex: 1 1 auto; min-width: 0; font-size: 28px; line-height: 1.2; letter-spacing: -0.01em"><span style="color: var(--muted)">$ </span>npx har-to-mocks ./your-file.har ./mocks --dry-run</pre>
+        <button type="button" id="copy-btn" data-copy="npx har-to-mocks ./your-file.har ./mocks --dry-run" aria-label="Copy command to clipboard" class="pill" style="flex: 0 0 auto; height: 44px; padding: 0 18px; border: 1px solid var(--text); border-radius: 999px; background: transparent; color: var(--text); font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: .12em; text-transform: uppercase; cursor: pointer">Click to copy</button>
+      </div>
+      <div style="display: flex; flex-wrap: wrap; justify-content: space-between; gap: 16px; font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: .12em; text-transform: uppercase; color: var(--muted)">
+        <div style="display: flex; flex-wrap: wrap; gap: 28px">
+          <a href="https://github.com/peterknezek/har-to-mocks" class="link" style="text-decoration: none">Star on GitHub ↗</a>
+          <a href="#docs" class="link" style="text-decoration: none">Read the docs ↓</a>
+          <a href="https://youtu.be/Pc2J8aHRKNY" class="link" style="text-decoration: none">Watch the 2-minute demo ↗</a>
+        </div>
+        <span>Scroll ↓</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- TERMINAL -->
+  <section class="sec" aria-label="Example dry run" style="max-width: 1360px; margin: 0 auto; padding: 0 40px 0">
+    <figure class="dissolve a-fade d6" style="margin: 0; background: var(--term-bg); border: 1px solid var(--term-line); border-radius: 12px; overflow: hidden; color: var(--term-text)">
+      <div style="display: flex; justify-content: space-between; align-items: center; padding: 14px 24px; border-bottom: 1px solid var(--term-line); font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: .12em; text-transform: uppercase; color: var(--term-muted)">
+        <span>har-to-mocks — dry run</span>
+        <span>--dry-run · nothing written</span>
+      </div>
+      <pre class="a-print" style="padding: 28px 32px; font-size: 14px"><span style="color: var(--accent)">$</span> har-to-mocks ./file.har ./mocks --url=api/service --method=GET --dry-run
+
+Filtered requests:
+
+ # │ Name          │ Method │ Path                        │ Query │ Status
+ ──┼───────────────┼────────┼─────────────────────────────┼───────┼───────
+ 1 │ userRoles     │ GET    │ /api/service/userRoles      │       │ create
+ 2 │ currentUserId │ GET    │ /api/service/currentUserId  │       │ create
+ 3 │ active        │ GET    │ /api/service/clients/active │       │ create
+
+Folder tree which will be applied:
+
+└─ mocks
+   └─ api
+      └─ service
+         ├─ userRoles
+         │  └─ GET.json
+         ├─ currentUserId
+         │  └─ GET.json
+         └─ clients
+            └─ active
+               └─ GET.json
+
+<span style="color: var(--term-muted)">No files were written. If you want to write files remove the (--dry-run) flag.</span></pre>
+    </figure>
+    <div class="band" aria-hidden="true" style="margin-top: 8px; padding: 0 1px"><svg class="bars grey" viewBox="0 0 1280 110" preserveAspectRatio="xMinYMin slice" height="110"><use href="#rx-bars" width="1280" height="260"></use></svg></div>
+  </section>
+  <div class="band" aria-hidden="true" style="margin: 40px 0 0"><svg class="bars red bars-up" viewBox="0 0 1280 260" preserveAspectRatio="xMinYMin slice" height="220"><use href="#rx-bars" width="1280" height="260"></use></svg></div>
+
+  <!-- STATEMENT -->
+  <section class="sec" style="max-width: 1360px; margin: 0 auto; padding: 56px 40px 120px">
+    <p class="rv big" style="margin: 0; font-size: 72px; line-height: 1.02; letter-spacing: -0.035em; font-weight: 500; max-width: 1100px">You already have the perfect mock data. <span class="stripe" style="display: inline-block; padding-bottom: 0.08em">It's in your Network tab.</span></p>
+  </section>
+
+  <!-- WORKFLOW -->
+  <section class="sec" aria-labelledby="h-workflow" style="max-width: 1360px; margin: 0 auto; padding: 0 40px 120px">
+    <div class="rv" style="display: flex; justify-content: space-between; align-items: baseline; gap: 24px; padding-bottom: 24px; border-bottom: 1px solid var(--line)">
+      <h2 id="h-workflow" style="margin: 0; font-size: 15px; font-weight: 500; letter-spacing: -0.01em">The 30-second workflow</h2>
+      <span class="lbl">From DevTools to mock server</span>
+    </div>
+    <div class="rv g3" style="display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 40px; padding-top: 40px">
+      <div style="display: flex; flex-direction: column; gap: 16px">
+        <span style="font-family: 'JetBrains Mono', monospace; font-size: 13px; color: var(--accent)">01</span>
+        <h3 style="margin: 0; font-size: 30px; line-height: 1.1; letter-spacing: -0.025em; font-weight: 500">Export a HAR from DevTools</h3>
+        <p style="margin: 0; color: var(--muted); font-size: 16px">Open the Network tab, use your app, then "Export HAR..." in Chrome or "Save All As HAR" in Firefox. Include content so the responses are in the file.</p>
+      </div>
+      <div style="display: flex; flex-direction: column; gap: 16px">
+        <span style="font-family: 'JetBrains Mono', monospace; font-size: 13px; color: var(--accent)">02</span>
+        <h3 style="margin: 0; font-size: 30px; line-height: 1.1; letter-spacing: -0.025em; font-weight: 500">Run har-to-mocks</h3>
+        <p style="margin: 0; color: var(--muted); font-size: 16px">Filter to the API calls you want, preview the table and the folder tree, then write one JSON file per endpoint.</p>
+        <pre style="font-size: 13px; color: var(--text)">npx har-to-mocks ./file.har ./mocks --url=/api</pre>
+      </div>
+      <div style="display: flex; flex-direction: column; gap: 16px">
+        <span style="font-family: 'JetBrains Mono', monospace; font-size: 13px; color: var(--accent)">03</span>
+        <h3 style="margin: 0; font-size: 30px; line-height: 1.1; letter-spacing: -0.025em; font-weight: 500">Point MSW or Chrome at the folder</h3>
+        <p style="margin: 0; color: var(--muted); font-size: 16px">Load it with <code>mocks-to-msw</code> or <code>connect-api-mocker</code>, or select it in Chrome's Sources → Overrides. The UI now runs on your recorded responses.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- PAINS -->
+  <section class="sec" aria-labelledby="h-pains" style="max-width: 1360px; margin: 0 auto; padding: 0 40px 120px">
+    <div class="rv" style="display: flex; justify-content: space-between; align-items: baseline; gap: 24px; padding-bottom: 24px; border-bottom: 1px solid var(--line); position: sticky; top: 0; background: var(--bg); z-index: 2; padding-top: 16px">
+      <h2 id="h-pains" style="margin: 0; font-size: 15px; font-weight: 500">Why not hand-write mocks?</h2>
+      <span class="lbl sub">Four ways mocks eat your time</span>
+      <span class="lbl pos" aria-live="polite"><span data-pos="pain">01</span> / 04</span>
+    </div>
+    <div class="pain-grid" data-gallery="pain" style="display: flex; flex-direction: column">
+    <div class="rv row idx-row" style="display: grid; grid-template-columns: 80px minmax(0, 5fr) minmax(0, 6fr); gap: 32px; padding: 36px 0; border-bottom: 1px solid var(--line)">
+      <span style="font-family: 'JetBrains Mono', monospace; font-size: 13px; color: var(--muted); padding-top: 8px">01</span>
+      <h3 class="row-title" style="margin: 0; font-size: 34px; line-height: 1.08; letter-spacing: -0.03em; font-weight: 500">Hand-written fixtures are slow and wrong</h3>
+      <p class="idx-aside" style="margin: 0; color: var(--muted); font-size: 17px; max-width: 520px">Typing JSON for a 40-field response means typos, missing fields, and shapes that drift from the real API. Recording the real response takes seconds and is exact by definition.</p>
+    </div>
+    <div class="rv row idx-row" style="display: grid; grid-template-columns: 80px minmax(0, 5fr) minmax(0, 6fr); gap: 32px; padding: 36px 0; border-bottom: 1px solid var(--line)">
+      <span style="font-family: 'JetBrains Mono', monospace; font-size: 13px; color: var(--muted); padding-top: 8px">02</span>
+      <h3 class="row-title" style="margin: 0; font-size: 34px; line-height: 1.08; letter-spacing: -0.03em; font-weight: 500">The backend is not ready, down, slow, or behind a VPN</h3>
+      <p class="idx-aside" style="margin: 0; color: var(--muted); font-size: 17px; max-width: 520px">Frontend work stalls. Recorded mocks let the UI run fully offline with production-shaped data.</p>
+    </div>
+    <div class="rv row idx-row" style="display: grid; grid-template-columns: 80px minmax(0, 5fr) minmax(0, 6fr); gap: 32px; padding: 36px 0; border-bottom: 1px solid var(--line)">
+      <span style="font-family: 'JetBrains Mono', monospace; font-size: 13px; color: var(--muted); padding-top: 8px">03</span>
+      <h3 class="row-title" style="margin: 0; font-size: 34px; line-height: 1.08; letter-spacing: -0.03em; font-weight: 500">Mocks live in several places</h3>
+      <p class="idx-aside" style="margin: 0; color: var(--muted); font-size: 17px; max-width: 520px">One set for dev, another for Storybook, another for tests. har-to-mocks produces one folder of JSON that MSW (dev, Storybook and tests), connect-api-mocker, and Chrome overrides can all read.</p>
+    </div>
+    <div class="rv row idx-row" style="display: grid; grid-template-columns: 80px minmax(0, 5fr) minmax(0, 6fr); gap: 32px; padding: 36px 0; border-bottom: 1px solid var(--line)">
+      <span style="font-family: 'JetBrains Mono', monospace; font-size: 13px; color: var(--muted); padding-top: 8px">04</span>
+      <h3 class="row-title" style="margin: 0; font-size: 34px; line-height: 1.08; letter-spacing: -0.03em; font-weight: 500">Reproducing a bug needs the exact response</h3>
+      <p class="idx-aside" style="margin: 0; color: var(--muted); font-size: 17px; max-width: 520px">QA or a teammate exports a HAR from the broken session. You turn it into mocks and replay the exact state locally, or load it as a Chrome override on production without touching code.</p>
+    </div>
+    </div>
+  </section>
+
+  <!-- FEATURES -->
+  <section id="features" class="sec" aria-labelledby="h-features" style="max-width: 1360px; margin: 0 auto; padding: 0 40px 120px">
+    <div class="feat-head" style="display: flex; justify-content: space-between; align-items: baseline; gap: 24px; padding-bottom: 24px; border-bottom: 1px solid var(--line); position: sticky; top: 0; background: var(--bg); z-index: 2; padding-top: 16px">
+      <h2 id="h-features" style="margin: 0; font-size: 15px; font-weight: 500">Small CLI, careful defaults</h2>
+      <span class="lbl sub">Everything below is in v3.0.0</span>
+      <span class="lbl pos" aria-live="polite"><span data-pos="feat">01</span> / 08</span>
+    </div>
+    <div class="g2 feat-grid" data-gallery="feat" style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 0 64px">
+      <div class="rv feat-card" style="display: grid; grid-template-columns: 56px minmax(0, 1fr); gap: 16px; padding: 28px 0; border-bottom: 1px solid var(--line)">
+        <span class="feat-num" style="font-family: 'JetBrains Mono', monospace; font-size: 13px; color: var(--muted); padding-top: 4px">01</span>
+        <div style="display: flex; flex-direction: column; gap: 8px"><h3 style="margin: 0; font-size: 22px; letter-spacing: -0.02em; font-weight: 500">Filters</h3><p style="margin: 0; color: var(--muted); font-size: 16px"><code>--url</code> substring, <code>--method</code> (GET, POST, PUT, DELETE, PATCH), <code>--type</code> (xhr, fetch, document). Defaults: GET and xhr.</p></div>
+      </div>
+      <div class="rv feat-card" style="display: grid; grid-template-columns: 56px minmax(0, 1fr); gap: 16px; padding: 28px 0; border-bottom: 1px solid var(--line)">
+        <span class="feat-num" style="font-family: 'JetBrains Mono', monospace; font-size: 13px; color: var(--muted); padding-top: 4px">02</span>
+        <div style="display: flex; flex-direction: column; gap: 8px"><h3 style="margin: 0; font-size: 22px; letter-spacing: -0.02em; font-weight: 500">Dry run and status column</h3><p style="margin: 0; color: var(--muted); font-size: 16px">See <code>create</code>, <code>update</code> or <code>skip</code> per row and the exact folder tree, with <code>[UPDATE]</code> on files that already exist.</p></div>
+      </div>
+      <div class="rv feat-card" style="display: grid; grid-template-columns: 56px minmax(0, 1fr); gap: 16px; padding: 28px 0; border-bottom: 1px solid var(--line)">
+        <span class="feat-num" style="font-family: 'JetBrains Mono', monospace; font-size: 13px; color: var(--muted); padding-top: 4px">03</span>
+        <div style="display: flex; flex-direction: column; gap: 8px"><h3 style="margin: 0; font-size: 22px; letter-spacing: -0.02em; font-weight: 500">Interactive picker</h3><p style="margin: 0; color: var(--muted); font-size: 16px"><code>-i</code> gives a checkbox list with the focused endpoint's JSON response rendered below it (up to 12 lines), then a confirm step. <code>↑/↓</code> navigate, <code>Space</code> toggle, <code>a</code> all, <code>i</code> invert, <code>Enter</code> confirm.</p></div>
+      </div>
+      <div class="rv feat-card" style="display: grid; grid-template-columns: 56px minmax(0, 1fr); gap: 16px; padding: 28px 0; border-bottom: 1px solid var(--line)">
+        <span class="feat-num" style="font-family: 'JetBrains Mono', monospace; font-size: 13px; color: var(--muted); padding-top: 4px">04</span>
+        <div style="display: flex; flex-direction: column; gap: 8px"><h3 style="margin: 0; font-size: 22px; letter-spacing: -0.02em; font-weight: 500"><code>--select</code> for scripts and CI</h3><p style="margin: 0; color: var(--muted); font-size: 16px">Pick rows by number: <code>--select=1,3,5-7</code>. Interactive mode prints the equivalent value so you can replay the same choice later.</p></div>
+      </div>
+      <div class="rv feat-card" style="display: grid; grid-template-columns: 56px minmax(0, 1fr); gap: 16px; padding: 28px 0; border-bottom: 1px solid var(--line)">
+        <span class="feat-num" style="font-family: 'JetBrains Mono', monospace; font-size: 13px; color: var(--muted); padding-top: 4px">05</span>
+        <div style="display: flex; flex-direction: column; gap: 8px"><h3 style="margin: 0; font-size: 22px; letter-spacing: -0.02em; font-weight: 500">Duplicate detection</h3><p style="margin: 0; color: var(--muted); font-size: 16px">Requests that share path and method are marked <code>skip</code>, with a hint telling you how to keep the one you want.</p></div>
+      </div>
+      <div class="rv feat-card" style="display: grid; grid-template-columns: 56px minmax(0, 1fr); gap: 16px; padding: 28px 0; border-bottom: 1px solid var(--line)">
+        <span class="feat-num" style="font-family: 'JetBrains Mono', monospace; font-size: 13px; color: var(--muted); padding-top: 4px">06</span>
+        <div style="display: flex; flex-direction: column; gap: 8px"><h3 style="margin: 0; font-size: 22px; letter-spacing: -0.02em; font-weight: 500">Two output formats</h3><p style="margin: 0; color: var(--muted); font-size: 16px"><code>mocks</code> for MSW and mock servers, <code>chrome-overrides</code> for Chrome DevTools Local Overrides.</p></div>
+      </div>
+      <div class="rv feat-card" style="display: grid; grid-template-columns: 56px minmax(0, 1fr); gap: 16px; padding: 28px 0; border-bottom: 1px solid var(--line)">
+        <span class="feat-num" style="font-family: 'JetBrains Mono', monospace; font-size: 13px; color: var(--muted); padding-top: 4px">07</span>
+        <div style="display: flex; flex-direction: column; gap: 8px"><h3 style="margin: 0; font-size: 22px; letter-spacing: -0.02em; font-weight: 500">Friendly errors</h3><p style="margin: 0; color: var(--muted); font-size: 16px"><code>File not found</code>, <code>File is not valid JSON</code>, <code>File is not a valid HAR file</code>. Unparsable URLs are skipped with a warning, not a crash.</p></div>
+      </div>
+      <div class="rv feat-card" style="display: grid; grid-template-columns: 56px minmax(0, 1fr); gap: 16px; padding: 28px 0; border-bottom: 1px solid var(--line)">
+        <span class="feat-num" style="font-family: 'JetBrains Mono', monospace; font-size: 13px; color: var(--muted); padding-top: 4px">08</span>
+        <div style="display: flex; flex-direction: column; gap: 8px"><h3 style="margin: 0; font-size: 22px; letter-spacing: -0.02em; font-weight: 500">Small bundled install</h3><p style="margin: 0; color: var(--muted); font-size: 16px">TypeScript, ES modules, bundled with esbuild into a single small install. Runs on Node.js 22 or newer.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- OUTPUT FORMATS -->
+  <section id="formats" class="sec" aria-labelledby="h-formats" style="max-width: 1360px; margin: 0 auto; padding: 0 40px 120px">
+    <div class="rv" style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 24px; padding-bottom: 24px; border-bottom: 1px solid var(--line)">
+      <h2 id="h-formats" style="margin: 0; font-size: 15px; font-weight: 500">Two output formats, same recording</h2>
+      <div role="tablist" aria-label="Output format" style="display: inline-flex; gap: 8px">
+        <button type="button" role="tab" id="tab-mocks" class="tab" aria-selected="true" aria-controls="panel-mocks">For MSW &amp; mock servers</button>
+        <button type="button" role="tab" id="tab-chrome" class="tab" aria-selected="false" aria-controls="panel-chrome">For Chrome Local Overrides</button>
+      </div>
+    </div>
+
+    <div id="panel-mocks" class="panel" aria-labelledby="tab-mocks">
+      <div class="g2" role="tabpanel" style="display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 64px; align-items: start; padding-top: 40px">
+        <div style="display: flex; flex-direction: column; gap: 20px">
+          <h3 style="margin: 0; font-size: 34px; line-height: 1.08; letter-spacing: -0.03em; font-weight: 500"><code style="font-size: 0.8em">--format=mocks</code> <span style="color: var(--muted)">(default)</span></h3>
+          <p style="margin: 0; color: var(--muted); font-size: 17px">Layout is <code>&lt;output&gt;/&lt;url path&gt;/&lt;METHOD&gt;.json</code>. Each file is the raw response body, nothing else: no headers, no status codes. This is the layout <code>mocks-to-msw</code> consumes and <code>connect-api-mocker</code> (Express / webpack-dev-server middleware) serves.</p>
+          <span class="lbl" style="margin-top: 8px">Then do this</span>
+          <pre style="padding: 20px 24px; background: var(--term-bg); color: var(--term-text); border: 1px solid var(--term-line); border-radius: 10px">import { createMockHandler } from "mocks-to-msw";
+import mocks from "./mocks/mocks";
+
+const { mock } = createMockHandler&lt;keyof typeof mocks&gt;({ mocks, debug: true });
+
+export const handlers = [
+  mock.get("/client"),
+  mock.post("/client/application", (data) =&gt; ({ ...data, modified: true })),
+];</pre>
+          <p style="margin: 0; color: var(--muted); font-size: 15px"><code>mocks-to-msw</code> adds type-safe URL/method pairing, async loading, response modifiers, debug logging, origin configuration, and a CLI that generates a typed import file from the mocks folder.</p>
+        </div>
+        <figure style="margin: 0; background: var(--term-bg); border: 1px solid var(--term-line); border-radius: 10px; overflow: hidden; color: var(--term-text)">
+          <pre style="padding: 24px 28px"><span style="color: var(--accent)">$</span> har-to-mocks ./file.har ./mocks --url=api/service --method=GET --dry-run
+
+Folder tree which will be applied:
+
+└─ mocks
+   └─ api
+      └─ service
+         ├─ userRoles
+         │  └─ GET.json
+         ├─ currentUserId
+         │  └─ GET.json
+         └─ clients
+            └─ active
+               └─ GET.json</pre>
+        </figure>
+      </div>
+    </div>
+
+    <div id="panel-chrome" class="panel" aria-labelledby="tab-chrome" hidden>
+      <div class="g2" role="tabpanel" style="display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 64px; align-items: start; padding-top: 40px">
+        <div style="display: flex; flex-direction: column; gap: 20px">
+          <h3 style="margin: 0; font-size: 34px; line-height: 1.08; letter-spacing: -0.03em; font-weight: 500"><code style="font-size: 0.8em">--format=chrome-overrides</code></h3>
+          <p style="margin: 0; color: var(--muted); font-size: 17px">Files are named the way Chrome names them: <code>&lt;host&gt;/&lt;path&gt;</code>, query string kept in the file name, <code>index.html</code> for paths ending in <code>/</code>, special characters escaped, very long URLs in a <code>longurls</code> folder. Binary responses (base64 in the HAR) are decoded, so images and fonts are written as original bytes.</p>
+          <span class="lbl" style="margin-top: 8px">Then do this</span>
+          <p style="margin: 0; font-size: 17px">In Chrome: Sources → Overrides → Select folder for overrides, pick exactly the folder you wrote to, allow access, reload. Chrome now serves those responses instead of the network, with no code changes to the app at all.</p>
+          <ul style="margin: 0; padding-left: 18px; color: var(--muted); font-size: 15px; display: flex; flex-direction: column; gap: 8px">
+            <li>Chrome matches by URL only, not method, so a GET and a POST to the same URL share one file (status skip). Different query strings get separate files.</li>
+            <li>Overridden responses come back with status 200 and the real request's headers.</li>
+            <li>A path cannot be both a file and a folder: <code>/api/users</code> and <code>/api/users/1</code> conflict, and the CLI reports <code>A file and a folder would have the same path</code>.</li>
+          </ul>
+        </div>
+        <figure style="margin: 0; background: var(--term-bg); border: 1px solid var(--term-line); border-radius: 10px; overflow: hidden; color: var(--term-text)">
+          <pre style="padding: 24px 28px"><span style="color: var(--accent)">$</span> har-to-mocks ./file.har ./overrides --format=chrome-overrides --dry-run
+
+Folder tree which will be applied:
+
+└─ overrides
+   └─ sample.com
+      ├─ api
+      │  └─ service
+      │     ├─ userRoles
+      │     └─ clients
+      │        └─ active
+      └─ complete
+         ├─ search?q=javascript
+         └─ search?q=python</pre>
+        </figure>
+      </div>
+    </div>
+  </section>
+
+  <!-- USE CASES -->
+  <section id="use-cases" class="sec" aria-labelledby="h-usecases" style="max-width: 1360px; margin: 0 auto; padding: 0 40px 120px">
+    <div class="rv" style="display: flex; justify-content: space-between; align-items: baseline; gap: 24px; padding-bottom: 24px; border-bottom: 1px solid var(--line); position: sticky; top: 0; background: var(--bg); z-index: 2; padding-top: 16px">
+      <h2 id="h-usecases" style="margin: 0; font-size: 15px; font-weight: 500">Who uses it, and for what</h2>
+      <span class="lbl sub">Pain · fix · command · format</span>
+      <span class="lbl pos" aria-live="polite"><span data-pos="uc">01</span> / 10</span>
+    </div>
+    <div class="uc-grid" data-gallery="uc" style="display: flex; flex-direction: column">
+
+    <article class="rv row idx-row" style="display: grid; grid-template-columns: 80px minmax(0, 5fr) minmax(0, 6fr); gap: 32px; padding: 32px 0; border-bottom: 1px solid var(--line)">
+      <span style="font-family: 'JetBrains Mono', monospace; font-size: 13px; color: var(--muted); padding-top: 6px">01</span>
+      <div style="display: flex; flex-direction: column; gap: 10px"><h3 class="row-title" style="margin: 0; font-size: 28px; line-height: 1.1; letter-spacing: -0.025em; font-weight: 500">Frontend developer blocked by the backend</h3><span class="lbl">format: mocks</span></div>
+      <div class="idx-aside" style="display: flex; flex-direction: column; gap: 12px"><p style="margin: 0; color: var(--muted); font-size: 16px">The API is not ready, down, or behind a VPN. Record the app once against staging, generate mocks, keep building offline.</p><pre style="font-size: 13px">npx har-to-mocks ./staging.har ./src/mocks/api --url=/api --dry-run
+<span style="color: var(--muted)"># then the same command without --dry-run</span></pre></div>
+    </article>
+
+    <article class="rv row idx-row" style="display: grid; grid-template-columns: 80px minmax(0, 5fr) minmax(0, 6fr); gap: 32px; padding: 32px 0; border-bottom: 1px solid var(--line)">
+      <span style="font-family: 'JetBrains Mono', monospace; font-size: 13px; color: var(--muted); padding-top: 6px">02</span>
+      <div style="display: flex; flex-direction: column; gap: 10px"><h3 class="row-title" style="margin: 0; font-size: 28px; line-height: 1.1; letter-spacing: -0.025em; font-weight: 500">Storybook author</h3><span class="lbl">format: mocks</span></div>
+      <div class="idx-aside" style="display: flex; flex-direction: column; gap: 12px"><p style="margin: 0; color: var(--muted); font-size: 16px">Stories need realistic data. Generate mocks, wire them with <code>mocks-to-msw</code>, reuse the same handlers in the app and in Storybook. <a href="https://medium.com/@peterknezek/streamline-your-storybook-api-mocking-with-mocks-to-msw-868f92f28fd6" class="link" style="color: var(--text)">The Medium article covers this flow ↗</a></p><pre style="font-size: 13px">npx har-to-mocks ./file.har ./mocks --url=/api</pre></div>
+    </article>
+
+    <article class="rv row idx-row" style="display: grid; grid-template-columns: 80px minmax(0, 5fr) minmax(0, 6fr); gap: 32px; padding: 32px 0; border-bottom: 1px solid var(--line)">
+      <span style="font-family: 'JetBrains Mono', monospace; font-size: 13px; color: var(--muted); padding-top: 6px">03</span>
+      <div style="display: flex; flex-direction: column; gap: 10px"><h3 class="row-title" style="margin: 0; font-size: 28px; line-height: 1.1; letter-spacing: -0.025em; font-weight: 500">Component and integration tests</h3><span class="lbl">format: mocks</span></div>
+      <div class="idx-aside" style="display: flex; flex-direction: column; gap: 12px"><p style="margin: 0; color: var(--muted); font-size: 16px">Fixtures nobody updates. Deterministic responses from real traffic instead, served by MSW in Vitest, Jest, React Testing Library, Playwright or Cypress.</p><pre style="font-size: 13px">npx har-to-mocks ./file.har ./mocks --url=/api --method=GET --method=POST</pre></div>
+    </article>
+
+    <article class="rv row idx-row" style="display: grid; grid-template-columns: 80px minmax(0, 5fr) minmax(0, 6fr); gap: 32px; padding: 32px 0; border-bottom: 1px solid var(--line)">
+      <span style="font-family: 'JetBrains Mono', monospace; font-size: 13px; color: var(--muted); padding-top: 6px">04</span>
+      <div style="display: flex; flex-direction: column; gap: 10px"><h3 class="row-title" style="margin: 0; font-size: 28px; line-height: 1.1; letter-spacing: -0.025em; font-weight: 500">Bug reproduction / QA handoff</h3><span class="lbl">format: mocks</span></div>
+      <div class="idx-aside" style="display: flex; flex-direction: column; gap: 12px"><p style="margin: 0; color: var(--muted); font-size: 16px">QA attaches a HAR to the ticket. Run interactive mode, preview the responses, pick the failing call, replay it.</p><pre style="font-size: 13px">npx har-to-mocks ./ticket-4821.har ./mocks --interactive</pre></div>
+    </article>
+
+    <article class="rv row idx-row" style="display: grid; grid-template-columns: 80px minmax(0, 5fr) minmax(0, 6fr); gap: 32px; padding: 32px 0; border-bottom: 1px solid var(--line)">
+      <span style="font-family: 'JetBrains Mono', monospace; font-size: 13px; color: var(--muted); padding-top: 6px">05</span>
+      <div style="display: flex; flex-direction: column; gap: 10px"><h3 class="row-title" style="margin: 0; font-size: 28px; line-height: 1.1; letter-spacing: -0.025em; font-weight: 500">Debugging production without a deploy</h3><span class="lbl">format: chrome-overrides</span></div>
+      <div class="idx-aside" style="display: flex; flex-direction: column; gap: 12px"><p style="margin: 0; color: var(--muted); font-size: 16px">Replace any production response with a saved or edited one. Write an overrides folder, select it in DevTools. No proxy, no code change.</p><pre style="font-size: 13px">npx har-to-mocks ./prod.har ./overrides --format=chrome-overrides</pre></div>
+    </article>
+
+    <article class="rv row idx-row" style="display: grid; grid-template-columns: 80px minmax(0, 5fr) minmax(0, 6fr); gap: 32px; padding: 32px 0; border-bottom: 1px solid var(--line)">
+      <span style="font-family: 'JetBrains Mono', monospace; font-size: 13px; color: var(--muted); padding-top: 6px">06</span>
+      <div style="display: flex; flex-direction: column; gap: 10px"><h3 class="row-title" style="margin: 0; font-size: 28px; line-height: 1.1; letter-spacing: -0.025em; font-weight: 500">Contractor onboarding to an unfamiliar codebase</h3><span class="lbl">format: mocks · the author's own story</span></div>
+      <div class="idx-aside" style="display: flex; flex-direction: column; gap: 12px"><p style="margin: 0; color: var(--muted); font-size: 16px">Day one, no backend access. Record the running app, generate mocks, and have a fully working local frontend before you understand the backend.</p><pre style="font-size: 13px">npx har-to-mocks ./day-one.har ./src/mocks --url=/api --type=xhr --type=fetch --dry-run</pre></div>
+    </article>
+
+    <article class="rv row idx-row" style="display: grid; grid-template-columns: 80px minmax(0, 5fr) minmax(0, 6fr); gap: 32px; padding: 32px 0; border-bottom: 1px solid var(--line)">
+      <span style="font-family: 'JetBrains Mono', monospace; font-size: 13px; color: var(--muted); padding-top: 6px">07</span>
+      <div style="display: flex; flex-direction: column; gap: 10px"><h3 class="row-title" style="margin: 0; font-size: 28px; line-height: 1.1; letter-spacing: -0.025em; font-weight: 500">Demo and sales environments</h3><span class="lbl">format: mocks</span></div>
+      <div class="idx-aside" style="display: flex; flex-direction: column; gap: 12px"><p style="margin: 0; color: var(--muted); font-size: 16px">Freeze a known-good data set once so demos never depend on a live service.</p><pre style="font-size: 13px">npx har-to-mocks ./golden-demo.har ./demo/mocks --url=/api</pre></div>
+    </article>
+
+    <article class="rv row idx-row" style="display: grid; grid-template-columns: 80px minmax(0, 5fr) minmax(0, 6fr); gap: 32px; padding: 32px 0; border-bottom: 1px solid var(--line)">
+      <span style="font-family: 'JetBrains Mono', monospace; font-size: 13px; color: var(--muted); padding-top: 6px">08</span>
+      <div style="display: flex; flex-direction: column; gap: 10px"><h3 class="row-title" style="margin: 0; font-size: 28px; line-height: 1.1; letter-spacing: -0.025em; font-weight: 500">Design handoff / prototyping</h3><span class="lbl">format: chrome-overrides</span></div>
+      <div class="idx-aside" style="display: flex; flex-direction: column; gap: 12px"><p style="margin: 0; color: var(--muted); font-size: 16px">Designers and PMs see the UI with real data on a laptop with no backend access.</p><pre style="font-size: 13px">npx har-to-mocks ./app.har ./overrides --format=chrome-overrides</pre></div>
+    </article>
+
+    <article class="rv row idx-row" style="display: grid; grid-template-columns: 80px minmax(0, 5fr) minmax(0, 6fr); gap: 32px; padding: 32px 0; border-bottom: 1px solid var(--line)">
+      <span style="font-family: 'JetBrains Mono', monospace; font-size: 13px; color: var(--muted); padding-top: 6px">09</span>
+      <div style="display: flex; flex-direction: column; gap: 10px"><h3 class="row-title" style="margin: 0; font-size: 28px; line-height: 1.1; letter-spacing: -0.025em; font-weight: 500">AI-agent workflows</h3><span class="lbl">format: mocks</span></div>
+      <div class="idx-aside" style="display: flex; flex-direction: column; gap: 12px"><p style="margin: 0; color: var(--muted); font-size: 16px">Install the <code>har-extraction</code> skill and ask Claude Code: "Extract mocks from this HAR file for my API tests." Non-interactive flags, deterministic output, dry run and readable tables make the CLI agent-friendly.</p><pre style="font-size: 13px">npx skills add peterknezek/skills</pre></div>
+    </article>
+
+    <article class="rv row idx-row" style="display: grid; grid-template-columns: 80px minmax(0, 5fr) minmax(0, 6fr); gap: 32px; padding: 32px 0; border-bottom: 1px solid var(--line)">
+      <span style="font-family: 'JetBrains Mono', monospace; font-size: 13px; color: var(--muted); padding-top: 6px">10</span>
+      <div style="display: flex; flex-direction: column; gap: 10px"><h3 class="row-title" style="margin: 0; font-size: 28px; line-height: 1.1; letter-spacing: -0.025em; font-weight: 500">REST query variants</h3><span class="lbl">format: mocks or chrome-overrides</span></div>
+      <div class="idx-aside" style="display: flex; flex-direction: column; gap: 12px"><p style="margin: 0; color: var(--muted); font-size: 16px"><code>?page=1</code> and <code>?page=2</code> hit the same path. The Query column plus <code>--select</code> or interactive mode let you keep the one you mean; chrome-overrides keeps both as separate files.</p><pre style="font-size: 13px">npx har-to-mocks ./file.har ./mocks --url=?page= --select=2</pre></div>
+    </article>
+    </div>
+  </section>
+
+  <!-- WORKS WITH (marquee) -->
+  <section aria-label="Works with" style="border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); padding: 28px 0; overflow: hidden">
+    <div class="marquee-track stripe-muted" aria-hidden="true" style="font-size: 44px; letter-spacing: -0.03em; font-weight: 500; white-space: nowrap; color: var(--muted)">
+      <span style="padding-right: 48px">MSW <span style="color: var(--accent)">·</span> mocks-to-msw <span style="color: var(--accent)">·</span> Storybook <span style="color: var(--accent)">·</span> connect-api-mocker <span style="color: var(--accent)">·</span> Chrome DevTools <span style="color: var(--accent)">·</span> Playwright &amp; Cypress via MSW <span style="color: var(--accent)">·</span> Node.js <span style="color: var(--accent)">·</span> TypeScript <span style="color: var(--accent)">·</span> Claude Code skill <span style="color: var(--accent)">·</span></span>
+      <span style="padding-right: 48px">MSW <span style="color: var(--accent)">·</span> mocks-to-msw <span style="color: var(--accent)">·</span> Storybook <span style="color: var(--accent)">·</span> connect-api-mocker <span style="color: var(--accent)">·</span> Chrome DevTools <span style="color: var(--accent)">·</span> Playwright &amp; Cypress via MSW <span style="color: var(--accent)">·</span> Node.js <span style="color: var(--accent)">·</span> TypeScript <span style="color: var(--accent)">·</span> Claude Code skill <span style="color: var(--accent)">·</span></span>
+    </div>
+    <p class="sec" style="margin: 16px auto 0; max-width: 1360px; padding: 0 40px" ><span class="lbl">Works with: MSW, mocks-to-msw, Storybook, connect-api-mocker, Chrome DevTools, Playwright and Cypress via MSW, Node.js, TypeScript, Claude Code skill</span></p>
+  </section>
+
+  <div class="band" aria-hidden="true"><svg class="bars grey" viewBox="0 0 1280 260" preserveAspectRatio="xMinYMin slice" height="160"><use href="#rx-bars" width="1280" height="260"></use></svg></div>
+
+  <!-- COMPARISON -->
+  <section class="sec" aria-labelledby="h-compare" style="max-width: 1360px; margin: 0 auto; padding: 120px 40px">
+    <div class="g2" style="display: grid; grid-template-columns: minmax(0, 4fr) minmax(0, 8fr); gap: 64px; align-items: start">
+      <div style="display: flex; flex-direction: column; gap: 16px">
+        <h2 id="h-compare" style="margin: 0; font-size: 34px; line-height: 1.08; letter-spacing: -0.03em; font-weight: 500">How it compares</h2>
+        <p style="margin: 0; color: var(--muted); font-size: 17px">None of these tools are bad. har-to-mocks is simpler for one specific job: "I want JSON files from real traffic."</p>
+      </div>
+      <div style="overflow-x: auto">
+        <table>
+          <thead><tr><th style="width: 26%">Alternative</th><th style="width: 30%">What it does</th><th>Why har-to-mocks is different</th></tr></thead>
+          <tbody>
+            <tr><td>Playwright <code>routeFromHAR</code></td><td style="color: var(--muted)">Replays a HAR inside Playwright tests</td><td style="color: var(--muted)">Only in Playwright. har-to-mocks produces plain JSON usable by MSW, Storybook, Chrome, any mock server, and humans editing files.</td></tr>
+            <tr><td>Hand-written MSW handlers / fixtures</td><td style="color: var(--muted)">Full control</td><td style="color: var(--muted)">Slow, error-prone, drifts from the real API. har-to-mocks generates the data; you still write handlers if you want, or let <code>mocks-to-msw</code> do it.</td></tr>
+            <tr><td><code>har-to-stubby</code>, MockServer HAR import, <code>har-mock-server</code>, <code>@jmcorp/har2mocks</code></td><td style="color: var(--muted)">Convert HAR to a specific server's format or run a replay server</td><td style="color: var(--muted)">Tool-specific or server-bound. har-to-mocks is a files-first, tool-agnostic generator with preview, dry run, interactive picking, duplicate detection, and a Chrome DevTools format.</td></tr>
+            <tr><td>Chrome DevTools "Override content" by hand</td><td style="color: var(--muted)">Edit one response at a time inside DevTools</td><td style="color: var(--muted)">Manual per request. har-to-mocks writes the whole override folder from a recording in one command.</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <!-- QUALITY & TRUST -->
+  <section id="trust" class="sec" aria-labelledby="h-trust" style="max-width: 1360px; margin: 0 auto; padding: 0 40px 120px">
+    <div class="rv" style="display: flex; justify-content: space-between; align-items: baseline; gap: 24px; padding-bottom: 24px; border-bottom: 1px solid var(--line)">
+      <h2 id="h-trust" style="margin: 0; font-size: 15px; font-weight: 500">Quality and trust</h2>
+      <span class="lbl">Is it maintained? Check for yourself</span>
+    </div>
+    <div class="g4" style="display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 32px; padding: 40px 0; border-bottom: 1px solid var(--line)">
+      <div style="display: flex; flex-direction: column; gap: 10px"><span class="rv big stripe" style="font-size: 72px; line-height: 1; letter-spacing: -0.04em; font-weight: 500; display: inline-block">100%</span><span style="font-size: 15px; color: var(--muted)">Test coverage. Unit, integration and snapshot tests with Vitest.</span></div>
+      <div style="display: flex; flex-direction: column; gap: 10px"><span class="rv big" style="font-size: 72px; line-height: 1; letter-spacing: -0.04em; font-weight: 500">21</span><span style="font-size: 15px; color: var(--muted)">Versions published between October 2021 and October 2026.</span></div>
+      <div style="display: flex; flex-direction: column; gap: 10px"><span class="rv big" style="font-size: 72px; line-height: 1; letter-spacing: -0.04em; font-weight: 500">10+</span><span style="font-size: 15px; color: var(--muted)">Releases in 2026 alone, v2.0.0 through v3.0.0.</span></div>
+      <div style="display: flex; flex-direction: column; gap: 10px"><span class="rv big" style="font-size: 72px; line-height: 1; letter-spacing: -0.04em; font-weight: 500">MIT</span><span style="font-size: 15px; color: var(--muted)">No web UI, no cloud service, no account, no telemetry beyond the npm update check.</span></div>
+    </div>
+    <div class="g2" style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 64px; padding-top: 40px">
+      <div style="display: flex; flex-direction: column; gap: 16px">
+        <span class="lbl">How it is built</span>
+        <ul style="margin: 0; padding: 0; list-style: none; display: flex; flex-direction: column">
+          <li style="padding: 14px 0; border-bottom: 1px solid var(--line); font-size: 16px">CI on every pull request: lint, tests, build.</li>
+          <li style="padding: 14px 0; border-bottom: 1px solid var(--line); font-size: 16px">Automated releases with semantic-release and conventional commits.</li>
+          <li style="padding: 14px 0; border-bottom: 1px solid var(--line); font-size: 16px">npm provenance: publishes are OIDC-signed from GitHub Actions.</li>
+          <li style="padding: 14px 0; border-bottom: 1px solid var(--line); font-size: 16px">TypeScript, ES modules, <code>@oclif/core</code> v5, <code>@inquirer/prompts</code>, ESLint + Prettier.</li>
+          <li style="padding: 14px 0; border-bottom: 1px solid var(--line); font-size: 16px">Snyk and Socket list the package as MIT licensed with no reported vulnerabilities; Snyk rates maintenance as "sustainable".</li>
+        </ul>
+      </div>
+      <div style="display: flex; flex-direction: column; gap: 16px">
+        <span class="lbl">Release timeline</span>
+        <ol style="margin: 0; padding: 0; list-style: none; display: flex; flex-direction: column">
+          <li style="display: grid; grid-template-columns: 120px minmax(0, 1fr); gap: 24px; padding: 14px 0; border-bottom: 1px solid var(--line)"><span style="font-family: 'JetBrains Mono', monospace; font-size: 12px; color: var(--accent); padding-top: 4px">18 Oct 2026</span><div><div style="font-size: 16px">v3.0.0 — latest</div><div style="font-size: 15px; color: var(--muted)">Node.js ≥ 22.</div></div></li>
+          <li style="display: grid; grid-template-columns: 120px minmax(0, 1fr); gap: 24px; padding: 14px 0; border-bottom: 1px solid var(--line)"><span style="font-family: 'JetBrains Mono', monospace; font-size: 12px; color: var(--muted); padding-top: 4px">2026</span><div><div style="font-size: 16px">v2.x series</div><div style="font-size: 15px; color: var(--muted)">Interactive mode, response preview, Chrome overrides format, <code>--select</code>, friendly errors, security dependency bumps. Node.js ≥ 18.</div></div></li>
+          <li style="display: grid; grid-template-columns: 120px minmax(0, 1fr); gap: 24px; padding: 14px 0; border-bottom: 1px solid var(--line)"><span style="font-family: 'JetBrains Mono', monospace; font-size: 12px; color: var(--muted); padding-top: 4px">24 Oct 2021</span><div><div style="font-size: 16px">First published on npm</div><div style="font-size: 15px; color: var(--muted)">Built for the author's own client work.</div></div></li>
+        </ol>
+        <a href="https://github.com/peterknezek/har-to-mocks/releases" class="link lbl" style="text-decoration: none; color: var(--text)">Full changelog on GitHub releases ↗</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- COMMUNITY -->
+  <section id="community" class="sec" aria-labelledby="h-community" style="max-width: 1360px; margin: 0 auto; padding: 0 40px 120px">
+    <div class="rv" style="display: flex; justify-content: space-between; align-items: baseline; gap: 24px; padding-bottom: 24px; border-bottom: 1px solid var(--line)">
+      <h2 id="h-community" style="margin: 0; font-size: 15px; font-weight: 500">A small, real community</h2>
+      <span class="lbl">No invented testimonials</span>
+    </div>
+    <div class="g2" style="display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 64px; padding: 40px 0; border-bottom: 1px solid var(--line)">
+      <blockquote class="rv" style="margin: 0; display: flex; flex-direction: column; gap: 16px">
+        <p style="margin: 0; font-size: 30px; line-height: 1.2; letter-spacing: -0.025em; font-weight: 500">"Hi, I am currently really liking how easy it is to get json responses from the HAR network traffic file."</p>
+        <footer class="lbl">GitHub user aaggarwal10 · <a href="https://github.com/peterknezek/har-to-mocks/issues/10" class="link" style="color: var(--text); text-decoration: none">issue #10 ↗</a> · January 2023</footer>
+      </blockquote>
+      <blockquote class="rv" style="margin: 0; display: flex; flex-direction: column; gap: 16px">
+        <p style="margin: 0; font-size: 30px; line-height: 1.2; letter-spacing: -0.025em; font-weight: 500">"Hi again, this tool has been very helpful." … "Thanks again for all the support."</p>
+        <footer class="lbl">GitHub user aaggarwal10 · <a href="https://github.com/peterknezek/har-to-mocks/issues/12" class="link" style="color: var(--text); text-decoration: none">issue #12 ↗</a> · February 2023</footer>
+      </blockquote>
+    </div>
+    <div class="g3" style="display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 48px; padding-top: 40px">
+      <div style="display: flex; flex-direction: column; gap: 12px">
+        <span class="lbl">On GitHub</span>
+        <p style="margin: 0; color: var(--muted); font-size: 16px">Starred and forked by a small group of developers, and adapted by others (for example <code>huihao/har-to-msw-mocks</code>). Good first issues welcome.</p>
+        <a href="https://github.com/peterknezek/har-to-mocks" id="gh-stars" class="pill" style="display: inline-flex; align-items: center; align-self: flex-start; height: 44px; padding: 0 18px; border: 1px solid var(--text); border-radius: 999px; text-decoration: none; font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: .12em; text-transform: uppercase; color: var(--text)">★ Star on GitHub</a>
+      </div>
+      <div style="display: flex; flex-direction: column; gap: 12px">
+        <span class="lbl">Listed in skill directories</span>
+        <p style="margin: 0; color: var(--muted); font-size: 16px">skills.sh, playbooks.com and tomevault.io list the author's <code>har-extraction</code> skill, describing the pipeline as HAR File → har-to-mocks → JSON Mocks → mocks-to-msw → MSW Handlers → Storybook/Tests.</p>
+      </div>
+      <div style="display: flex; flex-direction: column; gap: 12px">
+        <span class="lbl">Share your experience</span>
+        <p style="margin: 0; color: var(--muted); font-size: 16px">Used it? Share your use case in the GitHub discussion or post on X and tag <a href="https://x.com/peter_knezek" class="link" style="color: var(--text)">@peter_knezek</a>. Real quotes will replace this box over time.</p>
+        <a href="https://github.com/peterknezek/har-to-mocks/discussions/15" style="display: inline-flex; align-items: center; align-self: flex-start; height: 44px; padding: 0 18px; border-radius: 999px; background: var(--accent); color: var(--accent-text); text-decoration: none; font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: .12em; text-transform: uppercase">Join the discussion</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- AUTHOR -->
+  <section id="author" class="sec" aria-labelledby="h-author" style="max-width: 1360px; margin: 0 auto; padding: 0 40px 120px">
+    <div class="rv" style="display: flex; justify-content: space-between; align-items: baseline; gap: 24px; padding-bottom: 24px; border-bottom: 1px solid var(--line)">
+      <h2 id="h-author" style="margin: 0; font-size: 15px; font-weight: 500">Built by</h2>
+      <span class="lbl">Independent contractor · Working globally</span>
+    </div>
+    <div class="g2" style="display: grid; grid-template-columns: minmax(0, 7fr) minmax(0, 5fr); gap: 64px; align-items: start; padding-top: 40px">
+      <div style="display: flex; flex-direction: column; gap: 24px">
+        <p class="big" style="margin: 0; font-size: 72px; line-height: 0.98; letter-spacing: -0.04em; font-weight: 500">Peter Knezek</p>
+        <p style="margin: 0; font-size: 19px; line-height: 1.45; max-width: 600px">Senior software engineer and independent contractor focused on React, Next.js and TypeScript, with a current interest in agentic engineering and AI-assisted workflows. He created and maintains har-to-mocks, <code>mocks-to-msw</code> and the <code>har-extraction</code> agent skill.</p>
+        <p style="margin: 0; color: var(--muted); font-size: 17px; max-width: 600px">Built from real client projects, not a demo: he kept needing realistic frontend mocks without waiting on backends, wrote this tool for that, and has maintained it publicly since 2021.</p>
+      </div>
+      <div style="display: flex; flex-direction: column; gap: 0">
+        <div style="display: flex; justify-content: space-between; align-items: center; gap: 16px; padding: 18px 0; border-bottom: 1px solid var(--line)"><span class="lbl">For engagements</span><a href="https://www.linkedin.com/in/peterknezek/" class="pill" style="display: inline-flex; align-items: center; height: 44px; padding: 0 18px; border: 1px solid var(--text); border-radius: 999px; text-decoration: none; font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: .12em; text-transform: uppercase; color: var(--text)">Open to contracting ↗</a></div>
+        <a href="https://github.com/peterknezek" class="link" style="display: flex; justify-content: space-between; padding: 18px 0; border-bottom: 1px solid var(--line); text-decoration: none; font-size: 17px"><span>GitHub</span><span class="lbl">github.com/peterknezek ↗</span></a>
+        <a href="https://www.linkedin.com/in/peterknezek/" class="link" style="display: flex; justify-content: space-between; padding: 18px 0; border-bottom: 1px solid var(--line); text-decoration: none; font-size: 17px"><span>LinkedIn</span><span class="lbl">in/peterknezek ↗</span></a>
+        <a href="https://x.com/peter_knezek" class="link" style="display: flex; justify-content: space-between; padding: 18px 0; border-bottom: 1px solid var(--line); text-decoration: none; font-size: 17px"><span>X</span><span class="lbl">@peter_knezek ↗</span></a>
+        <a href="https://medium.com/@peterknezek/streamline-your-storybook-api-mocking-with-mocks-to-msw-868f92f28fd6" class="link" style="display: flex; justify-content: space-between; gap: 16px; padding: 18px 0; border-bottom: 1px solid var(--line); text-decoration: none; font-size: 17px"><span>Medium</span><span class="lbl" style="text-align: right">Storybook API mocking with mocks-to-msw ↗</span></a>
+        <a href="https://youtu.be/Pc2J8aHRKNY" class="link" style="display: flex; justify-content: space-between; padding: 18px 0; border-bottom: 1px solid var(--line); text-decoration: none; font-size: 17px"><span>YouTube</span><span class="lbl">2-minute demo (v1.1.1) ↗</span></a>
+      </div>
+    </div>
+  </section>
+
+  <!-- FAQ -->
+  <section id="faq" class="sec" aria-labelledby="h-faq" style="max-width: 1360px; margin: 0 auto; padding: 0 40px 120px">
+    <div class="rv" style="display: flex; justify-content: space-between; align-items: baseline; gap: 24px; padding-bottom: 24px; border-bottom: 1px solid var(--line)">
+      <h2 id="h-faq" style="margin: 0; font-size: 15px; font-weight: 500">Questions developers ask first</h2>
+      <span class="lbl">Including what it does not do yet</span>
+    </div>
+    <div class="rv idx-row" style="display: grid; grid-template-columns: 80px minmax(0, 5fr) minmax(0, 6fr); gap: 32px; padding: 28px 0; border-bottom: 1px solid var(--line)">
+      <span style="font-family: 'JetBrains Mono', monospace; font-size: 13px; color: var(--muted); padding-top: 4px">Q1</span>
+      <h3 style="margin: 0; font-size: 24px; line-height: 1.15; letter-spacing: -0.02em; font-weight: 500">Will it overwrite my files?</h3>
+      <p class="idx-aside" style="margin: 0; color: var(--muted); font-size: 16px">Not silently. Without an output folder nothing is written. With one, the Status column tells you what will be created, updated or skipped, <code>--dry-run</code> shows the full tree first, and interactive mode asks for confirmation.</p>
+    </div>
+    <div class="rv idx-row" style="display: grid; grid-template-columns: 80px minmax(0, 5fr) minmax(0, 6fr); gap: 32px; padding: 28px 0; border-bottom: 1px solid var(--line)">
+      <span style="font-family: 'JetBrains Mono', monospace; font-size: 13px; color: var(--muted); padding-top: 4px">Q2</span>
+      <h3 style="margin: 0; font-size: 24px; line-height: 1.15; letter-spacing: -0.02em; font-weight: 500">My HAR has 600 entries.</h3>
+      <p class="idx-aside" style="margin: 0; color: var(--muted); font-size: 16px">Narrow it with <code>--url</code>, <code>--method</code> and <code>--type</code>, then pick rows with the interactive picker or <code>--select=1,3,5-7</code>.</p>
+    </div>
+    <div class="rv idx-row" style="display: grid; grid-template-columns: 80px minmax(0, 5fr) minmax(0, 6fr); gap: 32px; padding: 28px 0; border-bottom: 1px solid var(--line)">
+      <span style="font-family: 'JetBrains Mono', monospace; font-size: 13px; color: var(--muted); padding-top: 4px">Q3</span>
+      <h3 style="margin: 0; font-size: 24px; line-height: 1.15; letter-spacing: -0.02em; font-weight: 500">I use GraphQL.</h3>
+      <p class="idx-aside" style="margin: 0; color: var(--muted); font-size: 16px">Requests are keyed by URL path and method, so multiple GraphQL operations on one endpoint collide today (<a href="https://github.com/peterknezek/har-to-mocks/issues/12" class="link" style="color: var(--text)">open issue #12</a>). Interactive mode and <code>--select</code> let you pick which one to keep. Operation splitting is not implemented.</p>
+    </div>
+    <div class="rv idx-row" style="display: grid; grid-template-columns: 80px minmax(0, 5fr) minmax(0, 6fr); gap: 32px; padding: 28px 0; border-bottom: 1px solid var(--line)">
+      <span style="font-family: 'JetBrains Mono', monospace; font-size: 13px; color: var(--muted); padding-top: 4px">Q4</span>
+      <h3 style="margin: 0; font-size: 24px; line-height: 1.15; letter-spacing: -0.02em; font-weight: 500">Same endpoint, different query params?</h3>
+      <p class="idx-aside" style="margin: 0; color: var(--muted); font-size: 16px">The Query column shows them apart. The chrome-overrides format writes separate files per query string; in the mocks format use <code>--select</code> or interactive mode to choose. Automatic handling is tracked in <a href="https://github.com/peterknezek/har-to-mocks/issues/18" class="link" style="color: var(--text)">open issue #18</a>.</p>
+    </div>
+    <div class="rv idx-row" style="display: grid; grid-template-columns: 80px minmax(0, 5fr) minmax(0, 6fr); gap: 32px; padding: 28px 0; border-bottom: 1px solid var(--line)">
+      <span style="font-family: 'JetBrains Mono', monospace; font-size: 13px; color: var(--muted); padding-top: 4px">Q5</span>
+      <h3 style="margin: 0; font-size: 24px; line-height: 1.15; letter-spacing: -0.02em; font-weight: 500">Why don't I see my fetch requests?</h3>
+      <p class="idx-aside" style="margin: 0; color: var(--muted); font-size: 16px">The default resource type is <code>xhr</code> and the default method is <code>GET</code>. Pass <code>--type=fetch</code> (and <code>--method=POST</code> etc.) to include them. <code>--url</code> is a case-sensitive substring match, not a regex.</p>
+    </div>
+    <div class="rv idx-row" style="display: grid; grid-template-columns: 80px minmax(0, 5fr) minmax(0, 6fr); gap: 32px; padding: 28px 0; border-bottom: 1px solid var(--line)">
+      <span style="font-family: 'JetBrains Mono', monospace; font-size: 13px; color: var(--muted); padding-top: 4px">Q6</span>
+      <h3 style="margin: 0; font-size: 24px; line-height: 1.15; letter-spacing: -0.02em; font-weight: 500">Does it leak secrets?</h3>
+      <p class="idx-aside" style="margin: 0; color: var(--muted); font-size: 16px">HAR files can contain cookies and tokens. The mocks keep response bodies only, no headers. Still, review the output before committing it.</p>
+    </div>
+  </section>
+
+  <!-- DOCS -->
+  <section id="docs" class="sec" aria-labelledby="h-docs" style="max-width: 1360px; margin: 0 auto; padding: 0 40px 120px">
+    <div class="g2" style="display: grid; grid-template-columns: minmax(0, 4fr) minmax(0, 8fr); gap: 64px; align-items: start">
+      <div style="display: flex; flex-direction: column; gap: 20px">
+        <h2 id="h-docs" style="margin: 0; font-size: 34px; line-height: 1.08; letter-spacing: -0.03em; font-weight: 500">Docs</h2>
+        <p style="margin: 0; color: var(--muted); font-size: 17px">Full CLI reference, every feature with its real output, the HAR export guide for Chrome, Firefox and Safari, FAQ, and the changelog.</p>
+        <div style="display: flex; flex-direction: column">
+          <a href="docs.html#cli" class="link" style="display: flex; justify-content: space-between; padding: 14px 0; border-top: 1px solid var(--line); text-decoration: none; font-size: 17px"><span>CLI reference</span><span>→</span></a>
+          <a href="docs.html#features" class="link" style="display: flex; justify-content: space-between; padding: 14px 0; border-top: 1px solid var(--line); text-decoration: none; font-size: 17px"><span>Features with output</span><span>→</span></a>
+          <a href="docs.html#har" class="link" style="display: flex; justify-content: space-between; padding: 14px 0; border-top: 1px solid var(--line); text-decoration: none; font-size: 17px"><span>How to get a HAR file</span><span>→</span></a>
+          <a href="docs.html#faq" class="link" style="display: flex; justify-content: space-between; padding: 14px 0; border-top: 1px solid var(--line); text-decoration: none; font-size: 17px"><span>FAQ</span><span>→</span></a>
+          <a href="https://github.com/peterknezek/har-to-mocks/releases" class="link" style="display: flex; justify-content: space-between; padding: 14px 0; border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); text-decoration: none; font-size: 17px"><span>Changelog</span><span>↗</span></a>
+        </div>
+      </div>
+      <figure style="margin: 0; background: var(--term-bg); border: 1px solid var(--term-line); border-radius: 12px; overflow: hidden; color: var(--term-text)">
+        <div style="padding: 14px 24px; border-bottom: 1px solid var(--term-line); font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: .12em; text-transform: uppercase; color: var(--term-muted)">har-to-mocks --help</div>
+        <pre style="padding: 24px 28px; font-size: 13.5px">har-to-mocks &lt;file.har&gt; [output-folder] [flags]
+
+  -u, --url          substring match in the full URL (case-sensitive)
+  -m, --method       GET | POST | PUT | DELETE | PATCH   (default: GET)
+  -t, --type         xhr | fetch | document             (default: xhr)
+  -f, --format       mocks | chrome-overrides           (default: mocks)
+  -s, --select       rows by # column, e.g. 1,3,5-7
+  -i, --interactive  checkbox picker with response preview
+      --dry-run      show tables and folder tree, write nothing
+  -v, --version
+  -h, --help
+
+<span style="color: var(--term-muted)">Install globally:</span> npm install -g har-to-mocks</pre>
+      </figure>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <div class="band" aria-hidden="true"><svg class="bars red bars-up" viewBox="0 0 1280 260" preserveAspectRatio="xMinYMin slice" height="220"><use href="#rx-bars" width="1280" height="260"></use></svg></div>
+  <footer class="sec" style="max-width: 1360px; margin: 0 auto; padding: 40px 40px 48px; display: flex; flex-direction: column; gap: 40px">
+    <p class="big" style="margin: 0; font-size: 72px; line-height: 0.98; letter-spacing: -0.04em; font-weight: 500">Record once.<br><span class="stripe fringe" style="display: inline-block; padding-bottom: 0.08em">Mock forever.</span></p>
+    <div style="display: flex; flex-wrap: wrap; justify-content: space-between; gap: 20px; font-family: 'JetBrains Mono', monospace; font-size: 11px; letter-spacing: .12em; text-transform: uppercase; color: var(--muted)">
+      <div style="display: flex; flex-wrap: wrap; gap: 28px">
+        <a href="https://github.com/peterknezek/har-to-mocks" class="link" style="text-decoration: none">GitHub</a>
+        <a href="https://www.npmjs.com/package/har-to-mocks" class="link" style="text-decoration: none">npm</a>
+        <a href="https://www.linkedin.com/in/peterknezek/" class="link" style="text-decoration: none">LinkedIn</a>
+        <a href="https://x.com/peter_knezek" class="link" style="text-decoration: none">X</a>
+        <a href="https://medium.com/@peterknezek/streamline-your-storybook-api-mocking-with-mocks-to-msw-868f92f28fd6" class="link" style="text-decoration: none">Medium</a>
+        <a href="https://youtu.be/Pc2J8aHRKNY" class="link" style="text-decoration: none">YouTube</a>
+      </div>
+      <span>MIT License © 2021 Peter Knezek</span>
+    </div>
+  </footer>
+</div>
+<script src="app.js" defer></script>
+</body>
+</html>

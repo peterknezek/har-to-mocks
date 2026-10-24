@@ -4,12 +4,12 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>har-to-mocks — Record once. Mock forever.</title>
-<meta name="description" content="Convert a HAR file from your browser's Network tab into JSON mocks for MSW, connect-api-mocker and Chrome DevTools Local Overrides. One command, free, MIT.">
-<meta name="keywords" content="HAR to mocks, convert HAR file to JSON mocks, HAR to MSW, Chrome local overrides from HAR, mock API from network recording, har-to-mocks">
+<meta name="description" content="Convert a HAR file from your browser's Network tab into JSON mocks for MSW, Playwright, connect-api-mocker and Chrome DevTools Local Overrides. One command, free, MIT.">
+<meta name="keywords" content="HAR to mocks, convert HAR file to JSON mocks, HAR to MSW, HAR to Playwright mocks, Chrome local overrides from HAR, mock API from network recording, har-to-mocks">
 <link rel="canonical" href="https://peterknezek.github.io/har-to-mocks/">
 <meta property="og:type" content="website">
 <meta property="og:title" content="har-to-mocks — Record once. Mock forever.">
-<meta property="og:description" content="Turn the HAR file from your Network tab into JSON mocks for MSW, connect-api-mocker and Chrome DevTools Local Overrides. One command, free, MIT.">
+<meta property="og:description" content="Turn the HAR file from your Network tab into JSON mocks for MSW, Playwright, connect-api-mocker and Chrome DevTools Local Overrides. One command, free, MIT.">
 <meta property="og:url" content="https://peterknezek.github.io/har-to-mocks/">
 <meta property="og:image" content="https://peterknezek.github.io/har-to-mocks/og.png">
 <meta property="og:image:width" content="1200">
@@ -67,7 +67,7 @@
     </div>
 
     <div class="g2 a-up d4" style="display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 7fr); gap: 48px; align-items: end">
-      <p style="margin: 0; font-size: 26px; line-height: 1.35; letter-spacing: -0.01em; max-width: 520px">A command-line tool that turns the HAR file from your browser's Network tab into a folder of JSON mocks. Real responses, one file per endpoint, readable by MSW, connect-api-mocker and Chrome DevTools Local Overrides.</p>
+      <p style="margin: 0; font-size: 26px; line-height: 1.35; letter-spacing: -0.01em; max-width: 520px">A command-line tool that turns the HAR file from your browser's Network tab into a folder of JSON mocks. Real responses, one file per endpoint, readable by MSW, Playwright, connect-api-mocker and Chrome DevTools Local Overrides.</p>
       <p style="margin: 0; font-size: 17px; color: var(--muted); max-width: 440px; justify-self: end">No account, no config file, no signup. Nothing is written unless you give it an output folder, and <code>--dry-run</code> shows every file before it does.</p>
     </div>
 
@@ -150,8 +150,8 @@ Folder tree which will be applied:
       </div>
       <div style="display: flex; flex-direction: column; gap: 16px">
         <span style="font-family: 'JetBrains Mono', monospace; font-size: 13px; color: var(--accent)">03</span>
-        <h3 style="margin: 0; font-size: 30px; line-height: 1.1; letter-spacing: -0.025em; font-weight: 500">Point MSW or Chrome at the folder</h3>
-        <p style="margin: 0; color: var(--muted); font-size: 16px">Load it with <code>mocks-to-msw</code> or <code>connect-api-mocker</code>, or select it in Chrome's Sources → Overrides. The UI now runs on your recorded responses.</p>
+        <h3 style="margin: 0; font-size: 30px; line-height: 1.1; letter-spacing: -0.025em; font-weight: 500">Point MSW, Playwright or Chrome at the folder</h3>
+        <p style="margin: 0; color: var(--muted); font-size: 16px">Load it with <code>mocks-to-msw</code>, <code>mocks-to-playwright</code> or <code>connect-api-mocker</code>, or select it in Chrome's Sources → Overrides. The UI now runs on your recorded responses.</p>
       </div>
     </div>
   </section>
@@ -177,7 +177,7 @@ Folder tree which will be applied:
     <div class="rv row idx-row" style="display: grid; grid-template-columns: 80px minmax(0, 5fr) minmax(0, 6fr); gap: 32px; padding: 36px 0; border-bottom: 1px solid var(--line)">
       <span style="font-family: 'JetBrains Mono', monospace; font-size: 13px; color: var(--muted); padding-top: 8px">03</span>
       <h3 class="row-title" style="margin: 0; font-size: 34px; line-height: 1.08; letter-spacing: -0.03em; font-weight: 500">Mocks live in several places</h3>
-      <p class="idx-aside" style="margin: 0; color: var(--muted); font-size: 17px; max-width: 520px">One set for dev, another for Storybook, another for tests. har-to-mocks produces one folder of JSON that MSW (dev, Storybook and tests), connect-api-mocker, and Chrome overrides can all read.</p>
+      <p class="idx-aside" style="margin: 0; color: var(--muted); font-size: 17px; max-width: 520px">One set for dev, another for Storybook, another for tests. har-to-mocks produces one folder of JSON that MSW (dev, Storybook and tests), Playwright, connect-api-mocker, and Chrome overrides can all read.</p>
     </div>
     <div class="rv row idx-row" style="display: grid; grid-template-columns: 80px minmax(0, 5fr) minmax(0, 6fr); gap: 32px; padding: 36px 0; border-bottom: 1px solid var(--line)">
       <span style="font-family: 'JetBrains Mono', monospace; font-size: 13px; color: var(--muted); padding-top: 8px">04</span>
@@ -217,7 +217,7 @@ Folder tree which will be applied:
       </div>
       <div class="rv feat-card" style="display: grid; grid-template-columns: 56px minmax(0, 1fr); gap: 16px; padding: 28px 0; border-bottom: 1px solid var(--line)">
         <span class="feat-num" style="font-family: 'JetBrains Mono', monospace; font-size: 13px; color: var(--muted); padding-top: 4px">06</span>
-        <div style="display: flex; flex-direction: column; gap: 8px"><h3 style="margin: 0; font-size: 22px; letter-spacing: -0.02em; font-weight: 500">Two output formats</h3><p style="margin: 0; color: var(--muted); font-size: 16px"><code>mocks</code> for MSW and mock servers, <code>chrome-overrides</code> for Chrome DevTools Local Overrides.</p></div>
+        <div style="display: flex; flex-direction: column; gap: 8px"><h3 style="margin: 0; font-size: 22px; letter-spacing: -0.02em; font-weight: 500">Two output formats</h3><p style="margin: 0; color: var(--muted); font-size: 16px"><code>mocks</code> for MSW, Playwright and mock servers, <code>chrome-overrides</code> for Chrome DevTools Local Overrides.</p></div>
       </div>
       <div class="rv feat-card" style="display: grid; grid-template-columns: 56px minmax(0, 1fr); gap: 16px; padding: 28px 0; border-bottom: 1px solid var(--line)">
         <span class="feat-num" style="font-family: 'JetBrains Mono', monospace; font-size: 13px; color: var(--muted); padding-top: 4px">07</span>
@@ -235,7 +235,7 @@ Folder tree which will be applied:
     <div class="rv" style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 24px; padding-bottom: 24px; border-bottom: 1px solid var(--line)">
       <h2 id="h-formats" style="margin: 0; font-size: 15px; font-weight: 500">Two output formats, same recording</h2>
       <div role="tablist" aria-label="Output format" style="display: inline-flex; gap: 8px">
-        <button type="button" role="tab" id="tab-mocks" class="tab" aria-selected="true" aria-controls="panel-mocks">For MSW &amp; mock servers</button>
+        <button type="button" role="tab" id="tab-mocks" class="tab" aria-selected="true" aria-controls="panel-mocks">For MSW &amp; Playwright</button>
         <button type="button" role="tab" id="tab-chrome" class="tab" aria-selected="false" aria-controls="panel-chrome">For Chrome Local Overrides</button>
       </div>
     </div>
@@ -244,7 +244,7 @@ Folder tree which will be applied:
       <div class="g2" role="tabpanel" style="display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 64px; align-items: start; padding-top: 40px">
         <div style="display: flex; flex-direction: column; gap: 20px">
           <h3 style="margin: 0; font-size: 34px; line-height: 1.08; letter-spacing: -0.03em; font-weight: 500"><code style="font-size: 0.8em">--format=mocks</code> <span style="color: var(--muted)">(default)</span></h3>
-          <p style="margin: 0; color: var(--muted); font-size: 17px">Layout is <code>&lt;output&gt;/&lt;url path&gt;/&lt;METHOD&gt;.json</code>. Each file is the raw response body, nothing else: no headers, no status codes. This is the layout <code>mocks-to-msw</code> consumes and <code>connect-api-mocker</code> (Express / webpack-dev-server middleware) serves.</p>
+          <p style="margin: 0; color: var(--muted); font-size: 17px">Layout is <code>&lt;output&gt;/&lt;url path&gt;/&lt;METHOD&gt;.json</code>. Each file is the raw response body, nothing else: no headers, no status codes. This is the layout <code>mocks-to-msw</code> and <code>mocks-to-playwright</code> consume and <code>connect-api-mocker</code> (Express / webpack-dev-server middleware) serves.</p>
           <span class="lbl" style="margin-top: 8px">Then do this</span>
           <pre style="padding: 20px 24px; background: var(--term-bg); color: var(--term-text); border: 1px solid var(--term-line); border-radius: 10px">import { createMockHandler } from "mocks-to-msw";
 import mocks from "./mocks/mocks";
@@ -256,6 +256,18 @@ export const handlers = [
   mock.post("/client/application", (data) =&gt; ({ ...data, modified: true })),
 ];</pre>
           <p style="margin: 0; color: var(--muted); font-size: 15px"><code>mocks-to-msw</code> adds type-safe URL/method pairing, async loading, response modifiers, debug logging, origin configuration, and a CLI that generates a typed import file from the mocks folder.</p>
+          <span class="lbl" style="margin-top: 8px">Or in Playwright tests</span>
+          <pre style="padding: 20px 24px; background: var(--term-bg); color: var(--term-text); border: 1px solid var(--term-line); border-radius: 10px">import { createMockRoutes } from "mocks-to-playwright";
+import mocks from "./mocks/mocks";
+
+const { mock } = createMockRoutes&lt;keyof typeof mocks&gt;({ mocks });
+
+test("shows the client", async ({ page }) =&gt; {
+  await mock.get("/client")(page);
+  await mock.post("/client/application", (data) =&gt; ({ ...data, status: "approved" }))(page);
+  await page.goto("/");
+});</pre>
+          <p style="margin: 0; color: var(--muted); font-size: 15px"><code>mocks-to-playwright</code> serves the same mocks through <code>page.route()</code> with the same typed API, works on a page or a whole browser context, and reads the same generated <code>mocks.ts</code>.</p>
         </div>
         <figure style="margin: 0; background: var(--term-bg); border: 1px solid var(--term-line); border-radius: 10px; overflow: hidden; color: var(--term-text)">
           <pre style="padding: 24px 28px"><span style="color: var(--accent)">$</span> har-to-mocks ./file.har ./mocks --url=api/service --method=GET --dry-run
@@ -334,7 +346,7 @@ Folder tree which will be applied:
     <article class="rv row idx-row" style="display: grid; grid-template-columns: 80px minmax(0, 5fr) minmax(0, 6fr); gap: 32px; padding: 32px 0; border-bottom: 1px solid var(--line)">
       <span style="font-family: 'JetBrains Mono', monospace; font-size: 13px; color: var(--muted); padding-top: 6px">03</span>
       <div style="display: flex; flex-direction: column; gap: 10px"><h3 class="row-title" style="margin: 0; font-size: 28px; line-height: 1.1; letter-spacing: -0.025em; font-weight: 500">Component and integration tests</h3><span class="lbl">format: mocks</span></div>
-      <div class="idx-aside" style="display: flex; flex-direction: column; gap: 12px"><p style="margin: 0; color: var(--muted); font-size: 16px">Fixtures nobody updates. Deterministic responses from real traffic instead, served by MSW in Vitest, Jest, React Testing Library, Playwright or Cypress.</p><pre style="font-size: 13px">npx har-to-mocks ./file.har ./mocks --url=/api --method=GET --method=POST</pre></div>
+      <div class="idx-aside" style="display: flex; flex-direction: column; gap: 12px"><p style="margin: 0; color: var(--muted); font-size: 16px">Fixtures nobody updates. Deterministic responses from real traffic instead, served by MSW in Vitest, Jest, React Testing Library or Cypress, and by <code>mocks-to-playwright</code> in Playwright, all from one <code>mocks.ts</code>.</p><pre style="font-size: 13px">npx har-to-mocks ./file.har ./mocks --url=/api --method=GET --method=POST</pre></div>
     </article>
 
     <article class="rv row idx-row" style="display: grid; grid-template-columns: 80px minmax(0, 5fr) minmax(0, 6fr); gap: 32px; padding: 32px 0; border-bottom: 1px solid var(--line)">
@@ -384,10 +396,10 @@ Folder tree which will be applied:
   <!-- WORKS WITH (marquee) -->
   <section aria-label="Works with" style="border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); padding: 28px 0; overflow: hidden">
     <div class="marquee-track stripe-muted" aria-hidden="true" style="font-size: 44px; letter-spacing: -0.03em; font-weight: 500; white-space: nowrap; color: var(--muted)">
-      <span style="padding-right: 48px">MSW <span style="color: var(--accent)">·</span> mocks-to-msw <span style="color: var(--accent)">·</span> Storybook <span style="color: var(--accent)">·</span> connect-api-mocker <span style="color: var(--accent)">·</span> Chrome DevTools <span style="color: var(--accent)">·</span> Playwright &amp; Cypress via MSW <span style="color: var(--accent)">·</span> Node.js <span style="color: var(--accent)">·</span> TypeScript <span style="color: var(--accent)">·</span> Claude Code skill <span style="color: var(--accent)">·</span></span>
-      <span style="padding-right: 48px">MSW <span style="color: var(--accent)">·</span> mocks-to-msw <span style="color: var(--accent)">·</span> Storybook <span style="color: var(--accent)">·</span> connect-api-mocker <span style="color: var(--accent)">·</span> Chrome DevTools <span style="color: var(--accent)">·</span> Playwright &amp; Cypress via MSW <span style="color: var(--accent)">·</span> Node.js <span style="color: var(--accent)">·</span> TypeScript <span style="color: var(--accent)">·</span> Claude Code skill <span style="color: var(--accent)">·</span></span>
+      <span style="padding-right: 48px">MSW <span style="color: var(--accent)">·</span> mocks-to-msw <span style="color: var(--accent)">·</span> Storybook <span style="color: var(--accent)">·</span> connect-api-mocker <span style="color: var(--accent)">·</span> Chrome DevTools <span style="color: var(--accent)">·</span> mocks-to-playwright <span style="color: var(--accent)">·</span> Playwright <span style="color: var(--accent)">·</span> Cypress via MSW <span style="color: var(--accent)">·</span> Node.js <span style="color: var(--accent)">·</span> TypeScript <span style="color: var(--accent)">·</span> Claude Code skill <span style="color: var(--accent)">·</span></span>
+      <span style="padding-right: 48px">MSW <span style="color: var(--accent)">·</span> mocks-to-msw <span style="color: var(--accent)">·</span> Storybook <span style="color: var(--accent)">·</span> connect-api-mocker <span style="color: var(--accent)">·</span> Chrome DevTools <span style="color: var(--accent)">·</span> mocks-to-playwright <span style="color: var(--accent)">·</span> Playwright <span style="color: var(--accent)">·</span> Cypress via MSW <span style="color: var(--accent)">·</span> Node.js <span style="color: var(--accent)">·</span> TypeScript <span style="color: var(--accent)">·</span> Claude Code skill <span style="color: var(--accent)">·</span></span>
     </div>
-    <p class="sec" style="margin: 16px auto 0; max-width: 1360px; padding: 0 40px" ><span class="lbl">Works with: MSW, mocks-to-msw, Storybook, connect-api-mocker, Chrome DevTools, Playwright and Cypress via MSW, Node.js, TypeScript, Claude Code skill</span></p>
+    <p class="sec" style="margin: 16px auto 0; max-width: 1360px; padding: 0 40px" ><span class="lbl">Works with: MSW, mocks-to-msw, Storybook, connect-api-mocker, Chrome DevTools, mocks-to-playwright, Playwright, Cypress via MSW, Node.js, TypeScript, Claude Code skill</span></p>
   </section>
 
   <div class="band" aria-hidden="true"><svg class="bars grey" viewBox="0 0 1280 260" preserveAspectRatio="xMinYMin slice" height="160"><use href="#rx-bars" width="1280" height="260"></use></svg></div>
@@ -403,7 +415,7 @@ Folder tree which will be applied:
         <table>
           <thead><tr><th style="width: 26%">Alternative</th><th style="width: 30%">What it does</th><th>Why har-to-mocks is different</th></tr></thead>
           <tbody>
-            <tr><td>Playwright <code>routeFromHAR</code></td><td style="color: var(--muted)">Replays a HAR inside Playwright tests</td><td style="color: var(--muted)">Only in Playwright. har-to-mocks produces plain JSON usable by MSW, Storybook, Chrome, any mock server, and humans editing files.</td></tr>
+            <tr><td>Playwright <code>routeFromHAR</code></td><td style="color: var(--muted)">Replays a HAR inside Playwright tests</td><td style="color: var(--muted)">One HAR blob per test suite, hard to read or edit for a single test. har-to-mocks produces one JSON file per endpoint; <code>mocks-to-playwright</code> serves them in Playwright with typed routes and per-test modifiers, and the same files work in MSW, Storybook, Chrome and any mock server.</td></tr>
             <tr><td>Hand-written MSW handlers / fixtures</td><td style="color: var(--muted)">Full control</td><td style="color: var(--muted)">Slow, error-prone, drifts from the real API. har-to-mocks generates the data; you still write handlers if you want, or let <code>mocks-to-msw</code> do it.</td></tr>
             <tr><td><code>har-to-stubby</code>, MockServer HAR import, <code>har-mock-server</code>, <code>@jmcorp/har2mocks</code></td><td style="color: var(--muted)">Convert HAR to a specific server's format or run a replay server</td><td style="color: var(--muted)">Tool-specific or server-bound. har-to-mocks is a files-first, tool-agnostic generator with preview, dry run, interactive picking, duplicate detection, and a Chrome DevTools format.</td></tr>
             <tr><td>Chrome DevTools "Override content" by hand</td><td style="color: var(--muted)">Edit one response at a time inside DevTools</td><td style="color: var(--muted)">Manual per request. har-to-mocks writes the whole override folder from a recording in one command.</td></tr>
@@ -491,7 +503,7 @@ Folder tree which will be applied:
     <div class="g2" style="display: grid; grid-template-columns: minmax(0, 7fr) minmax(0, 5fr); gap: 64px; align-items: start; padding-top: 40px">
       <div style="display: flex; flex-direction: column; gap: 24px">
         <p class="big" style="margin: 0; font-size: 72px; line-height: 0.98; letter-spacing: -0.04em; font-weight: 500">Peter Knezek</p>
-        <p style="margin: 0; font-size: 19px; line-height: 1.45; max-width: 600px">Senior software engineer and independent contractor focused on React, Next.js and TypeScript, with a current interest in agentic engineering and AI-assisted workflows. He created and maintains har-to-mocks, <code>mocks-to-msw</code> and the <code>har-extraction</code> agent skill.</p>
+        <p style="margin: 0; font-size: 19px; line-height: 1.45; max-width: 600px">Senior software engineer and independent contractor focused on React, Next.js and TypeScript, with a current interest in agentic engineering and AI-assisted workflows. He created and maintains har-to-mocks, <code>mocks-to-msw</code>, <code>mocks-to-playwright</code> and the <code>har-extraction</code> agent skill.</p>
         <p style="margin: 0; color: var(--muted); font-size: 17px; max-width: 600px">Built from real client projects, not a demo: he kept needing realistic frontend mocks without waiting on backends, wrote this tool for that, and has maintained it publicly since 2021.</p>
       </div>
       <div style="display: flex; flex-direction: column; gap: 0">
@@ -540,6 +552,11 @@ Folder tree which will be applied:
       <span style="font-family: 'JetBrains Mono', monospace; font-size: 13px; color: var(--muted); padding-top: 4px">Q6</span>
       <h3 style="margin: 0; font-size: 24px; line-height: 1.15; letter-spacing: -0.02em; font-weight: 500">Does it leak secrets?</h3>
       <p class="idx-aside" style="margin: 0; color: var(--muted); font-size: 16px">HAR files can contain cookies and tokens. The mocks keep response bodies only, no headers. Still, review the output before committing it.</p>
+    </div>
+    <div class="rv idx-row" style="display: grid; grid-template-columns: 80px minmax(0, 5fr) minmax(0, 6fr); gap: 32px; padding: 28px 0; border-bottom: 1px solid var(--line)">
+      <span style="font-family: 'JetBrains Mono', monospace; font-size: 13px; color: var(--muted); padding-top: 4px">Q7</span>
+      <h3 style="margin: 0; font-size: 24px; line-height: 1.15; letter-spacing: -0.02em; font-weight: 500">Can I use the mocks in Playwright without MSW?</h3>
+      <p class="idx-aside" style="margin: 0; color: var(--muted); font-size: 16px">Yes. <a href="https://github.com/peterknezek/mocks-to-playwright" class="link" style="color: var(--text)">mocks-to-playwright ↗</a> registers them with <code>page.route()</code>: <code>await mock.get("/client")(page)</code>. It uses the same <code>mocks.ts</code> as <code>mocks-to-msw</code>, so one set of mocks feeds Storybook, the app and your end-to-end tests.</p>
     </div>
   </section>
 

@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Docs — har-to-mocks</title>
-<meta name="description" content="har-to-mocks documentation: CLI reference, filters, dry run, interactive mode, --select, output formats for MSW and Chrome DevTools Local Overrides, how to export a HAR file, FAQ.">
+<meta name="description" content="har-to-mocks documentation: CLI reference, filters, dry run, interactive mode, --select, output formats for MSW, Playwright and Chrome DevTools Local Overrides, how to export a HAR file, FAQ.">
 <link rel="canonical" href="https://peterknezek.github.io/har-to-mocks/docs.html">
 <meta property="og:type" content="article">
 <meta property="og:title" content="har-to-mocks docs — CLI reference, formats, HAR export guide">
@@ -52,7 +52,7 @@
       <a href="#features">Features with output</a>
       <a href="#formats">Output formats</a>
       <a href="#har">How to get a HAR file</a>
-      <a href="#companions">mocks-to-msw and the agent skill</a>
+      <a href="#companions">Adapters and the agent skill</a>
       <a href="#faq">FAQ</a>
       <a href="https://github.com/peterknezek/har-to-mocks/releases">Changelog ↗</a>
     </aside>
@@ -194,8 +194,8 @@ The last occurrence will be written. To select specific endpoints, use --select 
       <section id="formats">
         <h2 style="margin-top: 72px">Output formats</h2>
 
-        <h3><code>mocks</code> (default) for MSW and connect-api-mocker</h3>
-        <p>Layout: <code>&lt;output&gt;/&lt;url path&gt;/&lt;METHOD&gt;.json</code>. The JSON file is the raw response body only (no headers, no status codes). This layout is what <code>mocks-to-msw</code> consumes and what <code>connect-api-mocker</code> (Express / webpack-dev-server middleware) serves.</p>
+        <h3><code>mocks</code> (default) for MSW, Playwright and connect-api-mocker</h3>
+        <p>Layout: <code>&lt;output&gt;/&lt;url path&gt;/&lt;METHOD&gt;.json</code>. The JSON file is the raw response body only (no headers, no status codes). This layout is what <code>mocks-to-msw</code> and <code>mocks-to-playwright</code> consume and what <code>connect-api-mocker</code> (Express / webpack-dev-server middleware) serves.</p>
         <div class="term"><pre>import { createMockHandler } from "mocks-to-msw";
 import mocks from "./mocks/mocks";
 
@@ -206,6 +206,18 @@ export const handlers = [
   mock.post("/client/application", (data) =&gt; ({ ...data, modified: true })),
 ];</pre></div>
         <p><code>mocks-to-msw</code> adds type-safe URL/method pairing, async loading, response modifiers, debug logging, origin configuration, and a CLI that generates a typed import file from the mocks folder.</p>
+        <p>In Playwright tests, <code>mocks-to-playwright</code> serves the same files through <code>page.route()</code> with the same typed API:</p>
+        <div class="term"><pre>import { createMockRoutes } from "mocks-to-playwright";
+import mocks from "./mocks/mocks";
+
+const { mock } = createMockRoutes&lt;keyof typeof mocks&gt;({ mocks });
+
+test("shows the client", async ({ page }) =&gt; {
+  await mock.get("/client")(page);
+  await mock.post("/client/application", (data) =&gt; ({ ...data, status: "approved" }))(page);
+  await page.goto("/");
+});</pre></div>
+        <p>Register a mock on a <code>page</code> or a whole browser <code>context</code>. The route registered last wins, so a mock with a modifier overrides a default one in a single test. The query string is ignored, and cross-origin requests work without extra CORS setup.</p>
 
         <h3><code>chrome-overrides</code> for Chrome DevTools Local Overrides</h3>
         <div class="term"><pre><span style="color: var(--accent)">$</span> har-to-mocks ./file.har ./overrides --format=chrome-overrides --dry-run
@@ -244,8 +256,10 @@ Folder tree which will be applied:
       </section>
 
       <section id="companions">
-        <h2 style="margin-top: 72px">mocks-to-msw and the agent skill</h2>
+        <h2 style="margin-top: 72px">Adapters and the agent skill</h2>
         <p><a href="https://github.com/peterknezek/mocks-to-msw" class="link" style="color: var(--text)">mocks-to-msw ↗</a> is an adapter that loads these mocks into Mock Service Worker with type-safe handlers and its own CLI. The <a href="https://medium.com/@peterknezek/streamline-your-storybook-api-mocking-with-mocks-to-msw-868f92f28fd6" class="link" style="color: var(--text)">Medium article ↗</a> walks through the Storybook flow.</p>
+        <p><a href="https://github.com/peterknezek/mocks-to-playwright" class="link" style="color: var(--text)">mocks-to-playwright ↗</a> serves the same mocks in <a href="https://playwright.dev" class="link" style="color: var(--text)">Playwright ↗</a> tests through <code>page.route()</code>. It ships the same <code>generate-mocks</code> CLI and file layout as <code>mocks-to-msw</code>, so one generated <code>mocks.ts</code> feeds both your MSW handlers and your Playwright tests. Requires <code>@playwright/test</code> 1.29 or newer.</p>
+        <div class="term"><pre>npm install mocks-to-playwright --save-dev</pre></div>
         <p>The <code>har-extraction</code> skill in <a href="https://github.com/peterknezek/skills" class="link" style="color: var(--text)">peterknezek/skills ↗</a> lets Claude Code and other AI agents run the whole HAR → mocks → MSW workflow on request.</p>
         <div class="term"><pre>npx skills add peterknezek/skills</pre></div>
         <p>A video walkthrough is at <a href="https://youtu.be/Pc2J8aHRKNY" class="link" style="color: var(--text)">youtu.be/Pc2J8aHRKNY ↗</a> (recorded on v1.1.1, older UI).</p>
@@ -265,6 +279,8 @@ Folder tree which will be applied:
         <p>The default resource type is <code>xhr</code> and the default method is <code>GET</code>. Pass <code>--type=fetch</code> (and <code>--method=POST</code> etc.) to include them. <code>--url</code> is a case-sensitive substring match, not a regex.</p>
         <h3>Is it maintained?</h3>
         <p>21 versions since October 2021, 10+ releases in 2026, 100 % test coverage, CI on every pull request, semantic-release with npm provenance. See the <a href="https://github.com/peterknezek/har-to-mocks/releases" class="link" style="color: var(--text)">release list</a>.</p>
+        <h3>Can I use the mocks in Playwright without MSW?</h3>
+        <p>Yes. <code>mocks-to-playwright</code> registers them with <code>page.route()</code>, no service worker involved. Unlike <code>page.routeFromHAR()</code>, every response is a readable JSON file, each test picks the endpoints it mocks, and a modifier changes one response for one test. See <a href="#companions" class="link" style="color: var(--text)">Adapters</a>.</p>
         <h3>Does it leak secrets?</h3>
         <p>HAR files can contain cookies and tokens. The mocks keep response bodies only, no headers. Still, review the output before committing it.</p>
       </section>

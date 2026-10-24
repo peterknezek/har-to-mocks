@@ -7,6 +7,10 @@ Extract response from .har file and create JSON mocks for mock server.
 [![Downloads/week](https://img.shields.io/npm/dw/har-to-mocks.svg)](https://npmjs.org/package/har-to-mocks)
 [![License](https://img.shields.io/npm/l/har-to-mocks.svg)](https://github.com/peterknezek/har-to-mocks/blob/master/package.json)
 
+**Website and docs:** [peterknezek.github.io/har-to-mocks](https://peterknezek.github.io/har-to-mocks/) ([CLI reference](https://peterknezek.github.io/har-to-mocks/docs.html#cli), [how to get a HAR file](https://peterknezek.github.io/har-to-mocks/docs.html#har), [FAQ](https://peterknezek.github.io/har-to-mocks/docs.html#faq))
+
+**Adapters:** serve the generated mocks with [mocks-to-msw](https://github.com/peterknezek/mocks-to-msw) (MSW) or [mocks-to-playwright](https://github.com/peterknezek/mocks-to-playwright) (Playwright). See [Use the mocks](#use-the-mocks).
+
 ## Install CLI
 ```
 npm install -g har-to-mocks
@@ -97,7 +101,7 @@ Selected requests:
 
 ### Extract data from .har to mock/api folder
 
-The second argument should be path to `mock`'s folder. Export structure is prepared for [mocks-to-msw](https://github.com/peterknezek/mocks-to-msw) which helps with integration with MSW (Mock Service Worker) and [connect-api-mocker](https://www.npmjs.com/package/connect-api-mocker).
+The second argument should be path to `mock`'s folder. Export structure is prepared for [mocks-to-msw](https://github.com/peterknezek/mocks-to-msw) (MSW, Mock Service Worker), [mocks-to-playwright](https://github.com/peterknezek/mocks-to-playwright) (Playwright tests) and [connect-api-mocker](https://www.npmjs.com/package/connect-api-mocker). See [Use the mocks](#use-the-mocks).
 
 WARNING: When second argument is defined cli will write files. To avoid unwanted overwrite use `--dry-run` flag to skip writing part of process.
 
@@ -194,6 +198,46 @@ Things to know about this format:
 - A URL path can't be both a file and a folder. For example, `/api/users` and `/api/users/1` can't both be written: the second one fails with `A file and a folder would have the same path`.
 - Binary responses (base64 in the .har file) are decoded, so images and fonts are written as the original bytes.
 - Point DevTools at the folder you wrote to. The `longurls` file names depend on the full path of that folder.
+
+## Use the mocks
+
+The default `--format=mocks` layout (`<url path>/<METHOD>.json`) is read by two adapters. Both ship the same `generate-mocks` CLI, which writes a typed `mocks.ts` import file from the mocks folder, so one set of mocks can feed the app, Storybook and your tests.
+
+### mocks-to-msw
+
+[mocks-to-msw](https://github.com/peterknezek/mocks-to-msw) turns the mocks into [MSW](https://mswjs.io) handlers for development, Storybook and unit tests.
+
+```ts
+import { createMockHandler } from "mocks-to-msw";
+import mocks from "./mocks/mocks";
+
+const { mock } = createMockHandler<keyof typeof mocks>({ mocks });
+
+export const handlers = [
+  mock.get("/client"),
+  mock.post("/client/application", (data) => ({ ...data, modified: true })),
+];
+```
+
+### mocks-to-playwright
+
+[mocks-to-playwright](https://github.com/peterknezek/mocks-to-playwright) serves the same mocks in [Playwright](https://playwright.dev) tests through `page.route()`, on a page or a whole browser context.
+
+```ts
+import { test } from "@playwright/test";
+import { createMockRoutes } from "mocks-to-playwright";
+import mocks from "./mocks/mocks";
+
+const { mock } = createMockRoutes<keyof typeof mocks>({ mocks });
+
+test("shows the client", async ({ page }) => {
+  await mock.get("/client")(page);
+  await mock.post("/client/application", (data) => ({ ...data, status: "approved" }))(page);
+  await page.goto("/");
+});
+```
+
+Both adapters check at compile time that a path has a mock for the method you use, and accept a modifier to change a response for one handler or one test.
 
 ## Development
 

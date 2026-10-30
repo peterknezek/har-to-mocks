@@ -56,7 +56,7 @@
     "/bin",
     "/lib"
   ],
-  "homepage": "https://github.com/peterknezek/har-to-mocks",
+  "homepage": "https://peterknezek.github.io/har-to-mocks",
   "keywords": [
     "cli",
     "har",
